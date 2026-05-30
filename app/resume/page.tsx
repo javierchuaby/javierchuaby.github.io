@@ -1,0 +1,63 @@
+import type { Metadata } from 'next';
+
+import Courses from '@/components/Resume/Courses';
+import Education from '@/components/Resume/Education';
+import Experience from '@/components/Resume/Experience';
+import References from '@/components/Resume/References';
+import ResumeNav from '@/components/Resume/ResumeNav';
+import Skills from '@/components/Resume/Skills';
+import PageWrapper from '@/components/Template/PageWrapper';
+import courses from '@/data/resume/courses';
+import degrees from '@/data/resume/degrees';
+import { categories, skills } from '@/data/resume/skills';
+import work from '@/data/resume/work';
+import { createPageMetadata } from '@/lib/metadata';
+
+export const metadata: Metadata = createPageMetadata({
+  title: 'Resume',
+  description:
+    "Javier Chua's Resume. Senior Software Engineer specializing in full-stack web development, design systems, and scalable systems.",
+  path: '/resume/',
+});
+
+export default function ResumePage() {
+  return (
+    <PageWrapper>
+      <section className="resume-page">
+        <header className="resume-header">
+          <h1 className="resume-title">Resume</h1>
+          <p className="resume-summary">
+            Computer Science undergraduate at NUS, currently developing
+            predictive machine learning models for network infrastructure at
+            Visa. Experienced in backend software development, cloud
+            infrastructure deployments, and applied artifical intelligence.
+          </p>
+        </header>
+
+        <ResumeNav />
+
+        <div className="resume-content">
+          <section id="experience" className="resume-section">
+            <Experience data={work} />
+          </section>
+
+          <section id="education" className="resume-section">
+            <Education data={degrees} />
+          </section>
+
+          <section id="skills" className="resume-section">
+            <Skills skills={skills} categories={categories} />
+          </section>
+
+          <section id="courses" className="resume-section">
+            <Courses data={courses} />
+          </section>
+
+          <section id="references" className="resume-section">
+            <References />
+          </section>
+        </div>
+      </section>
+    </PageWrapper>
+  );
+}
