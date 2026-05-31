@@ -3,7 +3,8 @@ export interface Project {
   subtitle?: string;
   link?: string;
   image: string;
-  date: string;
+  startDate: string;
+  endDate?: string;
   desc: string;
   tech?: string[];
   featured?: boolean;
@@ -15,7 +16,8 @@ const data: Project[] = [
     subtitle: 'Hyperlocal Intelligence Agent for Singapore',
     link: 'https://github.com/javierchuaby/city.ai',
     image: '/images/projects/city-ai.jpg',
-    date: '2026-01-01',
+    startDate: '2026-01-01',
+    endDate: '2026-03-01',
     desc: 'Agent designed for travellers and residents seeking authentic community knowledge about Singapore. It automatically extracts and indexes chucks from targeted subreddits (r/singapore, r/singaporefood), and uses a RAG pipeline for reasoning and vector-based semantic search.',
     tech: [
       'Python',
@@ -33,7 +35,8 @@ const data: Project[] = [
     subtitle: 'Group Travel Planning & Expense iOS App',
     link: 'https://github.com/javierchuaby/splend',
     image: '/images/projects/splend/splend-flow.png',
-    date: '2025-08-01',
+    startDate: '2025-05-01',
+    endDate: '2025-08-01',
     desc: 'An iOS app for groups planning trips together. It centralises itineraries, expenses, and logistics in one place, and includes a bill-splitting algorithm that settles debts at the end of a trip automatically. Users can also photograph receipts to log expenses instantly, with OCR handling the data entry.',
     tech: [
       'React Native',
@@ -49,7 +52,8 @@ const data: Project[] = [
     subtitle: 'Multithreaded Block Generation & Persistence',
     link: 'https://github.com/javierchuaby/My-New-Blockchain.git',
     image: '/images/projects/bitcoin.jpg',
-    date: '2025-07-01',
+    startDate: '2025-07-01',
+    endDate: '2025-09-01',
     desc: 'Java-based implementation of a distributed ledger system designed as an educational framework for exploring decentralised consensus and cryptographic security.',
     tech: [
       'Java',
@@ -66,7 +70,8 @@ const data: Project[] = [
     subtitle: 'Pandas Data Pipeline & LLM Analytics',
     link: 'https://github.com/javierchuaby/Nutrition-Analyser.git',
     image: '/images/projects/starbucks2.jpg',
-    date: '2025-10-01',
+    startDate: '2025-10-01',
+    endDate: '2025-11-01',
     desc: 'Specialised data analysis application designed to provide health-conscious consumers and nutritionists with deep insights into menu composition.',
     tech: ['Python', 'Pandas', 'NumPy', 'Groq LLM', 'Streamlit'],
   },

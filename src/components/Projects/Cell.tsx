@@ -6,12 +6,27 @@ import { PROJECT_IMAGE } from '@/lib/utils';
 
 interface CellProps {
   data: Project;
+  layout?: 'grid' | 'list';
 }
 
-export default function Cell({ data }: CellProps) {
-  const { title, subtitle, link, image, date, desc, tech, featured } = data;
+export default function Cell({ data, layout = 'grid' }: CellProps) {
+  const {
+    title,
+    subtitle,
+    link,
+    image,
+    startDate,
+    endDate,
+    desc,
+    tech,
+    featured,
+  } = data;
 
   const hasLink = Boolean(link);
+
+  const displayDate = endDate
+    ? `${dayjs(startDate).format('MMM YYYY')} - ${dayjs(endDate).format('MMM YYYY')}`
+    : dayjs(startDate).format('MMM YYYY');
 
   const cardContent = (
     <>
@@ -44,8 +59,8 @@ export default function Cell({ data }: CellProps) {
           </div>
         )}
 
-        <time className="project-card-date" dateTime={date}>
-          {dayjs(date).format('YYYY')}
+        <time className="project-card-date" dateTime={startDate}>
+          {displayDate}
         </time>
       </div>
     </>
@@ -53,7 +68,9 @@ export default function Cell({ data }: CellProps) {
 
   return (
     <article
-      className={`project-card ${featured ? 'project-card--featured' : ''} ${!hasLink ? 'project-card--static' : ''}`}
+      className={`project-card ${featured ? 'project-card--featured' : ''} ${
+        !hasLink ? 'project-card--static' : ''
+      } ${layout === 'list' ? 'project-card--list' : ''}`}
     >
       {hasLink ? (
         <a href={link} className="project-card-link">

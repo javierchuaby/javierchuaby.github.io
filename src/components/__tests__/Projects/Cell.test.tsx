@@ -8,7 +8,7 @@ describe('Cell', () => {
     title: 'Test Project',
     subtitle: 'A test subtitle',
     image: '/images/test.jpg',
-    date: '2023-01-01',
+    startDate: '2023-01-01',
     desc: 'This is a test project description',
     link: 'https://example.com',
   };
@@ -27,7 +27,7 @@ describe('Cell', () => {
 
   it('renders project date in correct format', () => {
     render(<Cell data={mockProject} />);
-    expect(screen.getByText('2023')).toBeInTheDocument();
+    expect(screen.getByText('Jan 2023')).toBeInTheDocument();
   });
 
   it('renders project image with alt text', () => {

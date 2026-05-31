@@ -60,6 +60,12 @@
   }
 }
 
+.activities-grid {
+  display: grid;
+  gap: 1.75rem;
+  grid-template-columns: 1fr;
+}
+
 .projects-grid--featured .project-card {
   grid-column: 1 / -1;
   box-shadow:
@@ -122,6 +128,46 @@
 
 .project-card-static {
   display: block;
+}
+
+/* List layout (horizontal cards) */
+@media screen and (min-width: 600px) {
+  .project-card--list .project-card-link,
+  .project-card--list .project-card-static {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .project-card--list:nth-child(even) .project-card-link,
+  .project-card--list:nth-child(even) .project-card-static {
+    flex-direction: row-reverse;
+  }
+
+  .project-card--list .project-card-image {
+    flex: 0 0 40%;
+    max-width: 40%;
+    border-right: 1px solid var(--color-border-bg);
+  }
+
+  .project-card--list:nth-child(even) .project-card-image {
+    border-right: none;
+    border-left: 1px solid var(--color-border-bg);
+  }
+
+  .project-card--list .project-card-content {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .project-card--list:nth-child(even) .project-card-content {
+    text-align: right;
+  }
+
+  .project-card--list:nth-child(even) .project-card-tech {
+    justify-content: flex-end;
+  }
 }
 
 .project-card-image {

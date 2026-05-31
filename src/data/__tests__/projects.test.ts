@@ -12,12 +12,12 @@ describe('projects data', () => {
     for (const project of projects) {
       expect(project).toHaveProperty('title');
       expect(project).toHaveProperty('image');
-      expect(project).toHaveProperty('date');
+      expect(project).toHaveProperty('startDate');
       expect(project).toHaveProperty('desc');
 
       expect(typeof project.title).toBe('string');
       expect(typeof project.image).toBe('string');
-      expect(typeof project.date).toBe('string');
+      expect(typeof project.startDate).toBe('string');
       expect(typeof project.desc).toBe('string');
     }
   });
@@ -40,10 +40,17 @@ describe('projects data', () => {
     }
   });
 
-  it('dates are valid date strings', () => {
+  it('dates are valid ISO strings', () => {
     for (const project of projects) {
-      const date = new Date(project.date);
-      expect(date.toString()).not.toBe('Invalid Date');
+      expect(/^\d{4}-\d{2}-\d{2}$/.test(project.startDate)).toBe(true);
+      const startDate = new Date(project.startDate);
+      expect(startDate.toString()).not.toBe('Invalid Date');
+
+      if (project.endDate) {
+        expect(/^\d{4}-\d{2}-\d{2}$/.test(project.endDate)).toBe(true);
+        const endDate = new Date(project.endDate);
+        expect(endDate.toString()).not.toBe('Invalid Date');
+      }
     }
   });
 
