@@ -12,7 +12,6 @@ describe('about data', () => {
     expect(aboutMarkdown).toContain('# Intro');
     expect(aboutMarkdown).toContain('National University of Singapore');
     expect(aboutMarkdown).toContain('Visa');
-    expect(aboutMarkdown).toContain('CPFB');
   });
 
   it('contains the likes section', () => {

@@ -13,6 +13,9 @@
 }
 
 .about-header {
+  max-width: 46rem;
+  margin-left: auto;
+  margin-right: auto;
   margin-bottom: var(--spacing-8);
 }
 
@@ -24,6 +27,7 @@
 
 .about-content {
   max-width: 46rem;
+  margin: 0 auto;
   line-height: 1.85;
 }
 
@@ -117,6 +121,7 @@
 .about-content p {
   margin: 0 0 var(--spacing-5);
   color: var(--color-fg);
+  text-align: justify;
   text-wrap: pretty;
 }
 
@@ -125,7 +130,6 @@
 }
 
 .about-intro p {
-  max-width: 41rem;
   font-size: clamp(1.04rem, 0.7vw + 0.95rem, 1.1rem);
   line-height: 1.9;
   color: var(--color-fg-bold);
@@ -139,6 +143,7 @@
 .about-content li {
   margin-bottom: 0.65rem;
   color: var(--color-fg);
+  text-align: justify;
   line-height: 1.75;
   text-wrap: pretty;
 }

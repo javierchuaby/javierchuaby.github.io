@@ -1,10 +1,10 @@
 export const aboutMarkdown = `# Intro
 
-I am a Computer Science student at the National University of Singapore (NUS) specialising in backend systems, cloud infrastructure, and network engineering. 
+Hi, I'm Javier! I'm a Computer Science student at the National University of Singapore (NUS) specialising in backend systems, cloud infrastructure, and network engineering. 
 
-Currently, I am a Network Engineering Intern at **Visa**, where I am building a hybrid ML + LLM network outage prediction agent using Isolation Forest, CatBoost and LangGraph. Previously, I was a Software Engineering Intern at the **Central Provident Fund Board (CPFB)**, where I built dynamic Infrastructure-as-Code provisioning engines and shift-left DevSecOps security pipelines on AWS.
+I am currently a Network Engineering Intern at **Visa**, building automation tooling and ML-based anomaly detection for event prediction and outage prevention.
 
-I am curious, and enjoy solving complex problems.
+I enjoy learning new technologies and solving real-world problems through code.
 
 # I Like
 
