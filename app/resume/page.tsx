@@ -49,9 +49,9 @@ export default function ResumePage() {
             <Skills skills={skills} categories={categories} />
           </section>
 
-          <section id="courses" className="resume-section">
+          {/* <section id="courses" className="resume-section">
             <Courses data={courses} />
-          </section>
+          </section> */}
 
           <section id="references" className="resume-section">
             <References />

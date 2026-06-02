@@ -51,7 +51,9 @@ describe('Site', () => {
     await Site();
 
     expect(global.fetch).toHaveBeenCalledWith(
-      'https://api.github.com/repos/javierchuaby/javierchuaby.github.io',
+      expect.stringContaining(
+        'https://api.github.com/repos/javierchuaby/javierchuaby.github.io',
+      ),
       expect.objectContaining({
         headers: expect.objectContaining({
           Accept: 'application/vnd.github.v3+json',

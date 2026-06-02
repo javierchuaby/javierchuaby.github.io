@@ -3,7 +3,7 @@
  */
 
 // Site configuration
-export const SITE_URL = 'https://javierchuaby.github.io';
+export const SITE_URL = 'https://javierchuaby.dev';
 export const AUTHOR_NAME = 'Javier Chua';
 export const TWITTER_HANDLE = '@javierchua';
 

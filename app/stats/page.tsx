@@ -8,7 +8,7 @@ import { createPageMetadata } from '@/lib/metadata';
 
 export const metadata: Metadata = createPageMetadata({
   title: 'Stats',
-  description: 'Some statistics about Javier Chua and javierchuaby.github.io',
+  description: 'Some statistics about Javier Chua and javierchuaby.dev',
   path: '/stats/',
 });
 

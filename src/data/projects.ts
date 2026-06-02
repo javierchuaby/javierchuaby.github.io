@@ -43,7 +43,6 @@ const data: Project[] = [
       'TypeScript',
       'Firebase',
       'Google Cloud Run',
-      'Express',
       'OpenAI Vision API',
     ],
   },

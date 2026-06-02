@@ -14,7 +14,11 @@ export interface Category {
 const skills: Skill[] = [
   // Languages
   { title: 'Python', competency: 5, category: ['Languages', 'AI/ML'] },
-  { title: 'TypeScript', competency: 5, category: ['Languages', 'Web & Mobile'] },
+  {
+    title: 'TypeScript',
+    competency: 5,
+    category: ['Languages', 'Web & Mobile'],
+  },
   { title: 'Java', competency: 4, category: ['Languages'] },
   { title: 'C++', competency: 4, category: ['Languages'] },
 
@@ -33,7 +37,11 @@ const skills: Skill[] = [
   { title: 'Trivy', competency: 4, category: ['Cloud & DevSecOps'] },
   { title: 'Kubernetes (K8s)', competency: 3, category: ['Cloud & DevSecOps'] },
   { title: 'Argo CD', competency: 3, category: ['Cloud & DevSecOps'] },
-  { title: 'Kafka', competency: 3, category: ['Cloud & DevSecOps', 'Data & Databases'] },
+  {
+    title: 'Kafka',
+    competency: 3,
+    category: ['Cloud & DevSecOps', 'Data & Databases'],
+  },
   { title: 'Entra ID (OIDC)', competency: 3, category: ['Cloud & DevSecOps'] },
   { title: 'GCP', competency: 3, category: ['Cloud & DevSecOps'] },
 

@@ -105,6 +105,8 @@
   gap: var(--spacing-2);
   margin-top: var(--spacing-6);
   margin-bottom: var(--spacing-4);
+  margin-inline: auto;
+  width: fit-content;
   position: sticky;
   top: var(--header-height);
   z-index: var(--z-sticky);
