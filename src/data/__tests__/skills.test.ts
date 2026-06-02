@@ -82,11 +82,18 @@ describe('categories data', () => {
   });
 
   // Data quality: categories should be sorted for filter button display order
-  it('categories are sorted alphabetically by name', () => {
+  it('categories are sorted in the correct display order', () => {
     const names = categories.map((c) => c.name);
-    const sorted = [...names].sort();
+    const expectedOrder = [
+      'Languages',
+      'AI/ML',
+      'Cloud & DevSecOps',
+      'Data & Databases',
+      'Web & Mobile',
+      'Network Tools',
+    ];
 
-    expect(names).toEqual(sorted);
+    expect(names).toEqual(expectedOrder);
   });
 
   it('all skill categories are represented', () => {

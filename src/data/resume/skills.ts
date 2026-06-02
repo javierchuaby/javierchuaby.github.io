@@ -13,101 +13,50 @@ export interface Category {
 
 const skills: Skill[] = [
   // Languages
-  {
-    title: 'TypeScript',
-    competency: 5,
-    category: ['Languages', 'Web & Mobile'],
-  },
-  {
-    title: 'JavaScript',
-    competency: 5,
-    category: ['Languages', 'Web & Mobile'],
-  },
-  {
-    title: 'Python',
-    competency: 5,
-    category: ['Languages', 'Security, AI & Tools', 'Data & Databases'],
-  },
+  { title: 'Python', competency: 5, category: ['Languages', 'AI/ML'] },
+  { title: 'TypeScript', competency: 5, category: ['Languages', 'Web & Mobile'] },
   { title: 'Java', competency: 4, category: ['Languages'] },
-  {
-    title: 'Bash/Shell',
-    competency: 4,
-    category: ['Languages', 'Cloud & DevOps'],
-  },
-  { title: 'C/C++', competency: 3, category: ['Languages'] },
-  { title: 'Dart', competency: 3, category: ['Languages', 'Web & Mobile'] },
+  { title: 'C++', competency: 4, category: ['Languages'] },
 
   // Web & Mobile
   { title: 'Next.js', competency: 5, category: ['Web & Mobile'] },
   { title: 'React', competency: 5, category: ['Web & Mobile'] },
-  { title: 'React Native', competency: 4, category: ['Web & Mobile'] },
   { title: 'Node.js', competency: 5, category: ['Web & Mobile'] },
-  { title: 'Express', competency: 4, category: ['Web & Mobile'] },
-  { title: 'Flutter', competency: 3, category: ['Web & Mobile'] },
-  { title: 'Expo', competency: 4, category: ['Web & Mobile'] },
-  { title: 'Vite', competency: 5, category: ['Web & Mobile'] },
-  { title: 'NextAuth', competency: 4, category: ['Web & Mobile'] },
-  {
-    title: 'Streamlit',
-    competency: 4,
-    category: ['Web & Mobile', 'Data & Databases'],
-  },
+  { title: 'React Native', competency: 4, category: ['Web & Mobile'] },
 
-  // Cloud & DevOps
-  { title: 'AWS', competency: 4, category: ['Cloud & DevOps'] },
-  { title: 'Terraform', competency: 5, category: ['Cloud & DevOps'] },
-  { title: 'Docker', competency: 5, category: ['Cloud & DevOps'] },
-  { title: 'Nginx', competency: 4, category: ['Cloud & DevOps'] },
-  { title: 'Google Cloud Run', competency: 4, category: ['Cloud & DevOps'] },
-  { title: 'Argo CD', competency: 3, category: ['Cloud & DevOps'] },
-  { title: 'Azure DevOps', competency: 4, category: ['Cloud & DevOps'] },
-  { title: 'CI/CD', competency: 5, category: ['Cloud & DevOps'] },
-  {
-    title: 'Kafka',
-    competency: 4,
-    category: ['Cloud & DevOps', 'Data & Databases'],
-  },
+  // Cloud & DevSecOps
+  { title: 'AWS', competency: 5, category: ['Cloud & DevSecOps'] },
+  { title: 'Azure DevOps', competency: 5, category: ['Cloud & DevSecOps'] },
+  { title: 'Docker', competency: 5, category: ['Cloud & DevSecOps'] },
+  { title: 'Terraform', competency: 4, category: ['Cloud & DevSecOps'] },
+  { title: 'SonarQube', competency: 4, category: ['Cloud & DevSecOps'] },
+  { title: 'Trivy', competency: 4, category: ['Cloud & DevSecOps'] },
+  { title: 'Kubernetes (K8s)', competency: 3, category: ['Cloud & DevSecOps'] },
+  { title: 'Argo CD', competency: 3, category: ['Cloud & DevSecOps'] },
+  { title: 'Kafka', competency: 3, category: ['Cloud & DevSecOps', 'Data & Databases'] },
+  { title: 'Entra ID (OIDC)', competency: 3, category: ['Cloud & DevSecOps'] },
+  { title: 'GCP', competency: 3, category: ['Cloud & DevSecOps'] },
 
   // Data & Databases
   { title: 'PostgreSQL', competency: 5, category: ['Data & Databases'] },
-  { title: 'MySQL', competency: 4, category: ['Data & Databases'] },
-  { title: 'MongoDB', competency: 4, category: ['Data & Databases'] },
-  { title: 'SQLite', competency: 4, category: ['Data & Databases'] },
-  { title: 'H2 Database', competency: 4, category: ['Data & Databases'] },
-  { title: 'Prisma', competency: 4, category: ['Data & Databases'] },
-  { title: 'Pandas', competency: 5, category: ['Data & Databases'] },
-  { title: 'NumPy', competency: 4, category: ['Data & Databases'] },
-  {
-    title: 'scikit-learn',
-    competency: 4,
-    category: ['Data & Databases', 'Security, AI & Tools'],
-  },
+  { title: 'MongoDB', competency: 5, category: ['Data & Databases'] },
+  { title: 'ClickHouse', competency: 4, category: ['Data & Databases'] },
   { title: 'InfluxDB3', competency: 4, category: ['Data & Databases'] },
+  { title: 'Prisma', competency: 4, category: ['Data & Databases'] },
+  { title: 'Supabase', competency: 4, category: ['Data & Databases'] },
 
-  // Security, AI & Tools
-  {
-    title: 'SonarQube',
-    competency: 4,
-    category: ['Security, AI & Tools', 'Cloud & DevOps'],
-  },
-  {
-    title: 'Trivy',
-    competency: 4,
-    category: ['Security, AI & Tools', 'Cloud & DevOps'],
-  },
-  {
-    title: 'Entra ID (OIDC)',
-    competency: 4,
-    category: ['Security, AI & Tools'],
-  },
-  { title: 'LangGraph', competency: 5, category: ['Security, AI & Tools'] },
-  { title: 'LangChain', competency: 4, category: ['Security, AI & Tools'] },
-  { title: 'CatBoost', competency: 4, category: ['Security, AI & Tools'] },
-  { title: 'SevOne', competency: 4, category: ['Security, AI & Tools'] },
-  { title: 'Vitest', competency: 5, category: ['Security, AI & Tools'] },
-  { title: 'Jest', competency: 4, category: ['Security, AI & Tools'] },
-  { title: 'JUnit', competency: 4, category: ['Security, AI & Tools'] },
-  { title: 'Pytest', competency: 4, category: ['Security, AI & Tools'] },
+  // AI/ML
+  { title: 'PyTorch', competency: 5, category: ['AI/ML'] },
+  { title: 'LangGraph', competency: 5, category: ['AI/ML'] },
+  { title: 'LangChain', competency: 5, category: ['AI/ML'] },
+  { title: 'scikit-learn', competency: 5, category: ['AI/ML'] },
+  { title: 'CatBoost', competency: 4, category: ['AI/ML'] },
+  { title: 'MLflow', competency: 4, category: ['AI/ML'] },
+
+  // Network Tools
+  { title: 'SevOne', competency: 4, category: ['Network Tools'] },
+  { title: 'Netmiko', competency: 4, category: ['Network Tools'] },
+  { title: 'NetBrain', competency: 4, category: ['Network Tools'] },
 ].map((skill) => ({ ...skill, category: skill.category.sort() }));
 
 /**
@@ -137,6 +86,15 @@ const FALLBACK_COLORS: { color: string; textColor: 'dark' | 'light' }[] = [
   { color: '#64cb7b', textColor: 'dark' },
 ];
 
+const CATEGORY_ORDER = [
+  'Languages',
+  'AI/ML',
+  'Cloud & DevSecOps',
+  'Data & Databases',
+  'Web & Mobile',
+  'Network Tools',
+];
+
 /**
  * Build categories from skills with type-safe color assignment.
  * Logs a warning in development if there are more categories than colors.
@@ -144,7 +102,16 @@ const FALLBACK_COLORS: { color: string; textColor: 'dark' | 'light' }[] = [
 function buildCategories(skillsList: Skill[]): Category[] {
   const uniqueCategories = Array.from(
     new Set(skillsList.flatMap(({ category }) => category)),
-  ).sort();
+  ).sort((a, b) => {
+    const indexA = CATEGORY_ORDER.indexOf(a);
+    const indexB = CATEGORY_ORDER.indexOf(b);
+
+    if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+    if (indexA !== -1) return -1;
+    if (indexB !== -1) return 1;
+
+    return a.localeCompare(b);
+  });
 
   const allColors = [...CATEGORY_COLORS, ...FALLBACK_COLORS];
 
