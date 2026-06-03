@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: /api
 
-Sitemap: https://javierchuaby.github.io/sitemap.xml
+Sitemap: https://javierchuaby.dev/sitemap.xml
