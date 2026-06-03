@@ -2,7 +2,7 @@
 
 This repository houses the source code for my personal portfolio website.
 
-**Live at**: [javierchuaby.dev](https://javierchuaby.dev).
+**Live at**: [javierchuaby.dev](https://javierchuaby.dev)
 
 ## Tech Stack
 
