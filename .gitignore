@@ -59,10 +59,6 @@ nohup.out
 docs/projects/
 docs/resume/
 
-# CLAUDE.md
-CLAUDE.md
-AGENTS.md
-
 # Next Image Export Optimizer
 next-image-export-optimizer-hashes.json
 next-image-export-optimizer-fallback-picture.png
