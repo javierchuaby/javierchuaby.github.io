@@ -8,7 +8,7 @@ This repository houses the source code for my personal portfolio website.
 
 The website is a performance-optimized static single-page application built using:
 
-- **Framework**: Next.js 16 (App Router)
+- **Framework**: Next.js 16
 - **Library**: React 19
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS v4 & custom properties
