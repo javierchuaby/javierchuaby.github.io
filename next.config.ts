@@ -1,4 +1,3 @@
-import bundleAnalyzer from '@next/bundle-analyzer';
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
@@ -25,23 +24,10 @@ const nextConfig: NextConfig = {
 
   trailingSlash: true,
 
-  // Turbopack configuration (used in development)
+  // Turbopack configuration (used in development and production builds)
   turbopack: {
     resolveExtensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
   },
-
-  // Experimental features
-  experimental: {
-    optimizePackageImports: [
-      '@fortawesome/react-fontawesome',
-      '@fortawesome/fontawesome-svg-core',
-    ],
-  },
 };
 
-// Bundle analyzer for production build analysis
-const withBundleAnalyzer = bundleAnalyzer({
-  enabled: process.env.ANALYZE === 'true',
-});
-
-export default withBundleAnalyzer(nextConfig);
+export default nextConfig;

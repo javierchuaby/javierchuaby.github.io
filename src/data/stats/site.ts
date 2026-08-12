@@ -28,7 +28,7 @@ const data: StatData[] = [
   // },
   {
     label: 'Number of linter warnings',
-    value: '0', // enforced via github workflow
+    value: '0', // verified by the predeploy lint check
   },
   // {
   //   label: 'Open github issues',
