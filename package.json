@@ -16,7 +16,7 @@
     "preinstall": "node scripts/enforce-package-manager.mjs",
     "predev": "pnpm run clean",
     "dev": "next dev --turbopack",
-    "build": "next build --webpack && next-image-export-optimizer",
+    "build": "next build && next-image-export-optimizer",
     "predeploy": "pnpm test && pnpm run build",
     "deploy": "gh-pages -d out -b gh-pages -t",
     "start": "next start",
