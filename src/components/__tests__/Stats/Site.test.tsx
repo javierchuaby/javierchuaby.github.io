@@ -63,6 +63,7 @@ describe('Site', () => {
   });
 
   it('uses fallback data when fetch fails', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
     vi.mocked(global.fetch).mockRejectedValueOnce(new Error('Network error'));
 
     const Component = await Site();
@@ -70,5 +71,9 @@ describe('Site', () => {
 
     // Should still render with fallback data
     expect(screen.getByRole('table')).toBeInTheDocument();
+    expect(warn).toHaveBeenCalledWith(
+      'Failed to fetch GitHub stats, using fallback:',
+      expect.any(Error),
+    );
   });
 });

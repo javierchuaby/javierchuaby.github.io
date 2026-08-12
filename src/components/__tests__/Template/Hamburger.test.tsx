@@ -83,7 +83,10 @@ describe('Hamburger', () => {
 
     // Click a link
     const aboutLink = screen.getByRole('link', { name: /about/i });
+    const preventNavigation = (event: MouseEvent) => event.preventDefault();
+    aboutLink.addEventListener('click', preventNavigation);
     fireEvent.click(aboutLink);
+    aboutLink.removeEventListener('click', preventNavigation);
 
     // Menu should be closed
     expect(button).toHaveAttribute('aria-expanded', 'false');

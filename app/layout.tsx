@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Raleway, Source_Sans_3 } from 'next/font/google';
+import localFont from 'next/font/local';
 import Script from 'next/script';
 
 import GoogleAnalytics from '@/components/Template/GoogleAnalytics';
@@ -8,22 +8,22 @@ import ScrollToTop from '@/components/Template/ScrollToTop';
 import { AUTHOR_NAME, SITE_URL, TWITTER_HANDLE } from '@/lib/utils';
 import './tailwind.css';
 
-const sourceSans = Source_Sans_3({
-  weight: ['400', '700'],
-  subsets: ['latin'],
+const sourceSans = localFont({
+  src: './fonts/SourceSans3-Variable.ttf',
+  weight: '200 900',
   variable: '--font-source-sans',
   display: 'swap',
   preload: true,
-  adjustFontFallback: true,
+  adjustFontFallback: 'Arial',
 });
 
-const raleway = Raleway({
-  weight: ['400', '800'],
-  subsets: ['latin'],
+const raleway = localFont({
+  src: './fonts/Raleway-Variable.ttf',
+  weight: '100 900',
   variable: '--font-raleway',
   display: 'swap',
   preload: true,
-  adjustFontFallback: true,
+  adjustFontFallback: 'Arial',
 });
 
 const siteDescription =

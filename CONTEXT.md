@@ -11,19 +11,19 @@ A dated role for which the site owner was formally hired or selected on merit to
 _Avoid_: Job, role, work entry, employment
 
 **Activity**:
-A dated role in the site owner's life that fails one or both of Position's criteria (formal selection on merit, *and* engineering-shaped work) — leadership posts, sports captaincies, military service, paid teaching. Buildable artefacts produced within an Activity context surface as separate Projects. Lives in `src/data/activities.ts`.
+A dated role in the site owner's life that fails one or both of Position's criteria (formal selection on merit, _and_ engineering-shaped work) — leadership posts, sports captaincies, military service, paid teaching. Buildable artefacts produced within an Activity context surface as separate Projects. Lives in `src/data/activities.ts`.
 _Avoid_: Experience, extracurricular, engagement
 
 **Project**:
-A portfolio-worthy buildable artefact (typically software with a public repository) the site owner authored outside the scope of any Position. Code produced *inside* a Position belongs to that Position's JSON Resume `highlights`, never here — see ADR-0001. Lives in `src/data/projects.ts`.
+A portfolio-worthy buildable artefact (typically software with a public repository) the site owner authored outside the scope of any Position. Code produced _inside_ a Position belongs to that Position's JSON Resume `highlights`, never here — see ADR-0001. Lives in `src/data/projects.ts`.
 _Avoid_: Side project, build, repo, personal project
 
 **Course**:
-A specific module taken at a university — completed *or* currently in progress. Modeled as a top-level concept (sibling of Education), not nested under it. Lives in `src/data/resume/courses.ts`.
+A specific module taken at a university — completed _or_ currently in progress. Modeled as a top-level concept (sibling of Education), not nested under it. Retained as data in `src/data/resume/courses.ts`, but not currently rendered on the résumé page.
 _Avoid_: Class, module, unit, subject
 
 **Skill**:
-A named technology the site owner uses, tagged with one or more Categories and a subjective **prominence** weight (1–5) that controls display size and within-category sort order. Prominence is *not* a proficiency claim — see ADR-0002. Lives in `src/data/resume/skills.ts`.
+A named technology the site owner uses, tagged with one or more Categories and a subjective **prominence** weight (1–5) that controls display size and within-category sort order. Prominence is _not_ a proficiency claim — see ADR-0002. Lives in `src/data/resume/skills.ts`.
 _Avoid_: Competency, proficiency, expertise, technology, tool
 
 **Category** (of Skills):
@@ -55,7 +55,7 @@ A top-level page of the site with `label`, `path`, and an optional `index: true`
 _Avoid_: Page, section, link, nav item
 
 **ContactItem**:
-A public profile or channel the site owner has *editorially chosen* to surface — answering "do I want a visitor to see this face of me?", not "will messages here reach me?". Order in the file is meaningful: distinctive social profiles first, email last as the universal fallback. Lives in `src/data/contact.ts`.
+A public profile or channel the site owner has _editorially chosen_ to surface — answering "do I want a visitor to see this face of me?", not "will messages here reach me?". Order in the file is meaningful: distinctive social profiles first, email last as the universal fallback. Lives in `src/data/contact.ts`.
 _Avoid_: Social link, channel, profile, contact method
 
 **AboutSection**:

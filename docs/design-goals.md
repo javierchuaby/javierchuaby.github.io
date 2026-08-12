@@ -25,7 +25,7 @@ This project attempts to follow these design principles.
 3. Lean
    - Actively prune old and dead code to avoid bloat.
    - New features that affect the entire project should be carefully considered.
-   - Use popular and well-maintained npm libraries when possible.
+   - Use popular and well-maintained third-party packages when possible.
 4. Limited horizontal fragmentation
    - Linter to prevent easy PR nits & to enforce code style consistency.
    - Preferred React Style: functional components with TypeScript for type safety.
@@ -36,12 +36,13 @@ This project attempts to follow these design principles.
 
 1. Use _Boring_ technologies
    - TypeScript for type safety while maintaining readability. Limited experimental features.
-   - Prefer popular and well-maintained npm packages.
+   - Prefer popular and well-maintained third-party packages.
 2. Maintainable
    - Easy setup.
    - It should be easy to deploy any version of this site.
    - Limited external dependencies (i.e. no missing headers for external libraries).
    - Dependencies are kept up to date.
+   - Maintenance scripts target POSIX shells on macOS and Linux.
 3. Good tests.
 4. Stable codebase structure.
 
