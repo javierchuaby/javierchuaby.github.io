@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 
 import type { StatData } from '../../components/Stats/types';
+import { CITIES_VISITED_COUNT, COUNTRIES_VISITED_COUNT } from '../travel';
 
 /** Birth date for age calculation (ISO format) */
 const BIRTH_DATE = '2003-09-20T09:24:00';
@@ -46,7 +47,12 @@ const data: StatData[] = [
   {
     key: 'countries',
     label: 'Countries visited',
-    value: 27,
+    value: COUNTRIES_VISITED_COUNT,
+  },
+  {
+    key: 'cities',
+    label: 'Cities visited',
+    value: CITIES_VISITED_COUNT,
   },
   {
     key: 'location',

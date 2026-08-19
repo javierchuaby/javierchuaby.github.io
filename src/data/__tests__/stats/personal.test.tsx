@@ -34,6 +34,22 @@ describe('personal stats data', () => {
     expect(ageStat!.value).toBeDefined();
   });
 
+  it('has the verified countries visited total', () => {
+    const countriesStat = data.find((s) => s.key === 'countries');
+
+    expect(countriesStat).toBeDefined();
+    expect(countriesStat!.label).toBe('Countries visited');
+    expect(countriesStat!.value).toBe(17);
+  });
+
+  it('has the verified cities visited total', () => {
+    const citiesStat = data.find((s) => s.key === 'cities');
+
+    expect(citiesStat).toBeDefined();
+    expect(citiesStat!.label).toBe('Cities visited');
+    expect(citiesStat!.value).toBe(35);
+  });
+
   it('has a current location stat', () => {
     const locationStat = data.find((s) => s.key === 'location');
 
