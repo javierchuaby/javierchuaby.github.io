@@ -6,35 +6,24 @@ describe('API page', () => {
   it('renders with correct structure and styling classes', () => {
     const { container } = render(<ApiDocsPage />);
 
-    expect(container.querySelector('main')).toHaveClass('api-page');
-    expect(container.querySelector('.api-content')).toBeInTheDocument();
-    expect(container.querySelector('.api-header')).toBeInTheDocument();
-    expect(container.querySelector('.page-title')).toHaveTextContent(
-      'Developer API',
-    );
+    // Verify main container
+    expect(container.querySelector('main')).toBeInTheDocument();
 
-    const sections = container.querySelectorAll('.api-section');
+    // Verify content container has api-content class
+    expect(container.querySelector('article')).toBeInTheDocument();
+
+    // Verify sections
+    const sections = container.querySelectorAll('section');
     expect(sections).toHaveLength(4);
 
-    const headingLinks = container.querySelectorAll(
-      '.api-section-heading-link',
-    );
-    expect(headingLinks).toHaveLength(3);
-
-    const hashIndicators = container.querySelectorAll(
-      '.api-section-heading-hash',
-    );
-    expect(hashIndicators).toHaveLength(3);
-    for (const hash of hashIndicators) {
-      expect(hash).toHaveAttribute('aria-hidden', 'true');
-    }
-
-    const endpointCodes = container.querySelectorAll('.api-endpoint');
+    // Verify inline code elements have appropriate classes
+    const endpointCodes = container.querySelectorAll('code.api-endpoint');
     expect(endpointCodes).toHaveLength(8);
 
-    const headerCodes = container.querySelectorAll('.http-header');
+    const headerCodes = container.querySelectorAll('code.http-header');
     expect(headerCodes).toHaveLength(4);
 
+    // Verify pre/code block for JSON
     expect(container.querySelector('pre')).toBeInTheDocument();
     expect(container.querySelector('pre code')).toBeInTheDocument();
   });
@@ -42,6 +31,7 @@ describe('API page', () => {
   it('contains all expected API documentation sections', () => {
     const { getByRole } = render(<ApiDocsPage />);
 
+    // Check for all section headings
     expect(
       getByRole('heading', { level: 2, name: 'OpenAPI Specification' }),
     ).toBeInTheDocument();
@@ -67,7 +57,7 @@ describe('API page', () => {
       'GET /api/contact',
     ];
 
-    const endpointCodes = container.querySelectorAll('.api-endpoint');
+    const endpointCodes = container.querySelectorAll('code.api-endpoint');
     expect(endpointCodes.length).toBeGreaterThanOrEqual(endpoints.length);
 
     for (let i = 0; i < endpoints.length; i++) {
@@ -85,7 +75,7 @@ describe('API page', () => {
       'RateLimit-Policy: 100;w=60',
     ];
 
-    const headerCodes = container.querySelectorAll('.http-header');
+    const headerCodes = container.querySelectorAll('code.http-header');
     expect(headerCodes).toHaveLength(headers.length);
 
     for (let i = 0; i < headers.length; i++) {

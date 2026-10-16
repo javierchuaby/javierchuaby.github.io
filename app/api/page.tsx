@@ -12,19 +12,21 @@ export const metadata: Metadata = createPageMetadata({
 
 export default function ApiDocsPage() {
   return (
-    <PageWrapper mainClassName="api-page">
-      <article className="api-content" id="api-docs">
-        <header className="api-header">
-          <h1 className="page-title">
-            <Link href="/api">Developer API</Link>
-          </h1>
-          <p>
-            Machine-readable endpoints, OpenAPI 3.1.0 specification, and
-            developer documentation for AI agents and automated clients.
-          </p>
+    <PageWrapper>
+      <article id="api-docs">
+        <header>
+          <div className="title">
+            <h1>
+              <Link href="/api">Developer API</Link>
+            </h1>
+            <p>
+              Machine-readable endpoints, OpenAPI 3.1.0 specification, and
+              developer documentation for AI agents and automated clients.
+            </p>
+          </div>
         </header>
 
-        <section aria-labelledby="openapi-heading" className="api-section">
+        <section aria-labelledby="openapi-heading">
           <h2 id="openapi-heading">OpenAPI Specification</h2>
           <p>
             This portfolio exposes a public, read-only developer API providing
@@ -73,13 +75,8 @@ export default function ApiDocsPage() {
           </ul>
         </section>
 
-        <section aria-labelledby="endpoints-heading" className="api-section">
-          <h2 id="endpoints-heading" className="api-section-heading-link">
-            <span>Available Endpoints</span>
-            <span className="api-section-heading-hash" aria-hidden="true">
-              #
-            </span>
-          </h2>
+        <section aria-labelledby="endpoints-heading">
+          <h2 id="endpoints-heading">Available Endpoints</h2>
           <p>
             All endpoints are accessible via HTTP GET and HEAD requests. No
             authentication or API key is required. Responses are encoded as
@@ -110,13 +107,8 @@ export default function ApiDocsPage() {
           </ul>
         </section>
 
-        <section aria-labelledby="ratelimit-heading" className="api-section">
-          <h2 id="ratelimit-heading" className="api-section-heading-link">
-            <span>Rate Limiting Conventions</span>
-            <span className="api-section-heading-hash" aria-hidden="true">
-              #
-            </span>
-          </h2>
+        <section aria-labelledby="ratelimit-heading">
+          <h2 id="ratelimit-heading">Rate Limiting Conventions</h2>
           <p>
             To ensure reliable availability for all visitors and automated
             agents, API endpoints enforce standard IETF RFC RateLimit headers.
@@ -143,16 +135,8 @@ export default function ApiDocsPage() {
           </ul>
         </section>
 
-        <section
-          aria-labelledby="errors-heading"
-          className="api-section api-section-json"
-        >
-          <h2 id="errors-heading" className="api-section-heading-link">
-            <span>Structured Error Responses</span>
-            <span className="api-section-heading-hash" aria-hidden="true">
-              #
-            </span>
-          </h2>
+        <section aria-labelledby="errors-heading">
+          <h2 id="errors-heading">Structured Error Responses</h2>
           <p>
             When an API route is requested with invalid parameters, an unmapped
             URL, or an unsupported method, the server returns a structured JSON
