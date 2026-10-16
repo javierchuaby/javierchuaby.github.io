@@ -49,7 +49,7 @@
   line-height: var(--leading-relaxed);
 }
 
-.api-content pre code {
+.api-content pre > code {
   display: block;
   padding: 0;
   margin: 0;
