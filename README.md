@@ -23,7 +23,7 @@ decisions.
 
 ## Production deployment
 
-After a PR merges, update a clean checkout of `main` and run `pnpm deploy`.
+After a PR merges, update a clean checkout of `main` and run `pnpm run deploy`.
 This runs tests and the production build, deploys to Cloudflare Workers, and
 verifies the public domain. `pnpm deploy:worker` is the same Cloudflare pipeline.
 The obsolete GitHub Pages publisher has been removed.
@@ -31,3 +31,5 @@ The obsolete GitHub Pages publisher has been removed.
 GitHub Actions validates PRs and `main` with formatting, lint, type checking,
 tests, a production build, and a Worker deployment dry-run. Deployments require
 local Wrangler authentication; CI does not contain Cloudflare credentials.
+
+Use `pnpm run deploy` with the explicit `run`: `pnpm deploy` is pnpm's built-in workspace deployment command.
