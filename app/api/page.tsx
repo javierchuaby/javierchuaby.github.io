@@ -143,7 +143,7 @@ export default function ApiDocsPage() {
             error object rather than an HTML page:
           </p>
           <pre>
-            <code>{`{
+            <code className="code-block">{`{
   "error": {
     "code": "NOT_FOUND",
     "message": "The requested API endpoint does not exist.",

@@ -36,7 +36,20 @@
   border-color: var(--color-accent);
 }
 
-/* Multiline code blocks - use !important to override base code styles */
+/* Multiline code blocks - use class selector for specificity */
+.api-content pre > code.code-block {
+  display: block;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  color: var(--color-fg-bold);
+  white-space: pre;
+  tab-size: 2;
+  -moz-tab-size: 2;
+}
+
 .api-content pre {
   margin: 0 0 var(--spacing-element) 0;
   padding: var(--spacing-4);
@@ -47,17 +60,4 @@
   font-family: var(--font-mono);
   font-size: 0.9em;
   line-height: var(--leading-relaxed);
-}
-
-.api-content pre code {
-  display: block;
-  padding: 0 !important;
-  margin: 0 !important;
-  border: none !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  color: var(--color-fg-bold);
-  white-space: pre;
-  tab-size: 2;
-  -moz-tab-size: 2;
 }
