@@ -14,6 +14,8 @@ describe('production deployment', () => {
       'pnpm verify:agents https://javierchuaby.dev',
     );
     expect(manifest.scripts.predeploy).toBeUndefined();
+    expect(manifest.devDependencies['gh-pages']).toBeUndefined();
+    expect(manifest.scripts['deploy:github-pages']).toBeUndefined();
   });
   it('retains the production domain when Wrangler reconciles routes', () => {
     expect(config.routes).toEqual([

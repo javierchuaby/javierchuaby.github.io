@@ -26,7 +26,7 @@ decisions.
 After a PR merges, update a clean checkout of `main` and run `pnpm deploy`.
 This runs tests and the production build, deploys to Cloudflare Workers, and
 verifies the public domain. `pnpm deploy:worker` is the same Cloudflare pipeline.
-`pnpm deploy:github-pages` is an explicit legacy deployment command.
+The obsolete GitHub Pages publisher has been removed.
 
 GitHub Actions validates PRs and `main` with formatting, lint, type checking,
 tests, a production build, and a Worker deployment dry-run. Deployments require

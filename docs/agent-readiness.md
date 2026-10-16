@@ -4,7 +4,7 @@ The portfolio remains a Next.js static export. HTML and Markdown use the same
 content: `pnpm build` converts each exported page's `<main>` into an adjacent
 `index.md`, removing scripts, icons, and decorative content. `/llms.txt` follows
 the [published format](https://llmstxt.org/) and links to those Markdown files.
-Cloudflare Workers serves the production domain. GitHub Pages remains an explicit legacy deployment target for HTML and these files.
+Cloudflare Workers serves the production domain. The previous GitHub Pages publisher has been retired.
 
 ## Content negotiation and deployment
 
@@ -51,7 +51,7 @@ pnpm deploy
 Run this from a clean checkout so untracked files under `public` cannot be
 published accidentally. `pnpm deploy` and `pnpm deploy:worker` run tests, build,
 deploy to Cloudflare, and verify the production endpoints. Wrangler authentication
-is required. `pnpm deploy:github-pages` retains the legacy target explicitly.
+is required. The former GitHub Pages deployment command and dependency have been removed.
 
 The Worker uses the documented
 [static assets binding](https://developers.cloudflare.com/workers/static-assets/binding/)

@@ -13,6 +13,8 @@
 - Standardized local development and deployment on Node.js 24 and pnpm 10
 - Switched development and production builds to Turbopack
 - Migrated Position entries to JSON Resume-compatible work fields
+- Added tracked GitHub Actions validation for formatting, lint, types, tests, builds, dependency auditing, and Worker packaging
+- Migrated production deployment to Cloudflare Workers with verified HTML and Markdown endpoints
 
 ## Planned
 
@@ -23,8 +25,6 @@
 
 ### Repository
 
-- Allow tracked `.github/workflows/` files and add CI for formatting, linting, type-checking, tests, and builds
-- Move deployment from the local `gh-pages` command to GitHub's official Pages actions after a successful `main` build
 - Add lightweight protection for `main` after CI exists, including required checks and protection from force pushes and deletion
 
 ## Evaluated
