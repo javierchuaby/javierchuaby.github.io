@@ -18,6 +18,7 @@ const work: Position[] = [
     position: 'Network Engineer (AIOps)',
     url: 'https://www.visa.com.sg',
     startDate: '2026-05-12',
+    endDate: '2026-07-31',
     summary: 'Infrastructure Reliability Engineering (IRE) - Network',
     highlights: ['Anomaly detection, event prediction & outage prevention'],
     employmentType: 'Internship',

@@ -32,7 +32,7 @@ const data: ContactItem[] = [
     icon: faInstagram,
   },
   {
-    link: 'mailto:javierchuaby@gmail.com',
+    link: 'mailto:javierchua.dev@gmail.com',
     label: 'Email',
     icon: faEnvelope,
   },
