@@ -36,7 +36,7 @@
   border-color: var(--color-accent);
 }
 
-/* Multiline code blocks */
+/* Multiline code blocks - use !important to override base code styles */
 .api-content pre {
   margin: 0 0 var(--spacing-element) 0;
   padding: var(--spacing-4);
@@ -49,13 +49,13 @@
   line-height: var(--leading-relaxed);
 }
 
-.api-content pre > code {
+.api-content pre code {
   display: block;
-  padding: 0;
-  margin: 0;
-  border: none;
-  border-radius: 0;
-  background: transparent;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
   color: var(--color-fg-bold);
   white-space: pre;
   tab-size: 2;
