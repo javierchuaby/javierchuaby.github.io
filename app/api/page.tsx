@@ -12,21 +12,19 @@ export const metadata: Metadata = createPageMetadata({
 
 export default function ApiDocsPage() {
   return (
-    <PageWrapper>
-      <article className="post" id="api-docs">
-        <header>
-          <div className="title">
-            <h1>
-              <Link href="/api">Developer API</Link>
-            </h1>
-            <p>
-              Machine-readable endpoints, OpenAPI 3.1.0 specification, and
-              developer documentation for AI agents and automated clients.
-            </p>
-          </div>
+    <PageWrapper mainClassName="api-page">
+      <article className="api-content" id="api-docs">
+        <header className="api-header">
+          <h1 className="page-title">
+            <Link href="/api">Developer API</Link>
+          </h1>
+          <p>
+            Machine-readable endpoints, OpenAPI 3.1.0 specification, and
+            developer documentation for AI agents and automated clients.
+          </p>
         </header>
 
-        <section aria-labelledby="openapi-heading">
+        <section aria-labelledby="openapi-heading" className="api-section">
           <h2 id="openapi-heading">OpenAPI Specification</h2>
           <p>
             This portfolio exposes a public, read-only developer API providing
@@ -75,8 +73,13 @@ export default function ApiDocsPage() {
           </ul>
         </section>
 
-        <section aria-labelledby="endpoints-heading">
-          <h2 id="endpoints-heading">Available Endpoints</h2>
+        <section aria-labelledby="endpoints-heading" className="api-section">
+          <h2 id="endpoints-heading" className="api-section-heading-link">
+            <span>Available Endpoints</span>
+            <span className="api-section-heading-hash" aria-hidden="true">
+              #
+            </span>
+          </h2>
           <p>
             All endpoints are accessible via HTTP GET and HEAD requests. No
             authentication or API key is required. Responses are encoded as
@@ -84,30 +87,36 @@ export default function ApiDocsPage() {
           </p>
           <ul>
             <li>
-              <code>GET /api/profile</code> — Personal biography, degree,
-              contact address, and social links.
+              <code className="api-endpoint">GET /api/profile</code> — Personal
+              biography, degree, contact address, and social links.
             </li>
             <li>
-              <code>GET /api/work</code> — Work history, company details, roles,
-              and date ranges.
+              <code className="api-endpoint">GET /api/work</code> — Work
+              history, company details, roles, and date ranges.
             </li>
             <li>
-              <code>GET /api/projects</code> — Software projects, repository
-              links, dates, and technology tags.
+              <code className="api-endpoint">GET /api/projects</code> — Software
+              projects, repository links, dates, and technology tags.
             </li>
             <li>
-              <code>GET /api/skills</code> — Technical proficiencies categorized
-              by programming languages, cloud, and databases.
+              <code className="api-endpoint">GET /api/skills</code> — Technical
+              proficiencies categorized by programming languages, cloud, and
+              databases.
             </li>
             <li>
-              <code>GET /api/contact</code> — Inquiries policy, email address,
-              and response timeframe expectations.
+              <code className="api-endpoint">GET /api/contact</code> — Inquiries
+              policy, email address, and response timeframe expectations.
             </li>
           </ul>
         </section>
 
-        <section aria-labelledby="ratelimit-heading">
-          <h2 id="ratelimit-heading">Rate Limiting Conventions</h2>
+        <section aria-labelledby="ratelimit-heading" className="api-section">
+          <h2 id="ratelimit-heading" className="api-section-heading-link">
+            <span>Rate Limiting Conventions</span>
+            <span className="api-section-heading-hash" aria-hidden="true">
+              #
+            </span>
+          </h2>
           <p>
             To ensure reliable availability for all visitors and automated
             agents, API endpoints enforce standard IETF RFC RateLimit headers.
@@ -116,26 +125,34 @@ export default function ApiDocsPage() {
           </p>
           <ul>
             <li>
-              <code>RateLimit-Limit: 100</code> — The maximum number of requests
-              allowed per 60-second window.
+              <code className="http-header">RateLimit-Limit: 100</code> — The
+              maximum number of requests allowed per 60-second window.
             </li>
             <li>
-              <code>RateLimit-Remaining</code> — The number of remaining
-              requests in the current time window.
+              <code className="http-header">RateLimit-Remaining</code> — The
+              number of remaining requests in the current time window.
             </li>
             <li>
-              <code>RateLimit-Reset: 60</code> — The seconds remaining until the
-              window resets.
+              <code className="http-header">RateLimit-Reset: 60</code> — The
+              seconds remaining until the window resets.
             </li>
             <li>
-              <code>RateLimit-Policy: 100;w=60</code> — The quota policy
-              parameters.
+              <code className="http-header">RateLimit-Policy: 100;w=60</code> —
+              The quota policy parameters.
             </li>
           </ul>
         </section>
 
-        <section aria-labelledby="errors-heading">
-          <h2 id="errors-heading">Structured Error Responses</h2>
+        <section
+          aria-labelledby="errors-heading"
+          className="api-section api-section-json"
+        >
+          <h2 id="errors-heading" className="api-section-heading-link">
+            <span>Structured Error Responses</span>
+            <span className="api-section-heading-hash" aria-hidden="true">
+              #
+            </span>
+          </h2>
           <p>
             When an API route is requested with invalid parameters, an unmapped
             URL, or an unsupported method, the server returns a structured JSON
@@ -151,9 +168,10 @@ export default function ApiDocsPage() {
 }`}</code>
           </pre>
           <p>
-            Supported HTTP error status codes include <code>404 Not Found</code>
-            , <code>405 Method Not Allowed</code>, and{' '}
-            <code>406 Not Acceptable</code>.
+            Supported HTTP error status codes include{' '}
+            <code className="api-endpoint">404 Not Found</code>,{' '}
+            <code className="api-endpoint">405 Method Not Allowed</code>, and{' '}
+            <code className="api-endpoint">406 Not Acceptable</code>.
           </p>
         </section>
       </article>
