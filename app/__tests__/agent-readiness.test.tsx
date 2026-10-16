@@ -2,7 +2,8 @@ import { render } from '@testing-library/react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import PersonSchema from '@/components/Schema/PersonSchema';
-import { SITE_URL } from '@/lib/utils';
+import { contactEmail, siteDescription } from '@/data/site';
+import { AUTHOR_NAME, SITE_URL } from '@/lib/utils';
 import AboutPage from '../about/page';
 import ContactPage from '../contact/page';
 import HomePage, { metadata } from '../page';
@@ -32,12 +33,9 @@ describe('agent readiness', () => {
 
   it('identifies the real portfolio and homepage canonical', () => {
     expect(metadata.title).toMatchObject({
-      absolute: expect.stringMatching(/Javier Chua.*Backend.*Infrastructure/i),
+      absolute: expect.stringContaining(AUTHOR_NAME),
     });
-    expect(metadata.description).toMatch(
-      /NUS|National University of Singapore/,
-    );
-    expect(metadata.description).not.toMatch(/OpenAI|Promptfoo/);
+    expect(metadata.description).toBe(siteDescription);
     expect(metadata.alternates?.canonical).toBe(`${SITE_URL}/`);
   });
 
@@ -46,11 +44,12 @@ describe('agent readiness', () => {
     const person = JSON.parse(
       container.querySelector('script')?.textContent || '{}',
     );
-    expect(person.description).toMatch(/backend.*infrastructure/i);
+    expect(person.description).toBe(siteDescription);
+    expect(person.description.trim().length).toBeGreaterThan(20);
     expect(person.contactPoint).toMatchObject({
       '@type': 'ContactPoint',
       contactType: 'professional inquiries',
-      email: 'javierchuaby@gmail.com',
+      email: contactEmail,
     });
     expect(person['@type']).toBe('Person');
   });

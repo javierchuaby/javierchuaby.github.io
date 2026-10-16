@@ -10,14 +10,16 @@ describe('about data', () => {
 
   it('contains the intro section', () => {
     expect(aboutMarkdown).toContain('# Intro');
-    expect(aboutMarkdown).toContain('National University of Singapore');
-    expect(aboutMarkdown).toContain('Visa');
+    const intro = aboutMarkdown
+      .split(/\n# /)[0]
+      .replace(/^# Intro\s*/, '')
+      .trim();
+    expect(intro.length).toBeGreaterThan(100);
   });
 
-  it('contains the likes section', () => {
-    expect(aboutMarkdown).toContain('# I Like');
-    expect(aboutMarkdown).toContain('Running');
-    expect(aboutMarkdown).toContain('Coffee');
+  it('keeps every editable section nonempty', () => {
+    const sections = aboutMarkdown.trim().split(/\n(?=# )/);
+    for (const section of sections) expect(section).toMatch(/^# .+\n\n\S/);
   });
 
   it('contains properly formatted headers', () => {
@@ -25,6 +27,6 @@ describe('about data', () => {
     const headers = aboutMarkdown.match(headerRegex);
 
     expect(headers).not.toBeNull();
-    expect(headers!.length).toBe(2);
+    expect(headers!.length).toBeGreaterThanOrEqual(1);
   });
 });

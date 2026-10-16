@@ -1,6 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
+import work from '@/data/resume/work';
+import { getCurrentPosition } from '@/lib/positions';
 import Footer from '../../Template/Footer';
 
 describe('Footer', () => {
@@ -15,9 +17,11 @@ describe('Footer', () => {
     render(<Footer />);
 
     expect(screen.getByText('Javier Chua')).toBeInTheDocument();
-    expect(
-      screen.getByText('Network Engineer (AIOps) at Visa'),
-    ).toBeInTheDocument();
+    const currentPosition = getCurrentPosition(work);
+    const label = currentPosition
+      ? `${currentPosition.position} at ${currentPosition.name}`
+      : 'Computer Science student at NUS';
+    expect(screen.getByText(label)).toBeInTheDocument();
   });
 
   it('displays the current year in copyright', () => {

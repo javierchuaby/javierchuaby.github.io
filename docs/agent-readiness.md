@@ -83,8 +83,7 @@ sitewide `rel="describedby"` link to `/llms.txt`.
 ## Editorial decisions that remain
 
 - This is a person's portfolio, not an asserted business. The Person has a
-  description and professional email ContactPoint. The nested Organization is
-  Visa, the employer; it is not the site's operator. Do not fabricate an
+  description and professional email ContactPoint. An Organization is emitted only for a current Position and identifies that employer, not the site's operator. Do not fabricate an
   Organization or publish an employer's address/contact as Javier's business.
   If a separate organization should be represented, its identity, public postal
   address, and appropriate contact details need confirmation first.

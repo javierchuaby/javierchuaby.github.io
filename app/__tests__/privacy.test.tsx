@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
+import { contactEmail } from '@/data/site';
 import { SITE_URL } from '@/lib/utils';
 import PrivacyPage, { metadata } from '../privacy/page';
 import sitemap from '../sitemap';
@@ -13,9 +14,9 @@ it('publishes a substantive privacy page with contact and analytics disclosure',
   expect(container).toHaveTextContent('Google Analytics');
   expect(container).toHaveTextContent('Cloudflare hosts the published site');
   expect(container).not.toHaveTextContent('GitHub Pages currently hosts');
-  expect(getByRole('link', { name: 'javierchuaby@gmail.com' })).toHaveAttribute(
+  expect(getByRole('link', { name: contactEmail })).toHaveAttribute(
     'href',
-    'mailto:javierchuaby@gmail.com',
+    `mailto:${contactEmail}`,
   );
   expect(metadata.alternates?.canonical).toBe(`${SITE_URL}/privacy/`);
 });

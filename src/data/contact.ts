@@ -3,6 +3,7 @@ import { faGithub } from '@fortawesome/free-brands-svg-icons/faGithub';
 import { faInstagram } from '@fortawesome/free-brands-svg-icons/faInstagram';
 import { faLinkedinIn } from '@fortawesome/free-brands-svg-icons/faLinkedinIn';
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons/faEnvelope';
+import { contactEmail } from './site';
 
 export interface ContactItem {
   link: string;
@@ -32,7 +33,7 @@ const data: ContactItem[] = [
     icon: faInstagram,
   },
   {
-    link: 'mailto:javierchua.dev@gmail.com',
+    link: `mailto:${contactEmail}`,
     label: 'Email',
     icon: faEnvelope,
   },

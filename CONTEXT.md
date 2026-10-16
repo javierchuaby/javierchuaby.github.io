@@ -7,7 +7,7 @@ The source for [javierchuaby.dev](https://javierchuaby.dev) — a static persona
 ### Resume
 
 **Position**:
-A dated role for which the site owner was formally hired or selected on merit to do engineering-shaped work — internships, full-time engineering roles, RAships under a PI. Entries are ordered most-recent-first; the head is the current job. Lives in `src/data/resume/work.ts` and conforms to the [JSON Resume schema](https://jsonresume.org/schema/).
+A dated role for which the site owner was formally hired or selected on merit to do engineering-shaped work — internships, full-time engineering roles, RAships under a PI. Entries are ordered most-recent-first; the head is the latest Position. A current Position has started and has no end date or an end date on or after today. There may be no current Position. Lives in `src/data/resume/work.ts` and conforms to the [JSON Resume schema](https://jsonresume.org/schema/).
 _Avoid_: Job, role, work entry, employment
 
 **Activity**:

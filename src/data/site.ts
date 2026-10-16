@@ -1,3 +1,6 @@
+// Shared by contact links, page metadata, and structured data.
+export const contactEmail = 'javierchua.dev@gmail.com';
+
 export const siteDescription =
   'Javier Chua is a Computer Science student at the National University of Singapore (NUS), interested in backend systems, network engineering, and software engineering.';
 
@@ -8,6 +11,7 @@ export const homeParagraphs = [
 ];
 
 export const contactParagraphs = [
-  'Email is the direct way to contact me about my portfolio, engineering background, or projects. I am interested in backend systems, networking engineering, and software engineering.',
+  'Email is the direct way to contact me about my portfolio, engineering background, or projects. I am interested in backend systems, network engineering, and software engineering.',
   'My resume and projects pages provide background you can refer to before getting in touch. You can also find my public LinkedIn and GitHub profiles below.',
+  'For project questions, include the repository link and enough detail to explain what you are trying to do. For professional inquiries, include a short introduction, the scope, and any relevant dates.',
 ];

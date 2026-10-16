@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import PageWrapper from '@/components/Template/PageWrapper';
+import { contactEmail } from '@/data/site';
 import { createPageMetadata } from '@/lib/metadata';
 
 export const metadata: Metadata = createPageMetadata({
@@ -57,8 +58,8 @@ export default function PrivacyPage() {
               that message, and I receive the information you choose to include.
               Please avoid sending credentials or confidential material. For
               privacy questions or requests concerning a message you sent, email{' '}
-              <a href="mailto:javierchuaby@gmail.com">javierchuaby@gmail.com</a>{' '}
-              with enough context to identify it.
+              <a href={`mailto:${contactEmail}`}>{contactEmail}</a> with enough
+              context to identify it.
             </p>
           </section>
         </article>

@@ -1,8 +1,19 @@
 import { render } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import work from '@/data/resume/work';
 import { AUTHOR_NAME, SITE_URL } from '@/lib/utils';
 import PersonSchema from '../PersonSchema';
+
+vi.mock('@/data/resume/work', () => ({
+  default: [
+    {
+      name: 'Example Networks',
+      position: 'Network Engineer',
+      url: 'https://example.com',
+      startDate: '2000-01-01',
+    },
+  ],
+}));
 
 describe('PersonSchema', () => {
   it('renders a script tag with JSON-LD content', () => {

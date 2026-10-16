@@ -28,6 +28,7 @@ xmlDom.window.close();
 for (const path of ['/', '/about/', '/contact/', '/privacy/', '/activities/'])
   assert.ok(paths.includes(path));
 
+let profileEmail;
 for (const path of paths) {
   const htmlResponse = await request(path, 'text/html');
   assert.equal(htmlResponse.status, 200, path);
@@ -76,7 +77,8 @@ for (const path of paths) {
       );
       assert.equal(person['@type'], 'Person');
       assert.ok(person.description.length > 20);
-      assert.equal(person.contactPoint.email, 'javierchuaby@gmail.com');
+      assert.match(person.contactPoint.email, /^[^@\s]+@[^@\s]+\.[^@\s]+$/);
+      profileEmail = person.contactPoint.email;
       schemaDom.window.close();
       assert.doesNotMatch(doc.title, /OpenAI|Promptfoo/);
       for (const selector of ['link[rel="stylesheet"]', 'main img[src]']) {
@@ -111,6 +113,12 @@ for (const path of paths) {
           /^text\/markdown/,
         );
       }
+    }
+    if (['/contact/', '/privacy/'].includes(path)) {
+      const links = [...doc.querySelectorAll('main a[href^="mailto:"]')];
+      assert.ok(links.length > 0, path);
+      for (const link of links)
+        assert.equal(link.getAttribute('href'), `mailto:${profileEmail}`);
     }
     const markdownResponse = await request(path, 'text/markdown');
     assert.equal(markdownResponse.status, 200, path);

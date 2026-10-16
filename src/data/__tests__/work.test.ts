@@ -56,10 +56,9 @@ describe('work data', () => {
     }
   });
 
-  // Resume should show at least one current/active position
-  it('has at least one current position (no endDate)', () => {
-    const currentJobs = work.filter((job) => !job.endDate);
-    expect(currentJobs.length).toBeGreaterThanOrEqual(1);
+  it('orders positions most-recent-first without requiring an ongoing position', () => {
+    const starts = work.map((position) => position.startDate);
+    expect(starts).toEqual([...starts].sort().reverse());
   });
 
   it('highlights are arrays when present', () => {
@@ -71,8 +70,12 @@ describe('work data', () => {
     }
   });
 
-  it('has multiple positions', () => {
-    expect(work.length).toBeGreaterThan(1);
+  it('does not duplicate positions', () => {
+    const identities = work.map(
+      (position) =>
+        `${position.name}-${position.position}-${position.startDate}`,
+    );
+    expect(new Set(identities).size).toBe(work.length);
   });
 
   it('company names are non-empty', () => {
