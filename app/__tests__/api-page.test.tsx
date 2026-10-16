@@ -10,7 +10,7 @@ describe('API page', () => {
     expect(container.querySelector('main')).toBeInTheDocument();
 
     // Verify content container has api-content class
-    expect(container.querySelector('article')).toBeInTheDocument();
+    expect(container.querySelector('article.api-content')).toBeInTheDocument();
 
     // Verify sections
     const sections = container.querySelectorAll('section');

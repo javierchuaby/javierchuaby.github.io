@@ -25,7 +25,7 @@
 }
 
 .api-content :not(pre) > code.http-header {
-  color: var(--color-accent);
+  color: var(--color-fg-bold);
   background: var(--color-surface-subtle);
   border: 1px solid var(--color-border);
   font-weight: var(--font-weight-medium);
@@ -36,8 +36,8 @@
   border-color: var(--color-accent);
 }
 
-/* Multiline code blocks - use higher specificity to override base code styles */
-.api-content pre.code-block-container {
+/* Multiline code blocks */
+.api-content pre {
   margin: 0 0 var(--spacing-element) 0;
   padding: var(--spacing-4);
   border-radius: var(--radius-md);
@@ -49,7 +49,7 @@
   line-height: var(--leading-relaxed);
 }
 
-.api-content pre.code-block-container > code.code-block {
+.api-content pre > code {
   display: block;
   padding: 0;
   margin: 0;
@@ -57,32 +57,7 @@
   border-radius: 0;
   background: transparent;
   color: var(--color-fg-bold);
-  white-space: pre;
-  tab-size: 2;
-  -moz-tab-size: 2;
-}
-
-/* Fallback: target any pre inside api-content that contains code.code-block */
-.api-content pre:has(> code.code-block) {
-  margin: 0 0 var(--spacing-element) 0;
-  padding: var(--spacing-4);
-  border-radius: var(--radius-md);
-  background: var(--color-bg-alt);
-  border: 1px solid var(--color-border);
-  overflow-x: auto;
-  font-family: var(--font-mono);
-  font-size: 0.9em;
-  line-height: var(--leading-relaxed);
-}
-
-.api-content pre:has(> code.code-block) > code.code-block {
-  display: block;
-  padding: 0;
-  margin: 0;
-  border: none;
-  border-radius: 0;
-  background: transparent;
-  color: var(--color-fg-bold);
+  font-size: inherit;
   white-space: pre;
   tab-size: 2;
   -moz-tab-size: 2;

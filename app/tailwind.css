@@ -32,12 +32,10 @@
 @import './styles/layout/page.css';
 
 /* Page-Specific */
-@layer components {
-  @import './styles/pages/home.css';
-  @import './styles/pages/resume.css';
-  @import './styles/pages/content.css';
-  @import './styles/pages/api.css';
-}
+@import './styles/pages/home.css';
+@import './styles/pages/resume.css';
+@import './styles/pages/content.css';
+@import './styles/pages/api.css';
 
 /* Utilities & Animations */
 @import './styles/utilities.css';

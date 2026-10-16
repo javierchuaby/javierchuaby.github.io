@@ -13,7 +13,7 @@ export const metadata: Metadata = createPageMetadata({
 export default function ApiDocsPage() {
   return (
     <PageWrapper>
-      <article id="api-docs">
+      <article className="api-content" id="api-docs">
         <header>
           <div className="title">
             <h1>
@@ -142,8 +142,8 @@ export default function ApiDocsPage() {
             URL, or an unsupported method, the server returns a structured JSON
             error object rather than an HTML page:
           </p>
-          <pre className="code-block-container">
-            <code className="code-block">{`{
+          <pre>
+            <code>{`{
   "error": {
     "code": "NOT_FOUND",
     "message": "The requested API endpoint does not exist.",
