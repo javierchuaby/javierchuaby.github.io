@@ -24,8 +24,14 @@ const paths = [...xmlDom.window.document.querySelectorAll('loc')].map(
     return url.pathname;
   },
 );
-xmlDom.window.close();
-for (const path of ['/', '/about/', '/contact/', '/privacy/', '/activities/'])
+for (const path of [
+  '/',
+  '/about/',
+  '/contact/',
+  '/privacy/',
+  '/activities/',
+  '/api/',
+])
   assert.ok(paths.includes(path));
 
 let profileEmail;
@@ -54,7 +60,7 @@ for (const path of paths) {
     ))
       element.remove();
     const text = main.textContent.replace(/\s+/g, ' ').trim();
-    if (['/', '/about/', '/contact/', '/privacy/'].includes(path))
+    if (['/', '/about/', '/contact/', '/privacy/', '/api/'].includes(path))
       assert.ok(text.length >= 500, `${path}: ${text.length} chars`);
     if (path === '/') {
       assert.equal(doc.querySelectorAll('h1').length, 1);
@@ -189,12 +195,39 @@ for (const accept of ['text/markdown', 'text/html']) {
   assert.match(head.headers.get('content-type') || '', new RegExp(accept));
   assert.equal(await head.text(), '');
 }
-assert.equal((await request('/', 'application/json')).status, 406);
-for (const path of ['/about', '/contact', '/privacy']) {
+for (const path of ['/about', '/contact', '/privacy', '/api']) {
   const response = await request(path, 'text/markdown');
   assert.equal(response.status, 200);
   assert.match(response.headers.get('content-type') || '', /^text\/markdown/);
 }
+
+const openapi = await request('/openapi.json', 'application/json');
+assert.equal(openapi.status, 200);
+assert.match(openapi.headers.get('content-type') || '', /json/);
+assert.equal(openapi.headers.get('ratelimit-limit'), '100');
+const openapiSpec = JSON.parse(await openapi.text());
+assert.equal(openapiSpec.openapi, '3.1.0');
+assert.ok(openapiSpec.paths['/api/profile']);
+
+const openapiYaml = await request('/openapi.yaml', '*/*');
+assert.equal(openapiYaml.status, 200);
+assert.match(await openapiYaml.text(), /openapi: 3\.1\.0/);
+
+const profile = await request('/api/profile', 'application/json');
+assert.equal(profile.status, 200);
+assert.equal(profile.headers.get('ratelimit-limit'), '100');
+const profileData = JSON.parse(await profile.text());
+assert.equal(profileData.name, 'Javier Chua');
+
+const api404 = await request('/api/nonexistent', 'application/json');
+assert.equal(api404.status, 404);
+const api404Data = JSON.parse(await api404.text());
+assert.equal(api404Data.error.code, 'NOT_FOUND');
+
+const api405 = await request('/api/profile', 'application/json', 'POST');
+assert.equal(api405.status, 405);
+const api405Data = JSON.parse(await api405.text());
+assert.equal(api405Data.error.code, 'METHOD_NOT_ALLOWED');
 console.log(
   `Verified ${paths.length} public pages, their Markdown files, llms.txt and every linked resource, sitemap.xml, robots.txt, HEAD, redirects, 406 and HTML/Markdown 404s at ${base}.`,
 );

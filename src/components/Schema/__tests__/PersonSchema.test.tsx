@@ -37,7 +37,7 @@ describe('PersonSchema', () => {
     expect(data['@type']).toBe('Person');
   });
 
-  it('uses correct author name from constants', () => {
+  it('uses correct author name and alternateName from constants', () => {
     const { container } = render(<PersonSchema />);
 
     const script = container.querySelector(
@@ -46,6 +46,8 @@ describe('PersonSchema', () => {
     const data = JSON.parse(script?.innerHTML || '{}');
 
     expect(data.name).toBe(AUTHOR_NAME);
+    expect(data.alternateName).toBe('javierchuaby');
+    expect(data.knowsAbout).toContain('Backend Systems');
   });
 
   it('uses correct site URL from constants', () => {

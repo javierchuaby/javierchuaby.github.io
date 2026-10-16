@@ -26,6 +26,34 @@ const assets = {
       return new Response('# Javier Chua\n', {
         headers: { 'Content-Type': 'text/plain' },
       });
+    if (path === '/openapi.json')
+      return new Response('{"openapi":"3.1.0"}', {
+        headers: { 'Content-Type': 'application/json' },
+      });
+    if (path === '/openapi.yaml')
+      return new Response('openapi: 3.1.0\n', {
+        headers: { 'Content-Type': 'application/yaml' },
+      });
+    if (path === '/api/profile.json')
+      return new Response('{"name":"Javier Chua"}', {
+        headers: { 'Content-Type': 'application/json' },
+      });
+    if (path === '/api/work.json')
+      return new Response('[{"name":"Visa"}]', {
+        headers: { 'Content-Type': 'application/json' },
+      });
+    if (path === '/api/projects.json')
+      return new Response('[{"title":"city.ai"}]', {
+        headers: { 'Content-Type': 'application/json' },
+      });
+    if (path === '/api/skills.json')
+      return new Response('[{"title":"Python"}]', {
+        headers: { 'Content-Type': 'application/json' },
+      });
+    if (path === '/api/contact.json')
+      return new Response('{"email":"javierchua.dev@gmail.com"}', {
+        headers: { 'Content-Type': 'application/json' },
+      });
     return new Response('<h1>Page Not Found</h1>', {
       status: 404,
       headers: { 'Content-Type': 'text/html' },
@@ -221,5 +249,86 @@ describe('content negotiation', () => {
     expect(response.status).toBe(304);
     expect(response.headers.get('Content-Type')).toContain('text/markdown');
     expect(await response.text()).toBe('');
+  });
+});
+
+describe('OpenAPI and JSON API endpoints', () => {
+  it('serves OpenAPI 3.1.0 JSON specification with rate limit headers', async () => {
+    const response = await get('application/json', '/openapi.json');
+    expect(response.status).toBe(200);
+    expect(response.headers.get('Content-Type')).toContain('openapi+json');
+    expect(response.headers.get('RateLimit-Limit')).toBe('100');
+    expect(response.headers.get('RateLimit-Remaining')).toBe('99');
+    expect(response.headers.get('RateLimit-Reset')).toBe('60');
+    expect(response.headers.get('Access-Control-Allow-Origin')).toBe('*');
+    const data = JSON.parse(await response.text());
+    expect(data.openapi).toBe('3.1.0');
+  });
+
+  it('serves OpenAPI YAML specification at /openapi.yaml', async () => {
+    const response = await get('*/*', '/openapi.yaml');
+    expect(response.status).toBe(200);
+    expect(response.headers.get('Content-Type')).toContain('application/yaml');
+    expect(response.headers.get('RateLimit-Limit')).toBe('100');
+    expect(await response.text()).toContain('openapi: 3.1.0');
+  });
+
+  it('serves profile data at /api/profile and /api/profile.json', async () => {
+    for (const path of ['/api/profile', '/api/profile.json']) {
+      const response = await get('application/json', path);
+      expect(response.status).toBe(200);
+      expect(response.headers.get('Content-Type')).toContain(
+        'application/json',
+      );
+      expect(response.headers.get('RateLimit-Limit')).toBe('100');
+      const data = JSON.parse(await response.text());
+      expect(data.name).toBe('Javier Chua');
+    }
+  });
+
+  it('rejects non-GET/HEAD methods on API endpoints with 405 JSON error', async () => {
+    const response = await get('application/json', '/api/profile', 'POST');
+    expect(response.status).toBe(405);
+    expect(response.headers.get('Content-Type')).toContain('application/json');
+    const data = JSON.parse(await response.text());
+    expect(data.error.code).toBe('METHOD_NOT_ALLOWED');
+    expect(data.error.resolution).toBeDefined();
+  });
+
+  it('returns structured JSON 404 for nonexistent /api/* endpoints', async () => {
+    const response = await get('application/json', '/api/nonexistent');
+    expect(response.status).toBe(404);
+    expect(response.headers.get('Content-Type')).toContain('application/json');
+    expect(response.headers.get('RateLimit-Limit')).toBe('100');
+    const data = JSON.parse(await response.text());
+    expect(data.error.code).toBe('NOT_FOUND');
+    expect(data.error.message).toContain('API endpoint does not exist');
+    expect(data.error.resolution).toContain('/openapi.json');
+  });
+
+  it('returns structured JSON 406 when Accept: application/json is sent to a page route', async () => {
+    const response = await get('application/json', '/');
+    expect(response.status).toBe(406);
+    expect(response.headers.get('Content-Type')).toContain('application/json');
+    const data = JSON.parse(await response.text());
+    expect(data.error.code).toBe('NOT_ACCEPTABLE');
+    expect(data.error.resolution).toBeDefined();
+  });
+
+  it('returns structured JSON 406 when Accept: application/json is sent to any page route', async () => {
+    const response = await get('application/json', '/missing-page');
+    expect(response.status).toBe(406);
+    expect(response.headers.get('Content-Type')).toContain('application/json');
+    const data = JSON.parse(await response.text());
+    expect(data.error.code).toBe('NOT_ACCEPTABLE');
+  });
+
+  it('returns API directory at /api when requested with Accept: application/json', async () => {
+    const response = await get('application/json', '/api');
+    expect(response.status).toBe(200);
+    expect(response.headers.get('Content-Type')).toContain('application/json');
+    const data = JSON.parse(await response.text());
+    expect(data.openapi).toBe('https://javierchuaby.dev/openapi.json');
+    expect(data.endpoints.profile).toBeDefined();
   });
 });

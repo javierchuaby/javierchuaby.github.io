@@ -2,7 +2,7 @@
 export const contactEmail = 'javierchua.dev@gmail.com';
 
 export const siteDescription =
-  'Javier Chua is a Computer Science student at the National University of Singapore (NUS), interested in backend systems, network engineering, and software engineering.';
+  'Computer Science student at the National University of Singapore (NUS), interested in backend systems, network engineering, and software engineering.';
 
 export const homeParagraphs = [
   'This is my personal portfolio, with my education, engineering positions, projects, and activities. I am a Computer Science student at the National University of Singapore, specialising in backend systems and network engineering.',

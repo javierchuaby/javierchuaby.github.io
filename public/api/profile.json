@@ -1,0 +1,30 @@
+{
+  "name": "Javier Chua",
+  "handle": "javierchuaby",
+  "title": "Backend & Infrastructure Engineer",
+  "description": "Javier Chua is a Computer Science student at the National University of Singapore (NUS), interested in backend systems, network engineering, and software engineering.",
+  "email": "javierchua.dev@gmail.com",
+  "education": [
+    {
+      "school": "National University of Singapore",
+      "degree": "B.Comp in Computer Science (Honours)",
+      "link": "https://www.comp.nus.edu.sg",
+      "year": 2026
+    }
+  ],
+  "currentPosition": null,
+  "social": [
+    {
+      "label": "LinkedIn",
+      "link": "https://www.linkedin.com/in/javierchuaby/"
+    },
+    {
+      "label": "GitHub",
+      "link": "https://github.com/javierchuaby"
+    },
+    {
+      "label": "Instagram",
+      "link": "https://www.instagram.com/javierchuaby/"
+    }
+  ]
+}
