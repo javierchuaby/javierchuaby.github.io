@@ -45,11 +45,11 @@ domain declared in `wrangler.jsonc`. The production pipeline is:
 ```sh
 git switch main
 git pull --ff-only
-pnpm deploy
+pnpm run deploy
 ```
 
 Run this from a clean checkout so untracked files under `public` cannot be
-published accidentally. `pnpm deploy` and `pnpm deploy:worker` run tests, build,
+published accidentally. `pnpm run deploy` and `pnpm deploy:worker` run tests, build,
 deploy to Cloudflare, and verify the production endpoints. Wrangler authentication
 is required. The former GitHub Pages deployment command and dependency have been removed.
 
