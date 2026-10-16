@@ -22,6 +22,7 @@ export default function PersonSchema() {
     '@context': 'https://schema.org',
     '@type': 'Person',
     name: AUTHOR_NAME,
+    alternateName: 'javierchuaby',
     description: siteDescription,
     url: SITE_URL,
     image: `${SITE_URL}/images/me.jpg`,
@@ -34,6 +35,14 @@ export default function PersonSchema() {
       },
     }),
     sameAs: socialLinks,
+    knowsAbout: [
+      'Computer Science',
+      'Backend Systems',
+      'Distributed Systems',
+      'Network Engineering',
+      'Software Engineering',
+      'Cloud Infrastructure',
+    ],
     ...(currentPosition && {
       jobTitle: currentPosition.position,
       worksFor: {

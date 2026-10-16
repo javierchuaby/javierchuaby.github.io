@@ -56,6 +56,10 @@ describe('Footer', () => {
       'href',
       '/contact',
     );
+    expect(screen.getByRole('link', { name: /^api$/i })).toHaveAttribute(
+      'href',
+      '/api',
+    );
   });
 
   it('renders contact icons section', () => {

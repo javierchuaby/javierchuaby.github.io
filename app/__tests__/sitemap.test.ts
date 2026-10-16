@@ -14,6 +14,7 @@ describe('sitemap', () => {
         expect.objectContaining({ url: `${SITE_URL}/projects/` }),
         expect.objectContaining({ url: `${SITE_URL}/stats/` }),
         expect.objectContaining({ url: `${SITE_URL}/contact/` }),
+        expect.objectContaining({ url: `${SITE_URL}/api/` }),
       ]),
     );
   });

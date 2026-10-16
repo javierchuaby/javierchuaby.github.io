@@ -1,0 +1,23 @@
+{
+  "email": "javierchua.dev@gmail.com",
+  "responseTime": "Usually within 24 hours",
+  "guidelines": [
+    "Email is the direct way to contact me about my portfolio, engineering background, or projects.",
+    "For project questions, include the repository link and enough detail to explain what you are trying to do.",
+    "For professional inquiries, include a short introduction, the scope, and any relevant dates."
+  ],
+  "social": [
+    {
+      "label": "LinkedIn",
+      "link": "https://www.linkedin.com/in/javierchuaby/"
+    },
+    {
+      "label": "GitHub",
+      "link": "https://github.com/javierchuaby"
+    },
+    {
+      "label": "Instagram",
+      "link": "https://www.instagram.com/javierchuaby/"
+    }
+  ]
+}

@@ -16,7 +16,7 @@
     "preinstall": "node scripts/enforce-package-manager.mjs",
     "predev": "pnpm run clean",
     "dev": "next dev --turbopack",
-    "build": "next build && next-image-export-optimizer && node scripts/export-markdown.mjs",
+    "build": "next build && next-image-export-optimizer && node scripts/export-markdown.mjs && node scripts/export-api-data.mjs",
     "deploy": "pnpm run deploy:worker",
     "start": "next start",
     "lint": "biome check .",

@@ -1,0 +1,172 @@
+[
+  {
+    "title": "Python",
+    "competency": 5,
+    "category": ["AI/ML", "Languages"]
+  },
+  {
+    "title": "TypeScript",
+    "competency": 5,
+    "category": ["Languages", "Web & Mobile"]
+  },
+  {
+    "title": "Java",
+    "competency": 4,
+    "category": ["Languages"]
+  },
+  {
+    "title": "C++",
+    "competency": 4,
+    "category": ["Languages"]
+  },
+  {
+    "title": "Next.js",
+    "competency": 5,
+    "category": ["Web & Mobile"]
+  },
+  {
+    "title": "React",
+    "competency": 5,
+    "category": ["Web & Mobile"]
+  },
+  {
+    "title": "Node.js",
+    "competency": 5,
+    "category": ["Web & Mobile"]
+  },
+  {
+    "title": "React Native",
+    "competency": 4,
+    "category": ["Web & Mobile"]
+  },
+  {
+    "title": "AWS",
+    "competency": 5,
+    "category": ["Cloud & DevSecOps"]
+  },
+  {
+    "title": "Azure DevOps",
+    "competency": 5,
+    "category": ["Cloud & DevSecOps"]
+  },
+  {
+    "title": "Docker",
+    "competency": 5,
+    "category": ["Cloud & DevSecOps"]
+  },
+  {
+    "title": "Terraform",
+    "competency": 4,
+    "category": ["Cloud & DevSecOps"]
+  },
+  {
+    "title": "SonarQube",
+    "competency": 4,
+    "category": ["Cloud & DevSecOps"]
+  },
+  {
+    "title": "Trivy",
+    "competency": 4,
+    "category": ["Cloud & DevSecOps"]
+  },
+  {
+    "title": "Kubernetes (K8s)",
+    "competency": 3,
+    "category": ["Cloud & DevSecOps"]
+  },
+  {
+    "title": "Argo CD",
+    "competency": 3,
+    "category": ["Cloud & DevSecOps"]
+  },
+  {
+    "title": "Kafka",
+    "competency": 3,
+    "category": ["Cloud & DevSecOps", "Data & Databases"]
+  },
+  {
+    "title": "Entra ID (OIDC)",
+    "competency": 3,
+    "category": ["Cloud & DevSecOps"]
+  },
+  {
+    "title": "GCP",
+    "competency": 3,
+    "category": ["Cloud & DevSecOps"]
+  },
+  {
+    "title": "PostgreSQL",
+    "competency": 5,
+    "category": ["Data & Databases"]
+  },
+  {
+    "title": "MongoDB",
+    "competency": 5,
+    "category": ["Data & Databases"]
+  },
+  {
+    "title": "ClickHouse",
+    "competency": 4,
+    "category": ["Data & Databases"]
+  },
+  {
+    "title": "InfluxDB3",
+    "competency": 4,
+    "category": ["Data & Databases"]
+  },
+  {
+    "title": "Prisma",
+    "competency": 4,
+    "category": ["Data & Databases"]
+  },
+  {
+    "title": "Supabase",
+    "competency": 4,
+    "category": ["Data & Databases"]
+  },
+  {
+    "title": "PyTorch",
+    "competency": 5,
+    "category": ["AI/ML"]
+  },
+  {
+    "title": "LangGraph",
+    "competency": 5,
+    "category": ["AI/ML"]
+  },
+  {
+    "title": "LangChain",
+    "competency": 5,
+    "category": ["AI/ML"]
+  },
+  {
+    "title": "scikit-learn",
+    "competency": 5,
+    "category": ["AI/ML"]
+  },
+  {
+    "title": "CatBoost",
+    "competency": 4,
+    "category": ["AI/ML"]
+  },
+  {
+    "title": "MLflow",
+    "competency": 4,
+    "category": ["AI/ML"]
+  },
+  {
+    "title": "SevOne",
+    "competency": 4,
+    "category": ["Network Tools"]
+  },
+  {
+    "title": "Netmiko",
+    "competency": 4,
+    "category": ["Network Tools"]
+  },
+  {
+    "title": "NetBrain",
+    "competency": 4,
+    "category": ["Network Tools"]
+  }
+]

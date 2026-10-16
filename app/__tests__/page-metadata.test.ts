@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { AUTHOR_NAME, SITE_URL } from '@/lib/utils';
 import { metadata as aboutMetadata } from '../about/page';
+import { metadata as apiMetadata } from '../api/page';
 import { metadata as contactMetadata } from '../contact/page';
 import { metadata as notFoundMetadata } from '../not-found';
 import { metadata as projectsMetadata } from '../projects/page';
@@ -11,6 +12,7 @@ import { metadata as statsMetadata } from '../stats/page';
 describe('page metadata', () => {
   it.each([
     ['about', aboutMetadata, `${SITE_URL}/about/`],
+    ['api', apiMetadata, `${SITE_URL}/api/`],
     ['contact', contactMetadata, `${SITE_URL}/contact/`],
     ['archive', projectsMetadata, `${SITE_URL}/projects/`],
     ['resume', resumeMetadata, `${SITE_URL}/resume/`],
@@ -25,6 +27,7 @@ describe('page metadata', () => {
 
   it.each([
     ['about', aboutMetadata],
+    ['api', apiMetadata],
     ['contact', contactMetadata],
     ['archive', projectsMetadata],
     ['resume', resumeMetadata],

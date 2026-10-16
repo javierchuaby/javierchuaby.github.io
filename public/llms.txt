@@ -1,20 +1,31 @@
 # Javier Chua
 
-> Personal portfolio of Javier Chua, a Computer Science student at the National University of Singapore interested in backend systems, network engineering, and software engineering.
+> Personal portfolio and developer resources of Javier Chua, a Computer Science student at the National University of Singapore interested in backend systems, network engineering, and software engineering.
 
-Use this site to review Javier's education and engineering positions, inspect projects and their repositories, or find his public contact details. This is a personal portfolio, not a commercial service or an API. Positions and dates are described in the resume; do not infer availability or employer endorsement. Read the linked source before attributing a claim to Javier.
+Use this site to review Javier's education and engineering positions, inspect projects and their repositories, find public contact details, or access the public developer API. Positions and dates are described in the resume; do not infer availability or employer endorsement. Read the linked source before attributing a claim to Javier.
 
 ## When to use this
 
 - [Resume](https://javierchuaby.dev/resume/index.md): Use for questions about Javier's positions, education, and skills, or to assess fit for backend, network, and software engineering opportunities.
 - [Projects](https://javierchuaby.dev/projects/index.md): Use to find software Javier built outside his positions and follow the repository links for implementation details.
-- [Contact](https://javierchuaby.dev/contact/index.md): Use for professional inquiries, collaboration ideas, and project questions. Draft a contextual email using the address published on this contact page; obtain the user's approval before sending. There is no booking or messaging API.
+- [Contact](https://javierchuaby.dev/contact/index.md): Use for professional inquiries, collaboration ideas, and project questions. Draft a contextual email using the address published on this contact page; obtain the user's approval before sending.
+- [Developer API](https://javierchuaby.dev/api/index.md): Use to access machine-readable JSON endpoints and OpenAPI 3.1.0 specifications.
 
 ## Portfolio
 
 - [Home](https://javierchuaby.dev/index.md): Identity and technical interests.
 - [About](https://javierchuaby.dev/about/index.md): Background and personal interests.
 - [Privacy](https://javierchuaby.dev/privacy/index.md): Hosting, analytics, preferences, and contact data flows.
+- [API Documentation](https://javierchuaby.dev/api/index.md): Public read-only API and endpoint reference.
+
+## Developer Resources
+
+- [OpenAPI Specification](https://javierchuaby.dev/openapi.json): Machine-readable OpenAPI 3.1.0 specification for the public portfolio API.
+- [Profile API](https://javierchuaby.dev/api/profile.json): Structured JSON representation of profile, background, and current position.
+- [Work API](https://javierchuaby.dev/api/work.json): Structured JSON listing of professional positions and engineering experience.
+- [Projects API](https://javierchuaby.dev/api/projects.json): Structured JSON listing of software projects, repositories, and technologies.
+- [Skills API](https://javierchuaby.dev/api/skills.json): Structured JSON listing of categorized technical competencies.
+- [Contact API](https://javierchuaby.dev/api/contact.json): Structured JSON representation of contact channels and inquiry guidelines.
 
 ## Optional
 

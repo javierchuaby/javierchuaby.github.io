@@ -1,0 +1,360 @@
+openapi: 3.1.0
+info:
+  title: Javier Chua Portfolio API
+  version: 1.0.0
+  description: Public read-only API and machine-readable endpoints for Javier Chua's developer portfolio, including profile data, work experience, projects, technical skills, and contact guidelines.
+  contact:
+    name: Javier Chua
+    email: javierchua.dev@gmail.com
+    url: https://javierchuaby.dev/contact/
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+  - url: https://javierchuaby.dev
+    description: Production portfolio server
+paths:
+  /api/profile:
+    get:
+      operationId: getProfile
+      summary: Retrieve personal and professional profile
+      description: Returns verified profile data for Javier Chua, including identity, educational background, technical interests, and current position.
+      responses:
+        '200':
+          description: Personal profile successfully retrieved
+          headers:
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+  /api/work:
+    get:
+      operationId: getWorkExperience
+      summary: Retrieve career history and engineering positions
+      description: Returns chronologically sorted professional engineering experience and internships adhering to JSON Resume schema conventions.
+      responses:
+        '200':
+          description: List of career positions successfully retrieved
+          headers:
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Position'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+  /api/projects:
+    get:
+      operationId: getProjects
+      summary: Retrieve software projects and applications
+      description: Returns published software projects with summaries, external repository links, dates, and technology tags.
+      responses:
+        '200':
+          description: List of projects successfully retrieved
+          headers:
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+  /api/skills:
+    get:
+      operationId: getSkills
+      summary: Retrieve technical skills and proficiencies
+      description: Returns categorized technical proficiencies across programming languages, web & mobile frameworks, cloud/DevSecOps, and databases.
+      responses:
+        '200':
+          description: List of categorized skills successfully retrieved
+          headers:
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Skill'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+  /api/contact:
+    get:
+      operationId: getContactInfo
+      summary: Retrieve contact methods and communication guidelines
+      description: Returns public communication channels, primary email address, social links, and guidelines for collaboration or project inquiries.
+      responses:
+        '200':
+          description: Contact information and guidelines successfully retrieved
+          headers:
+            RateLimit-Limit:
+              $ref: '#/components/headers/RateLimit-Limit'
+            RateLimit-Remaining:
+              $ref: '#/components/headers/RateLimit-Remaining'
+            RateLimit-Reset:
+              $ref: '#/components/headers/RateLimit-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactInfo'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+components:
+  headers:
+    RateLimit-Limit:
+      description: The maximum number of allowed requests in the current time window.
+      schema:
+        type: integer
+        example: 100
+    RateLimit-Remaining:
+      description: The number of remaining requests allowed within the current rate limit window.
+      schema:
+        type: integer
+        example: 99
+    RateLimit-Reset:
+      description: The number of seconds remaining until the current rate limit window resets.
+      schema:
+        type: integer
+        example: 60
+  responses:
+    MethodNotAllowed:
+      description: Method not allowed on read-only API endpoint
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  schemas:
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - code
+            - message
+            - resolution
+          properties:
+            code:
+              type: string
+              example: NOT_FOUND
+            message:
+              type: string
+              example: The requested API endpoint does not exist.
+            resolution:
+              type: string
+              example: Check the OpenAPI specification at /openapi.json or documentation at /api/.
+    Profile:
+      type: object
+      required:
+        - name
+        - handle
+        - title
+        - description
+        - email
+        - education
+      properties:
+        name:
+          type: string
+          example: Javier Chua
+        handle:
+          type: string
+          example: javierchuaby
+        title:
+          type: string
+          example: Backend & Infrastructure Engineer
+        description:
+          type: string
+          example: Javier Chua is a Computer Science student at NUS, interested in backend systems and network engineering.
+        email:
+          type: string
+          format: email
+          example: javierchua.dev@gmail.com
+        education:
+          type: array
+          items:
+            type: object
+            properties:
+              school:
+                type: string
+                example: National University of Singapore
+              degree:
+                type: string
+                example: B.Comp in Computer Science (Honours)
+              link:
+                type: string
+                format: uri
+              year:
+                type: integer
+                example: 2026
+        currentPosition:
+          type: object
+          nullable: true
+          properties:
+            name:
+              type: string
+            position:
+              type: string
+            url:
+              type: string
+              format: uri
+            startDate:
+              type: string
+            endDate:
+              type: string
+              nullable: true
+        social:
+          type: array
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+              link:
+                type: string
+                format: uri
+    Position:
+      type: object
+      required:
+        - name
+        - position
+        - url
+        - startDate
+      properties:
+        name:
+          type: string
+          example: Visa
+        position:
+          type: string
+          example: Network Engineer (AIOps)
+        url:
+          type: string
+          format: uri
+          example: https://www.visa.com.sg
+        startDate:
+          type: string
+          example: 2026-05-12
+        endDate:
+          type: string
+          nullable: true
+          example: 2026-07-31
+        summary:
+          type: string
+        highlights:
+          type: array
+          items:
+            type: string
+        employmentType:
+          type: string
+          example: Internship
+    Project:
+      type: object
+      required:
+        - title
+        - startDate
+        - desc
+      properties:
+        title:
+          type: string
+          example: city.ai
+        subtitle:
+          type: string
+        link:
+          type: string
+          format: uri
+        image:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
+          nullable: true
+        desc:
+          type: string
+        tech:
+          type: array
+          items:
+            type: string
+        featured:
+          type: boolean
+    Skill:
+      type: object
+      required:
+        - title
+        - competency
+        - category
+      properties:
+        title:
+          type: string
+          example: Python
+        competency:
+          type: integer
+          minimum: 1
+          maximum: 5
+          example: 5
+        category:
+          type: array
+          items:
+            type: string
+    ContactInfo:
+      type: object
+      required:
+        - email
+        - responseTime
+        - guidelines
+        - social
+      properties:
+        email:
+          type: string
+          format: email
+          example: javierchua.dev@gmail.com
+        responseTime:
+          type: string
+          example: Usually within 24 hours
+        guidelines:
+          type: array
+          items:
+            type: string
+        social:
+          type: array
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+              link:
+                type: string
+                format: uri

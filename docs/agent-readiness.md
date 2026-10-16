@@ -80,6 +80,26 @@ and `main` without deploying; the production publish remains an explicit command
 The `.md` files are also discoverable through HTML alternate links and the
 sitewide `rel="describedby"` link to `/llms.txt`.
 
+## Developer API & OpenAPI Specification
+
+The portfolio publishes an OpenAPI 3.1.0 specification at `/openapi.json` and `/openapi.yaml` (also mirrored under `/api/`). Machine-readable endpoints provide structured JSON representations of portfolio content:
+
+- `GET /api/profile` — Identity, education, and current position.
+- `GET /api/work` — Work history and career positions conforming to JSON Resume schema conventions.
+- `GET /api/projects` — Portfolio software projects and repositories.
+- `GET /api/skills` — Categorized technical proficiencies.
+- `GET /api/contact` — Public communication channels and inquiry guidelines.
+- `GET /api/` — Developer documentation page in HTML and Markdown, or JSON API index when requested with `Accept: application/json`.
+
+All API endpoints return standard IETF RFC RateLimit headers (`RateLimit-Limit: 100`, `RateLimit-Remaining: 99`, `RateLimit-Reset: 60`, `RateLimit-Policy: 100;w=60`) and CORS headers (`Access-Control-Allow-Origin: *`). Unmapped API routes, method mismatches, or unsupported media formats return structured JSON error responses (`{"error": {"code": "...", "message": "...", "resolution": "..."}}`).
+
+## Cloudflare Bot Management & Security Settings
+
+Automated agent audit tools (e.g. Is Agentic / Ora) and AI crawlers (e.g. ClaudeBot, PerplexityBot) can be challenged or blocked at the Cloudflare edge if zone bot protections are overly strict:
+
+1. **AI Scrapers & Crawlers**: In Cloudflare Dashboard under **Security > Bots**, ensure "Block AI Scrapers and Crawlers" is configured to allow or observe rather than block if agent discoverability is desired.
+2. **Bot Fight Mode**: On Free zones, Bot Fight Mode challenges unverified automated bots. If external audit tools receive JS challenges instead of HTML, configure a WAF Custom Rule under **Security > WAF** to skip Bot Fight Mode for legitimate scanner user-agents or IPs.
+
 ## Editorial decisions that remain
 
 - This is a person's portfolio, not an asserted business. The Person has a
