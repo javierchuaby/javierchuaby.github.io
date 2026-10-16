@@ -2,13 +2,6 @@ interface Env {
   ASSETS: { fetch(request: Request): Promise<Response> };
 }
 
-const RATE_LIMIT_HEADERS = {
-  'RateLimit-Limit': '100',
-  'RateLimit-Remaining': '99',
-  'RateLimit-Reset': '60',
-  'RateLimit-Policy': '100;w=60',
-};
-
 // Specific exclusions (q=0) take precedence over broader wildcards.
 function quality(accept: string, type: string): number {
   let specificity = -1;
@@ -17,7 +10,13 @@ function quality(accept: string, type: string): number {
     const [mediaType, ...parameters] = entry.trim().split(';');
     const range = mediaType.trim();
     const score =
-      range === type ? 2 : range === 'text/*' ? 1 : range === '*/*' ? 0 : -1;
+      range === type
+        ? 2
+        : range === `${type.split('/')[0]}/*`
+          ? 1
+          : range === '*/*'
+            ? 0
+            : -1;
     if (score < 0 || score < specificity) continue;
     const parameter = parameters
       .map((part) => part.trim())
@@ -63,7 +62,6 @@ function json(
       'Content-Type': 'application/json; charset=utf-8',
       'Access-Control-Allow-Origin': '*',
       Vary: 'Accept',
-      ...RATE_LIMIT_HEADERS,
       ...extraHeaders,
     },
   });
@@ -75,7 +73,11 @@ function jsonError(
   resolution: string,
   status = 404,
 ): Response {
-  return json({ error: { code, message, resolution } }, status);
+  return json(
+    { error: { code, message, resolution } },
+    status,
+    status === 405 ? { Allow: 'GET, HEAD' } : {},
+  );
 }
 
 async function respond(request: Request, env: Env): Promise<Response> {
@@ -85,6 +87,35 @@ async function respond(request: Request, env: Env): Promise<Response> {
   const jsonQuality = quality(accept, 'application/json');
   const pathname = new URL(request.url).pathname;
   const explicitMarkdown = pathname.endsWith('.md');
+
+  const notAcceptable = () =>
+    jsonError(
+      'NOT_ACCEPTABLE',
+      'The requested media type is unavailable for this resource.',
+      'Use a media type listed in /openapi.json or Accept: */*.',
+      406,
+    );
+  const unavailable = () =>
+    jsonError(
+      'SERVICE_UNAVAILABLE',
+      'The requested API resource is temporarily unavailable.',
+      'Retry later or use the portfolio pages.',
+      503,
+    );
+
+  // The API directory also has HTML and Markdown representations.
+  if (
+    (pathname === '/api' || pathname === '/api/') &&
+    request.method !== 'GET' &&
+    request.method !== 'HEAD'
+  ) {
+    return jsonError(
+      'METHOD_NOT_ALLOWED',
+      'Only GET and HEAD methods are supported.',
+      'Use HTTP GET to access the API directory.',
+      405,
+    );
+  }
 
   // Handle OpenAPI specification endpoints
   if (pathname === '/openapi.json' || pathname === '/api/openapi.json') {
@@ -96,14 +127,21 @@ async function respond(request: Request, env: Env): Promise<Response> {
         405,
       );
     }
+    const openapiQuality = quality(accept, 'application/vnd.oai.openapi+json');
+    if (jsonQuality === 0 && openapiQuality === 0) return notAcceptable();
+    const contentType =
+      jsonQuality >= openapiQuality
+        ? 'application/json'
+        : 'application/vnd.oai.openapi+json';
     const asset = await env.ASSETS.fetch(
       new Request('https://javierchuaby.dev/openapi.json', { method: 'GET' }),
     );
     if (asset.ok) {
       return json(await asset.text(), 200, {
-        'Content-Type': 'application/vnd.oai.openapi+json; charset=utf-8',
+        'Content-Type': `${contentType}; charset=utf-8`,
       });
     }
+    return unavailable();
   }
 
   if (pathname === '/openapi.yaml' || pathname === '/api/openapi.yaml') {
@@ -115,6 +153,7 @@ async function respond(request: Request, env: Env): Promise<Response> {
         405,
       );
     }
+    if (quality(accept, 'application/yaml') === 0) return notAcceptable();
     const asset = await env.ASSETS.fetch(
       new Request('https://javierchuaby.dev/openapi.yaml', { method: 'GET' }),
     );
@@ -125,41 +164,44 @@ async function respond(request: Request, env: Env): Promise<Response> {
           'Content-Type': 'application/yaml; charset=utf-8',
           'Access-Control-Allow-Origin': '*',
           Vary: 'Accept',
-          ...RATE_LIMIT_HEADERS,
         },
       });
     }
+    return unavailable();
   }
 
-  // Handle structured API data endpoints
-  const apiEndpoints = [
-    '/api/profile',
-    '/api/work',
-    '/api/projects',
-    '/api/skills',
-    '/api/contact',
-  ];
-  const matchedEndpoint = apiEndpoints.find(
-    (ep) => pathname === ep || pathname === `${ep}.json`,
-  );
-  if (matchedEndpoint) {
+  // Handle structured API data endpoints. `/api/v1/<resource>` is canonical;
+  // unversioned `/api/<resource>` and `.json` forms remain compatible aliases.
+  const dataResources = ['profile', 'work', 'projects', 'skills', 'contact'];
+  const dataMatch = pathname.match(/^\/api\/(?:v1\/)?([a-z]+)(?:\.json)?$/);
+  const resource =
+    dataMatch && dataResources.includes(dataMatch[1]) ? dataMatch[1] : null;
+  if (resource) {
+    const versioned = (response: Response) => {
+      response.headers.set('API-Version', 'v1');
+      return response;
+    };
     if (request.method !== 'GET' && request.method !== 'HEAD') {
-      return jsonError(
-        'METHOD_NOT_ALLOWED',
-        'Only GET and HEAD methods are supported.',
-        'Use HTTP GET to retrieve this resource.',
-        405,
+      return versioned(
+        jsonError(
+          'METHOD_NOT_ALLOWED',
+          'Only GET and HEAD methods are supported.',
+          'Use HTTP GET to retrieve this resource.',
+          405,
+        ),
       );
     }
+    if (jsonQuality === 0) return versioned(notAcceptable());
     const targetUrl = new URL(request.url);
-    targetUrl.pathname = `${matchedEndpoint}.json`;
+    targetUrl.pathname = `/api/${resource}.json`;
     targetUrl.search = '';
     const asset = await env.ASSETS.fetch(
       new Request(targetUrl, { method: 'GET' }),
     );
     if (asset.ok) {
-      return json(await asset.text());
+      return versioned(json(await asset.text()));
     }
+    return versioned(unavailable());
   }
 
   // Handle /api root when requested as JSON directory
@@ -168,26 +210,34 @@ async function respond(request: Request, env: Env): Promise<Response> {
     jsonQuality > htmlQuality &&
     jsonQuality > markdownQuality
   ) {
-    if (request.method !== 'GET' && request.method !== 'HEAD') {
-      return jsonError(
-        'METHOD_NOT_ALLOWED',
-        'Only GET and HEAD methods are supported.',
-        'Use HTTP GET to access the API index.',
-        405,
-      );
-    }
     return json({
       message: 'Javier Chua Developer Portfolio API',
+      version: 'v1',
       openapi: 'https://javierchuaby.dev/openapi.json',
       docs: 'https://javierchuaby.dev/api/',
       endpoints: {
-        profile: 'https://javierchuaby.dev/api/profile',
-        work: 'https://javierchuaby.dev/api/work',
-        projects: 'https://javierchuaby.dev/api/projects',
-        skills: 'https://javierchuaby.dev/api/skills',
-        contact: 'https://javierchuaby.dev/api/contact',
+        profile: 'https://javierchuaby.dev/api/v1/profile',
+        work: 'https://javierchuaby.dev/api/v1/work',
+        projects: 'https://javierchuaby.dev/api/v1/projects',
+        skills: 'https://javierchuaby.dev/api/v1/skills',
+        contact: 'https://javierchuaby.dev/api/v1/contact',
       },
     });
+  }
+
+  // Next.js fetches these exported route payloads during client navigation.
+  // Keep their native media type and request headers, as with other static assets.
+  if (
+    (request.method === 'GET' || request.method === 'HEAD') &&
+    [
+      '/api/index.txt',
+      '/api/__next._tree.txt',
+      '/api/__next._full.txt',
+      '/api/__next.api.__PAGE__.txt',
+    ].includes(pathname)
+  ) {
+    const payload = await env.ASSETS.fetch(request);
+    if (payload.status !== 404) return payload;
   }
 
   // Handle unmapped /api/* endpoints

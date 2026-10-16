@@ -11,19 +11,19 @@ describe('skills data', () => {
   it('each skill has required properties', () => {
     for (const skill of skills) {
       expect(skill).toHaveProperty('title');
-      expect(skill).toHaveProperty('competency');
+      expect(skill).toHaveProperty('prominence');
       expect(skill).toHaveProperty('category');
 
       expect(typeof skill.title).toBe('string');
-      expect(typeof skill.competency).toBe('number');
+      expect(typeof skill.prominence).toBe('number');
       expect(Array.isArray(skill.category)).toBe(true);
     }
   });
 
-  it('competency values are between 1 and 5', () => {
+  it('prominence values are between 1 and 5', () => {
     for (const skill of skills) {
-      expect(skill.competency).toBeGreaterThanOrEqual(1);
-      expect(skill.competency).toBeLessThanOrEqual(5);
+      expect(skill.prominence).toBeGreaterThanOrEqual(1);
+      expect(skill.prominence).toBeLessThanOrEqual(5);
     }
   });
 

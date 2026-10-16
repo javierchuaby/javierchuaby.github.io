@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react';
 
 import type { Category, Skill } from '@/data/resume/skills';
-import { MAX_COMPETENCY } from '@/lib/utils';
+import { MAX_PROMINENCE } from '@/lib/utils';
 
 interface SkillBarProps {
   data: Skill;
@@ -9,7 +9,7 @@ interface SkillBarProps {
 }
 
 export default function SkillBar({ data, categories }: SkillBarProps) {
-  const { category, competency, title } = data;
+  const { category, prominence, title } = data;
 
   // Get the primary category for styling (color and pre-computed text contrast)
   const primaryCategory = categories.find((cat) => category.includes(cat.name));
@@ -24,7 +24,7 @@ export default function SkillBar({ data, categories }: SkillBarProps) {
 
   const percentage = Math.min(
     100,
-    Math.max((competency / MAX_COMPETENCY) * 100, 0),
+    Math.max((prominence / MAX_PROMINENCE) * 100, 0),
   );
 
   // Pass color via CSS custom property for design system consistency
@@ -36,10 +36,10 @@ export default function SkillBar({ data, categories }: SkillBarProps) {
     <div
       className="skillbar"
       role="progressbar"
-      aria-valuenow={competency}
+      aria-valuenow={prominence}
       aria-valuemin={1}
-      aria-valuemax={MAX_COMPETENCY}
-      aria-label={`${title}: ${competency} out of ${MAX_COMPETENCY}`}
+      aria-valuemax={MAX_PROMINENCE}
+      aria-label={`${title}: display prominence ${prominence} out of ${MAX_PROMINENCE}`}
       style={skillbarStyle}
     >
       <div className={`skillbar-title ${textColorClass}`}>
@@ -47,7 +47,7 @@ export default function SkillBar({ data, categories }: SkillBarProps) {
       </div>
       <div className="skillbar-bar" style={{ width: `${percentage}%` }} />
       <div className="skill-bar-percent">
-        {competency} / {MAX_COMPETENCY}
+        {prominence} / {MAX_PROMINENCE}
       </div>
     </div>
   );

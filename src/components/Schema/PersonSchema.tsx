@@ -3,7 +3,7 @@ import degrees from '@/data/resume/degrees';
 import work from '@/data/resume/work';
 import { siteDescription } from '@/data/site';
 import { getCurrentPosition } from '@/lib/positions';
-import { AUTHOR_NAME, SITE_URL } from '@/lib/utils';
+import { AUTHOR_HANDLE, AUTHOR_NAME, SITE_URL } from '@/lib/utils';
 import JsonLd from './JsonLd';
 
 export default function PersonSchema() {
@@ -22,7 +22,7 @@ export default function PersonSchema() {
     '@context': 'https://schema.org',
     '@type': 'Person',
     name: AUTHOR_NAME,
-    alternateName: 'javierchuaby',
+    alternateName: AUTHOR_HANDLE,
     description: siteDescription,
     url: SITE_URL,
     image: `${SITE_URL}/images/me.jpg`,

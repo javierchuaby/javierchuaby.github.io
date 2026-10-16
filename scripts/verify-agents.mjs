@@ -1,10 +1,11 @@
 import assert from 'node:assert/strict';
 import { JSDOM } from 'jsdom';
+import { verifyPortfolioConsistency } from './portfolio-consistency.mjs';
 
 const base = (process.argv[2] || 'http://127.0.0.1:8787').replace(/\/$/, '');
 const publicOrigin = 'https://javierchuaby.dev';
 const request = (path, accept, method = 'GET', headers = {}) =>
-  fetch(`${base}${path}`, {
+  fetch(new URL(path, `${base}/`), {
     method,
     headers: { Accept: accept, ...headers },
     signal: AbortSignal.timeout(15000),
@@ -35,12 +36,15 @@ for (const path of [
   assert.ok(paths.includes(path));
 
 let profileEmail;
+const representations = { html: {}, markdown: {}, api: {} };
 for (const path of paths) {
   const htmlResponse = await request(path, 'text/html');
   assert.equal(htmlResponse.status, 200, path);
   assert.match(htmlResponse.headers.get('content-type') || '', /text\/html/);
   hasVary(htmlResponse);
-  const dom = new JSDOM(await htmlResponse.text());
+  const html = await htmlResponse.text();
+  representations.html[path] = html;
+  const dom = new JSDOM(html);
   try {
     const doc = dom.window.document;
     assert.equal(doc.documentElement.lang, 'en');
@@ -60,7 +64,7 @@ for (const path of paths) {
     ))
       element.remove();
     const text = main.textContent.replace(/\s+/g, ' ').trim();
-    if (['/', '/about/', '/contact/', '/privacy/', '/api/'].includes(path))
+    if (['/about/', '/privacy/', '/api/'].includes(path))
       assert.ok(text.length >= 500, `${path}: ${text.length} chars`);
     if (path === '/') {
       assert.equal(doc.querySelectorAll('h1').length, 1);
@@ -134,6 +138,7 @@ for (const path of paths) {
     );
     hasVary(markdownResponse);
     const markdown = await markdownResponse.text();
+    representations.markdown[path] = markdown;
     assert.match(markdown, /^# /m);
     assert.doesNotMatch(markdown, /<script|<!doctype|<html/i);
     assert.ok(markdown.length > 100);
@@ -201,33 +206,67 @@ for (const path of ['/about', '/contact', '/privacy', '/api']) {
   assert.match(response.headers.get('content-type') || '', /^text\/markdown/);
 }
 
+// Next.js uses these static payloads for navigation into the API docs page.
+for (const path of ['/api/index.txt', '/api/__next._tree.txt']) {
+  const response = await request(path, '*/*', 'GET', { RSC: '1' });
+  assert.equal(response.status, 200, path);
+  assert.match(response.headers.get('content-type') || '', /text\/plain/);
+  assert.ok((await response.text()).trim().length > 0, path);
+}
+
 const openapi = await request('/openapi.json', 'application/json');
 assert.equal(openapi.status, 200);
 assert.match(openapi.headers.get('content-type') || '', /json/);
-assert.equal(openapi.headers.get('ratelimit-limit'), '100');
-const openapiSpec = JSON.parse(await openapi.text());
+assert.equal(openapi.headers.get('ratelimit-limit'), null);
+const openapiText = await openapi.text();
+const openapiSpec = JSON.parse(openapiText);
 assert.equal(openapiSpec.openapi, '3.1.0');
 assert.ok(openapiSpec.paths['/api/profile']);
+assert.ok(openapiSpec.paths['/api/v1/profile']);
+assert.ok(openapiSpec.components.headers['API-Version']);
+assert.doesNotMatch(openapiText, /RateLimit/);
 
 const openapiYaml = await request('/openapi.yaml', '*/*');
 assert.equal(openapiYaml.status, 200);
-assert.match(await openapiYaml.text(), /openapi: 3\.1\.0/);
+const openapiYamlText = await openapiYaml.text();
+assert.match(openapiYamlText, /openapi: 3\.1\.0/);
+assert.doesNotMatch(openapiYamlText, /RateLimit/);
 
-const profile = await request('/api/profile', 'application/json');
+const profile = await request('/api/v1/profile', 'application/json');
 assert.equal(profile.status, 200);
-assert.equal(profile.headers.get('ratelimit-limit'), '100');
+assert.equal(profile.headers.get('api-version'), 'v1');
+assert.equal(profile.headers.get('ratelimit-limit'), null);
 const profileData = JSON.parse(await profile.text());
-assert.equal(profileData.name, 'Javier Chua');
+representations.api.profile = profileData;
+const legacyProfile = await request('/api/profile', 'application/json');
+assert.equal(legacyProfile.status, 200);
+assert.equal(legacyProfile.headers.get('api-version'), 'v1');
+assert.deepEqual(await legacyProfile.json(), profileData);
+for (const resource of ['work', 'projects', 'skills', 'contact']) {
+  const response = await request(`/api/v1/${resource}`, 'application/json');
+  assert.equal(response.status, 200, resource);
+  assert.match(response.headers.get('content-type') || '', /json/);
+  assert.equal(response.headers.get('api-version'), 'v1');
+  assert.equal(response.headers.get('ratelimit-limit'), null);
+  representations.api[resource] = await response.json();
+  const legacy = await request(`/api/${resource}`, 'application/json');
+  assert.equal(legacy.status, 200, resource);
+  assert.equal(legacy.headers.get('api-version'), 'v1');
+  assert.deepEqual(await legacy.json(), representations.api[resource]);
+}
+verifyPortfolioConsistency(representations);
 
 const api404 = await request('/api/nonexistent', 'application/json');
 assert.equal(api404.status, 404);
 const api404Data = JSON.parse(await api404.text());
 assert.equal(api404Data.error.code, 'NOT_FOUND');
 
-const api405 = await request('/api/profile', 'application/json', 'POST');
+// Reuse the final GET URL: a hostname-canonicalizing 301 can turn POST into
+// GET before it reaches the API, hiding the endpoint's method handling.
+const api405 = await request(profile.url, 'application/json', 'POST');
 assert.equal(api405.status, 405);
 const api405Data = JSON.parse(await api405.text());
 assert.equal(api405Data.error.code, 'METHOD_NOT_ALLOWED');
 console.log(
-  `Verified ${paths.length} public pages, their Markdown files, llms.txt and every linked resource, sitemap.xml, robots.txt, HEAD, redirects, 406 and HTML/Markdown 404s at ${base}.`,
+  `Verified ${paths.length} public pages, their Markdown files, llms.txt and every linked resource, sitemap.xml, robots.txt, HEAD, redirects, 406 and HTML/Markdown 404s, plus HTML/Markdown/JSON portfolio consistency at ${base}.`,
 );

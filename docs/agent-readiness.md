@@ -1,8 +1,11 @@
 # Agent readiness
 
-The portfolio remains a Next.js static export. HTML and Markdown use the same
+The portfolio remains a Next.js static export. Markdown preserves the visible page
 content: `pnpm build` converts each exported page's `<main>` into an adjacent
-`index.md`, removing scripts, icons, and decorative content. `/llms.txt` follows
+`index.md`, removing scripts, icons, and decorative content. Home and Contact
+Markdown also include supplemental when-to-use guidance from `src/data/site.ts`;
+that guidance is not rendered or hidden in HTML. Home and Contact intentionally
+do not meet the external audit's arbitrary 500-character threshold. `/llms.txt` follows
 the [published format](https://llmstxt.org/) and links to those Markdown files.
 Cloudflare Workers serves the production domain. The previous GitHub Pages publisher has been retired.
 
@@ -84,14 +87,26 @@ sitewide `rel="describedby"` link to `/llms.txt`.
 
 The portfolio publishes an OpenAPI 3.1.0 specification at `/openapi.json` and `/openapi.yaml` (also mirrored under `/api/`). Machine-readable endpoints provide structured JSON representations of portfolio content:
 
-- `GET /api/profile` — Identity, education, and current position.
-- `GET /api/work` — Work history and career positions conforming to JSON Resume schema conventions.
-- `GET /api/projects` — Portfolio software projects and repositories.
-- `GET /api/skills` — Categorized technical proficiencies.
-- `GET /api/contact` — Public communication channels and inquiry guidelines.
+- `GET /api/v1/profile` — Identity, education, and current position.
+- `GET /api/v1/work` — Work history and career positions conforming to JSON Resume schema conventions.
+- `GET /api/v1/projects` — Portfolio software projects and repositories.
+- `GET /api/v1/skills` — Skills with Categories and subjective prominence weights (1–5) for display size and ordering, not proficiency.
+- `GET /api/v1/contact` — Public communication channels and inquiry guidelines.
 - `GET /api/` — Developer documentation page in HTML and Markdown, or JSON API index when requested with `Accept: application/json`.
 
-All API endpoints return standard IETF RFC RateLimit headers (`RateLimit-Limit: 100`, `RateLimit-Remaining: 99`, `RateLimit-Reset: 60`, `RateLimit-Policy: 100;w=60`) and CORS headers (`Access-Control-Allow-Origin: *`). Unmapped API routes, method mismatches, or unsupported media formats return structured JSON error responses (`{"error": {"code": "...", "message": "...", "resolution": "..."}}`).
+Unversioned `/api/{resource}`, `/api/{resource}.json`, and canonical `/api/v1/{resource}` forms are all supported. Data responses include `API-Version: v1`.
+
+JSON data and specification responses include `Access-Control-Allow-Origin: *`.
+No application-level request quota is enforced, and the Worker emits no quota headers.
+Data endpoints accept `application/json` and compatible wildcards, and also support
+explicit `.json` aliases. The JSON specification accepts `application/json` or
+`application/vnd.oai.openapi+json`; the YAML specification accepts `application/yaml`.
+GET and HEAD are supported, with matching status and headers and an empty HEAD body.
+Unsupported methods return 405 with `Allow: GET, HEAD`. Unmapped API routes return
+404, unacceptable media types return 406, and missing generated API assets return 503. These API errors use structured JSON responses
+(`{"error": {"code": "...", "message": "...", "resolution": "..."}}`).
+The `/api/` directory also offers HTML and Markdown, selected by `Accept`; HTML is preferred when its quality ties the other representations. The public JSON files are generated from shared portfolio data during
+`pnpm build`, and `currentPosition` is null when no Position is current on the build date.
 
 ## Cloudflare Bot Management & Security Settings
 

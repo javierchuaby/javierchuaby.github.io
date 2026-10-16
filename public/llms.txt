@@ -9,6 +9,7 @@ Use this site to review Javier's education and engineering positions, inspect pr
 - [Resume](https://javierchuaby.dev/resume/index.md): Use for questions about Javier's positions, education, and skills, or to assess fit for backend, network, and software engineering opportunities.
 - [Projects](https://javierchuaby.dev/projects/index.md): Use to find software Javier built outside his positions and follow the repository links for implementation details.
 - [Contact](https://javierchuaby.dev/contact/index.md): Use for professional inquiries, collaboration ideas, and project questions. Draft a contextual email using the address published on this contact page; obtain the user's approval before sending.
+- [Developer Portal](https://javierchuaby.dev/developers/index.md): Use for the quickstart, public read-only playground, version and deprecation policy, and local CLI preview.
 - [Developer API](https://javierchuaby.dev/api/index.md): Use to access machine-readable JSON endpoints and OpenAPI 3.1.0 specifications.
 
 ## Portfolio
@@ -21,11 +22,11 @@ Use this site to review Javier's education and engineering positions, inspect pr
 ## Developer Resources
 
 - [OpenAPI Specification](https://javierchuaby.dev/openapi.json): Machine-readable OpenAPI 3.1.0 specification for the public portfolio API.
-- [Profile API](https://javierchuaby.dev/api/profile.json): Structured JSON representation of profile, background, and current position.
-- [Work API](https://javierchuaby.dev/api/work.json): Structured JSON listing of professional positions and engineering experience.
-- [Projects API](https://javierchuaby.dev/api/projects.json): Structured JSON listing of software projects, repositories, and technologies.
-- [Skills API](https://javierchuaby.dev/api/skills.json): Structured JSON listing of categorized technical competencies.
-- [Contact API](https://javierchuaby.dev/api/contact.json): Structured JSON representation of contact channels and inquiry guidelines.
+- [Profile API](https://javierchuaby.dev/api/v1/profile): Structured JSON representation of profile, background, and current position.
+- [Work API](https://javierchuaby.dev/api/v1/work): Structured JSON listing of professional positions and engineering experience.
+- [Projects API](https://javierchuaby.dev/api/v1/projects): Structured JSON listing of software projects, repositories, and technologies.
+- [Skills API](https://javierchuaby.dev/api/v1/skills): Structured JSON listing of Skills, Categories, and subjective display prominence weights.
+- [Contact API](https://javierchuaby.dev/api/v1/contact): Structured JSON representation of contact channels and inquiry guidelines.
 
 ## Optional
 

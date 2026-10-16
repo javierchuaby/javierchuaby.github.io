@@ -5,6 +5,7 @@
 // Site configuration
 export const SITE_URL = 'https://javierchuaby.dev';
 export const AUTHOR_NAME = 'Javier Chua';
+export const AUTHOR_HANDLE = 'javierchuaby';
 export const TWITTER_HANDLE = '@javierchua';
 
 // Image dimension constants
@@ -19,8 +20,8 @@ export const PROJECT_IMAGE = {
   height: 400,
 } as const;
 
-// Skill competency
-export const MAX_COMPETENCY = 5;
+// Skill prominence
+export const MAX_PROMINENCE = 5;
 
 /**
  * Formats a date string to a human-readable format.

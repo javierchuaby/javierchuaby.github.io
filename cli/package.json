@@ -1,0 +1,31 @@
+{
+  "name": "@javierchuaby/portfolio-cli",
+  "version": "1.0.0",
+  "description": "Official read-only CLI for Javier Chua's public portfolio API",
+  "type": "module",
+  "bin": {
+    "javier-portfolio": "bin/javier-portfolio.mjs"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/javierchuaby/javierchuaby.github.io.git",
+    "directory": "cli"
+  },
+  "homepage": "https://javierchuaby.dev/api/",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  }
+}

@@ -6,7 +6,7 @@
     "image": "/images/projects/city-ai.jpg",
     "startDate": "2026-01-01",
     "endDate": "2026-03-01",
-    "desc": "Agent designed for travellers and residents seeking authentic community knowledge about Singapore. It automatically extracts and indexes chunks from targeted subreddits (r/singapore, r/singaporefood), and uses a RAG pipeline for reasoning and vector-based semantic search.",
+    "desc": "Agent designed for travellers and residents seeking authentic community knowledge about Singapore. It automatically extracts and indexes chucks from targeted subreddits (r/singapore, r/singaporefood), and uses a RAG pipeline for reasoning and vector-based semantic search.",
     "tech": [
       "Python",
       "JavaScript",

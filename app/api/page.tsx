@@ -21,7 +21,10 @@ export default function ApiDocsPage() {
             </h1>
             <p>
               Machine-readable endpoints, OpenAPI 3.1.0 specification, and
-              developer documentation for AI agents and automated clients.
+              developer documentation for AI agents and automated clients. Start
+              at the{' '}
+              <Link href="/developers/">Javier Chua Developer Portal</Link>
+              for a quickstart, live playground, and CLI preview.
             </p>
           </div>
         </header>
@@ -30,9 +33,9 @@ export default function ApiDocsPage() {
           <h2 id="openapi-heading">OpenAPI Specification</h2>
           <p>
             This portfolio exposes a public, read-only developer API providing
-            verified information about Javier Chua&apos;s background, education,
-            engineering positions, projects, and skills. The complete API
-            surface is specified using the OpenAPI 3.1.0 standard and is
+            information about Javier Chua&apos;s background, education,
+            engineering positions, projects, and skills. The data endpoints are
+            documented using the OpenAPI 3.1.0 standard, with the specification
             available in both JSON and YAML formats:
           </p>
           <ul>
@@ -80,67 +83,84 @@ export default function ApiDocsPage() {
           <p>
             All endpoints are accessible via HTTP GET and HEAD requests. No
             authentication or API key is required. Responses are encoded as
-            UTF-8 JSON with standard rate-limiting headers.
+            UTF-8 JSON with public CORS access and identify the contract with an{' '}
+            <code>API-Version: v1</code> header. Each data endpoint also accepts
+            a .json suffix. Unversioned resource URLs remain supported aliases
+            of v1. New integrations should use /api/v1/. See the{' '}
+            <Link href="/developers/#version-policy">
+              version and deprecation policy
+            </Link>
+            .
           </p>
           <ul>
             <li>
-              <code className="api-endpoint">GET /api/profile</code> — Personal
-              biography, degree, contact address, and social links.
+              <code className="api-endpoint">GET /api/v1/profile</code> —
+              Personal biography, degree, contact address, and social links.
             </li>
             <li>
-              <code className="api-endpoint">GET /api/work</code> — Work
-              history, company details, roles, and date ranges.
+              <code className="api-endpoint">GET /api/v1/work</code> —
+              Positions, company details, and date ranges.
             </li>
             <li>
-              <code className="api-endpoint">GET /api/projects</code> — Software
-              projects, repository links, dates, and technology tags.
+              <code className="api-endpoint">GET /api/v1/projects</code> —
+              Software projects, repository links, dates, and technology tags.
             </li>
             <li>
-              <code className="api-endpoint">GET /api/skills</code> — Technical
-              proficiencies categorized by programming languages, cloud, and
-              databases.
+              <code className="api-endpoint">GET /api/v1/skills</code> — Skills
+              with Categories and a subjective prominence weight (1–5) for
+              display size and ordering, not proficiency.
             </li>
             <li>
-              <code className="api-endpoint">GET /api/contact</code> — Inquiries
-              policy, email address, and response timeframe expectations.
+              <code className="api-endpoint">GET /api/v1/contact</code> —
+              Inquiries guidelines, email address, and public social links.
             </li>
           </ul>
         </section>
 
-        <section aria-labelledby="ratelimit-heading">
-          <h2 id="ratelimit-heading">Rate Limiting Conventions</h2>
+        <section aria-labelledby="access-heading">
+          <h2 id="access-heading">Access and Media Types</h2>
           <p>
-            To ensure reliable availability for all visitors and automated
-            agents, API endpoints enforce standard IETF RFC RateLimit headers.
-            Clients can inspect these response headers to self-throttle in real
-            time:
+            JSON data endpoints accept application/json and compatible
+            wildcards. The JSON specification accepts application/json or
+            application/vnd.oai.openapi+json; the YAML specification accepts
+            application/yaml. Unsupported media types return 406.
           </p>
           <ul>
             <li>
-              <code className="http-header">RateLimit-Limit: 100</code> — The
-              maximum number of requests allowed per 60-second window.
+              <code className="http-header">Accept: application/json</code> —
+              Request JSON data or the JSON directory at /api/.
             </li>
             <li>
-              <code className="http-header">RateLimit-Remaining</code> — The
-              number of remaining requests in the current time window.
+              <code className="http-header">Accept: text/markdown</code> —
+              Request Markdown documentation at /api/.
             </li>
             <li>
-              <code className="http-header">RateLimit-Reset: 60</code> — The
-              seconds remaining until the window resets.
+              <code className="http-header">
+                Access-Control-Allow-Origin: *
+              </code>{' '}
+              — JSON data and specifications allow public cross-origin reads.
             </li>
             <li>
-              <code className="http-header">RateLimit-Policy: 100;w=60</code> —
-              The quota policy parameters.
+              <code className="http-header">Allow: GET, HEAD</code> — Method
+              errors identify the supported read-only methods.
             </li>
           </ul>
+          <p>
+            HEAD returns the same status and headers as GET with no response
+            body. Responses identify the served data contract with an{' '}
+            <code>API-Version: v1</code> header.
+          </p>
+          <p>
+            No application-level request quota is enforced. No rate-limit
+            headers are emitted.
+          </p>
         </section>
 
         <section aria-labelledby="errors-heading">
           <h2 id="errors-heading">Structured Error Responses</h2>
           <p>
-            When an API route is requested with invalid parameters, an unmapped
-            URL, or an unsupported method, the server returns a structured JSON
-            error object rather than an HTML page:
+            Unmapped API URLs, unsupported methods or media types, and
+            unavailable data exports return a structured JSON error object:
           </p>
           <pre>
             <code>{`{
@@ -154,8 +174,10 @@ export default function ApiDocsPage() {
           <p>
             Supported HTTP error status codes include{' '}
             <code className="api-endpoint">404 Not Found</code>,{' '}
-            <code className="api-endpoint">405 Method Not Allowed</code>, and{' '}
-            <code className="api-endpoint">406 Not Acceptable</code>.
+            <code className="api-endpoint">405 Method Not Allowed</code>,{' '}
+            <code className="api-endpoint">406 Not Acceptable</code>, and{' '}
+            <code className="api-endpoint">503 Service Unavailable</code>.
+            Method errors include Allow: GET, HEAD.
           </p>
         </section>
       </article>

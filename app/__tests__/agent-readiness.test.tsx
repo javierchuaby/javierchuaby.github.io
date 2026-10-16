@@ -2,7 +2,12 @@ import { render } from '@testing-library/react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import PersonSchema from '@/components/Schema/PersonSchema';
-import { contactEmail, siteDescription } from '@/data/site';
+import {
+  contactEmail,
+  contactGuidance,
+  homeGuidance,
+  siteDescription,
+} from '@/data/site';
 import { AUTHOR_NAME, SITE_URL } from '@/lib/utils';
 import AboutPage from '../about/page';
 import ContactPage from '../contact/page';
@@ -21,14 +26,21 @@ const mainContent = (page: React.ReactNode) => {
 describe('agent readiness', () => {
   it.each([
     ['home', HomePage],
-    ['about', AboutPage],
     ['contact', ContactPage],
-  ])('%s provides 500 meaningful characters without JavaScript', (_, Page) => {
+  ])('%s keeps agent guidance out of its HTML', (name, Page) => {
     const main = mainContent(<Page />);
-    expect(
-      main?.textContent?.replace(/\s+/g, ' ').trim().length,
-    ).toBeGreaterThanOrEqual(500);
     expect(main?.querySelectorAll('h1')).toHaveLength(1);
+    expect(main?.textContent?.trim().length).toBeGreaterThan(0);
+    for (const paragraph of name === 'home' ? homeGuidance : contactGuidance) {
+      expect(main?.textContent).not.toContain(paragraph);
+    }
+    expect(main?.querySelector('#portfolio-heading')).toBeNull();
+  });
+
+  it('retains substantive About content', () => {
+    expect(
+      mainContent(<AboutPage />)?.textContent?.trim().length,
+    ).toBeGreaterThanOrEqual(500);
   });
 
   it('identifies the real portfolio and homepage canonical', () => {

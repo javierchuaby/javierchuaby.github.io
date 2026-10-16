@@ -10,19 +10,19 @@ const mockCategories = [
 ];
 
 const mockSkills = [
-  { title: 'Python', competency: 5, category: ['Languages', 'ML Engineering'] },
+  { title: 'Python', prominence: 5, category: ['Languages', 'ML Engineering'] },
   {
     title: 'TypeScript',
-    competency: 5,
+    prominence: 5,
     category: ['Languages', 'Web Development'],
   },
   {
     title: 'JavaScript',
-    competency: 4,
+    prominence: 4,
     category: ['Languages', 'Web Development'],
   },
-  { title: 'PyTorch', competency: 4, category: ['ML Engineering'] },
-  { title: 'React', competency: 3, category: ['Web Development'] },
+  { title: 'PyTorch', prominence: 4, category: ['ML Engineering'] },
+  { title: 'React', prominence: 3, category: ['Web Development'] },
 ];
 
 describe('Skills', () => {
@@ -104,7 +104,7 @@ describe('Skills', () => {
     expect(groupTitles.length).toBeGreaterThan(0);
   });
 
-  it('sorts skills by competency (highest first)', () => {
+  it('sorts skills by prominence (highest first)', () => {
     render(<Skills skills={mockSkills} categories={mockCategories} />);
 
     // Filter to Languages to check sorting

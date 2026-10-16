@@ -1,7 +1,31 @@
 import { describe, expect, it } from 'vitest';
-import { htmlToMarkdown } from '../export-markdown.mjs';
+import { contactGuidance, homeGuidance } from '../../src/data/site';
+import { htmlToMarkdown, pageToMarkdown } from '../export-markdown.mjs';
 
 describe('Markdown export', () => {
+  it('does not attach homepage guidance to the exported error page', () => {
+    expect(
+      pageToMarkdown(
+        '<main><h1>Not found</h1></main>',
+        'https://javierchuaby.dev/404.html',
+      ),
+    ).not.toContain('## When to use this page');
+  });
+  it.each([
+    ['/', homeGuidance],
+    ['/contact/', contactGuidance],
+  ])('keeps supplemental guidance publicly available in %s Markdown', (path, guidance) => {
+    const html = '<main><h1>Page</h1><p>Visible content.</p></main>';
+    const result = pageToMarkdown(html, `https://javierchuaby.dev${path}`);
+    expect(result).toContain('Visible content.');
+    expect(result).toContain('## When to use this page');
+    for (const paragraph of guidance) expect(result).toContain(paragraph);
+    expect(htmlToMarkdown(html)).not.toContain('## When to use this page');
+    expect(
+      pageToMarkdown(html, 'https://javierchuaby.dev/about/'),
+    ).not.toContain('## When to use this page');
+  });
+
   it('preserves content, sequential headings, links, lists and table cells without site chrome', () => {
     const html =
       '<nav>Navigation</nav><main><h1>Javier Chua</h1><h2>Projects</h2><p>A <a href="/projects/">project</a> &amp; <strong>code</strong>.</p><ul><li>Backend</li></ul><table><tr><td>School</td><td>NUS</td></tr></table><script>SECRET</script><svg><title>Icon</title></svg><span aria-hidden="true">Decoration</span></main><footer>Footer</footer>';

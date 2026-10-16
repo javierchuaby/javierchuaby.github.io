@@ -10,23 +10,23 @@ const mockCategories = [
 
 describe('SkillBar', () => {
   it('renders the skill title', () => {
-    const skill = { title: 'Python', competency: 5, category: ['Languages'] };
+    const skill = { title: 'Python', prominence: 5, category: ['Languages'] };
 
     render(<SkillBar data={skill} categories={mockCategories} />);
 
     expect(screen.getByText('Python')).toBeInTheDocument();
   });
 
-  it('displays competency as fraction', () => {
-    const skill = { title: 'Python', competency: 4, category: ['Languages'] };
+  it('displays prominence as fraction', () => {
+    const skill = { title: 'Python', prominence: 4, category: ['Languages'] };
 
     render(<SkillBar data={skill} categories={mockCategories} />);
 
     expect(screen.getByText('4 / 5')).toBeInTheDocument();
   });
 
-  it('calculates bar width based on competency (5 = 100%)', () => {
-    const skill = { title: 'Python', competency: 5, category: ['Languages'] };
+  it('calculates bar width based on prominence (5 = 100%)', () => {
+    const skill = { title: 'Python', prominence: 5, category: ['Languages'] };
 
     render(<SkillBar data={skill} categories={mockCategories} />);
 
@@ -34,10 +34,10 @@ describe('SkillBar', () => {
     expect(bar.style.width).toBe('100%');
   });
 
-  it('calculates bar width based on competency (4 = 80%)', () => {
+  it('calculates bar width based on prominence (4 = 80%)', () => {
     const skill = {
       title: 'JavaScript',
-      competency: 4,
+      prominence: 4,
       category: ['Languages'],
     };
 
@@ -47,8 +47,8 @@ describe('SkillBar', () => {
     expect(bar.style.width).toBe('80%');
   });
 
-  it('calculates bar width based on competency (3 = 60%)', () => {
-    const skill = { title: 'Ruby', competency: 3, category: ['Languages'] };
+  it('calculates bar width based on prominence (3 = 60%)', () => {
+    const skill = { title: 'Ruby', prominence: 3, category: ['Languages'] };
 
     render(<SkillBar data={skill} categories={mockCategories} />);
 
@@ -57,7 +57,7 @@ describe('SkillBar', () => {
   });
 
   it('applies category color via CSS custom property', () => {
-    const skill = { title: 'Python', competency: 5, category: ['Languages'] };
+    const skill = { title: 'Python', prominence: 5, category: ['Languages'] };
 
     render(<SkillBar data={skill} categories={mockCategories} />);
 
@@ -67,10 +67,10 @@ describe('SkillBar', () => {
   });
 
   it('clamps width between 0% and 100%', () => {
-    // Test with very high competency (shouldn't exceed 100%)
+    // Test with very high prominence (shouldn't exceed 100%)
     const highSkill = {
       title: 'Expert',
-      competency: 10,
+      prominence: 10,
       category: ['Languages'],
     };
 

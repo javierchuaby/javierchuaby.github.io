@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import ContactIcons from '@/components/Contact/ContactIcons';
 import EmailLink from '@/components/Contact/EmailLink';
 import PageWrapper from '@/components/Template/PageWrapper';
-import { contactEmail, contactParagraphs } from '@/data/site';
+import { contactEmail } from '@/data/site';
 import { createPageMetadata } from '@/lib/metadata';
 
 export const metadata: Metadata = createPageMetadata({
@@ -31,11 +31,6 @@ export default function ContactPage() {
           </div>
 
           <ContactIcons />
-          <div className="about-content">
-            {contactParagraphs.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
-          </div>
         </div>
       </section>
     </PageWrapper>

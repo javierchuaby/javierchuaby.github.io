@@ -253,53 +253,122 @@ describe('content negotiation', () => {
 });
 
 describe('OpenAPI and JSON API endpoints', () => {
-  it('serves OpenAPI 3.1.0 JSON specification with rate limit headers', async () => {
+  it('serves OpenAPI 3.1.0 JSON specification without quota headers', async () => {
     const response = await get('application/json', '/openapi.json');
     expect(response.status).toBe(200);
-    expect(response.headers.get('Content-Type')).toContain('openapi+json');
-    expect(response.headers.get('RateLimit-Limit')).toBe('100');
-    expect(response.headers.get('RateLimit-Remaining')).toBe('99');
-    expect(response.headers.get('RateLimit-Reset')).toBe('60');
+    expect(response.headers.get('Content-Type')).toBe(
+      'application/json; charset=utf-8',
+    );
+    expect(response.headers.get('RateLimit-Limit')).toBeNull();
+    expect(response.headers.get('RateLimit-Remaining')).toBeNull();
+    expect(response.headers.get('RateLimit-Reset')).toBeNull();
+    expect(response.headers.get('RateLimit-Policy')).toBeNull();
     expect(response.headers.get('Access-Control-Allow-Origin')).toBe('*');
     const data = JSON.parse(await response.text());
     expect(data.openapi).toBe('3.1.0');
+  });
+
+  it.each([
+    ['application/json', 'application/json'],
+    [
+      'application/json, application/vnd.oai.openapi+json;q=0',
+      'application/json',
+    ],
+    [
+      'application/json;q=0, application/vnd.oai.openapi+json',
+      'application/vnd.oai.openapi+json',
+    ],
+    [
+      'application/json;q=0.5, application/vnd.oai.openapi+json;q=0.9',
+      'application/vnd.oai.openapi+json',
+    ],
+    [
+      'application/json;q=0.9, application/vnd.oai.openapi+json;q=0.5',
+      'application/json',
+    ],
+  ])('selects an acceptable OpenAPI JSON media type for %s', async (accept, expectedType) => {
+    for (const path of ['/openapi.json', '/api/openapi.json']) {
+      const response = await get(accept, path);
+      expect(response.status).toBe(200);
+      expect(response.headers.get('Content-Type')).toBe(
+        `${expectedType}; charset=utf-8`,
+      );
+      expect((await response.json()).openapi).toBe('3.1.0');
+    }
+  });
+
+  it('rejects OpenAPI JSON when both media types are explicitly excluded', async () => {
+    const response = await get(
+      'application/json;q=0, application/vnd.oai.openapi+json;q=0, */*;q=1',
+      '/openapi.json',
+    );
+    expect(response.status).toBe(406);
   });
 
   it('serves OpenAPI YAML specification at /openapi.yaml', async () => {
     const response = await get('*/*', '/openapi.yaml');
     expect(response.status).toBe(200);
     expect(response.headers.get('Content-Type')).toContain('application/yaml');
-    expect(response.headers.get('RateLimit-Limit')).toBe('100');
+    expect(response.headers.get('RateLimit-Limit')).toBeNull();
     expect(await response.text()).toContain('openapi: 3.1.0');
   });
 
-  it('serves profile data at /api/profile and /api/profile.json', async () => {
-    for (const path of ['/api/profile', '/api/profile.json']) {
+  it('serves profile data at canonical and alias routes with API-Version', async () => {
+    for (const path of [
+      '/api/v1/profile',
+      '/api/v1/profile.json',
+      '/api/profile',
+      '/api/profile.json',
+    ]) {
       const response = await get('application/json', path);
       expect(response.status).toBe(200);
       expect(response.headers.get('Content-Type')).toContain(
         'application/json',
       );
-      expect(response.headers.get('RateLimit-Limit')).toBe('100');
+      expect(response.headers.get('API-Version')).toBe('v1');
+      expect(response.headers.get('RateLimit-Limit')).toBeNull();
       const data = JSON.parse(await response.text());
       expect(data.name).toBe('Javier Chua');
     }
   });
 
+  it.each([
+    'profile',
+    'work',
+    'projects',
+    'skills',
+    'contact',
+  ])('serves /api/v1/%s and its unversioned alias with API-Version', async (resource) => {
+    for (const path of [`/api/v1/${resource}`, `/api/${resource}`]) {
+      const response = await get('application/json', path);
+      expect(response.status).toBe(200);
+      expect(response.headers.get('API-Version')).toBe('v1');
+      expect(response.headers.get('Content-Type')).toContain(
+        'application/json',
+      );
+    }
+  });
+
   it('rejects non-GET/HEAD methods on API endpoints with 405 JSON error', async () => {
-    const response = await get('application/json', '/api/profile', 'POST');
-    expect(response.status).toBe(405);
-    expect(response.headers.get('Content-Type')).toContain('application/json');
-    const data = JSON.parse(await response.text());
-    expect(data.error.code).toBe('METHOD_NOT_ALLOWED');
-    expect(data.error.resolution).toBeDefined();
+    for (const path of ['/api/profile', '/api/v1/profile']) {
+      const response = await get('application/json', path, 'POST');
+      expect(response.status).toBe(405);
+      expect(response.headers.get('Content-Type')).toContain(
+        'application/json',
+      );
+      expect(response.headers.get('API-Version')).toBe('v1');
+      expect(response.headers.get('Allow')).toBe('GET, HEAD');
+      const data = JSON.parse(await response.text());
+      expect(data.error.code).toBe('METHOD_NOT_ALLOWED');
+      expect(data.error.resolution).toBeDefined();
+    }
   });
 
   it('returns structured JSON 404 for nonexistent /api/* endpoints', async () => {
     const response = await get('application/json', '/api/nonexistent');
     expect(response.status).toBe(404);
     expect(response.headers.get('Content-Type')).toContain('application/json');
-    expect(response.headers.get('RateLimit-Limit')).toBe('100');
+    expect(response.headers.get('RateLimit-Limit')).toBeNull();
     const data = JSON.parse(await response.text());
     expect(data.error.code).toBe('NOT_FOUND');
     expect(data.error.message).toContain('API endpoint does not exist');
@@ -330,5 +399,146 @@ describe('OpenAPI and JSON API endpoints', () => {
     const data = JSON.parse(await response.text());
     expect(data.openapi).toBe('https://javierchuaby.dev/openapi.json');
     expect(data.endpoints.profile).toBeDefined();
+  });
+
+  it.each([
+    ['/api/profile', 'text/*'],
+    ['/api/v1/profile', 'text/*'],
+    ['/api/profile.json', 'application/json;q=0, */*;q=1'],
+    ['/openapi.json', 'text/html'],
+    ['/api/openapi.yaml', 'application/json'],
+  ])('rejects unavailable media on %s: %s', async (path, accept) => {
+    const response = await get(accept, path);
+    expect(response.status).toBe(406);
+    expect((await response.json()).error.code).toBe('NOT_ACCEPTABLE');
+  });
+
+  it.each([
+    ['/api/profile', 'application/*'],
+    ['/api/v1/work', 'application/*'],
+    ['/api/work.json', '*/*'],
+    ['/api/openapi.json', 'application/vnd.oai.openapi+json'],
+    ['/api/openapi.yaml', 'application/yaml'],
+  ])('supports matching media ranges and aliases on %s', async (path, accept) => {
+    expect((await get(accept, path)).status).toBe(200);
+  });
+
+  it.each([
+    '/api',
+    '/api/',
+    '/api/profile',
+    '/api/contact.json',
+    '/openapi.json',
+    '/api/openapi.yaml',
+  ])('includes Allow on method errors at %s regardless of Accept', async (path) => {
+    const response = await get('text/html', path, 'POST');
+    expect(response.status).toBe(405);
+    expect(response.headers.get('Allow')).toBe('GET, HEAD');
+    expect((await response.json()).error.code).toBe('METHOD_NOT_ALLOWED');
+  });
+
+  it.each([
+    '/api/profile',
+    '/api/v1/profile',
+    '/api/work.json',
+    '/openapi.json',
+    '/api/openapi.yaml',
+  ])('returns a structured 503 when the backing asset is missing at %s', async (path) => {
+    const response = await worker.fetch(
+      new Request(`https://javierchuaby.dev${path}`),
+      {
+        ASSETS: { fetch: async () => new Response('missing', { status: 404 }) },
+      },
+    );
+    expect(response.status).toBe(503);
+    expect((await response.json()).error.code).toBe('SERVICE_UNAVAILABLE');
+  });
+
+  it.each([
+    ['/api/profile', 'application/json'],
+    ['/api/v1/profile', 'application/json'],
+    ['/api/nonexistent', 'application/json'],
+    ['/api/', 'application/json'],
+    ['/openapi.json', 'application/json'],
+    ['/api/openapi.yaml', 'application/yaml'],
+    ['/api/profile', 'text/html'],
+  ])('preserves GET status and headers for HEAD at %s', async (path, accept) => {
+    const response = await get(accept, path);
+    const head = await get(accept, path, 'HEAD');
+    expect(head.status).toBe(response.status);
+    expect([...head.headers]).toEqual([...response.headers]);
+    expect(await head.text()).toBe('');
+  });
+
+  it.each([
+    '/api/index.txt',
+    '/api/__next._tree.txt',
+    '/api/__next._full.txt',
+    '/api/__next.api.__PAGE__.txt',
+  ])('serves the exported Next.js navigation payload at %s without negotiation', async (path) => {
+    for (const accept of [
+      '*/*',
+      'text/x-component',
+      'text/markdown',
+      'application/json',
+    ]) {
+      for (const method of ['GET', 'HEAD']) {
+        const request = new Request(
+          `https://javierchuaby.dev${path}?_rsc=fixture`,
+          {
+            method,
+            headers: {
+              Accept: accept,
+              RSC: '1',
+              'If-None-Match': '"old-payload"',
+            },
+          },
+        );
+        const response = await worker.fetch(request, {
+          ASSETS: {
+            async fetch(assetRequest: Request) {
+              expect(assetRequest.url).toBe(request.url);
+              expect(assetRequest.headers.get('Accept')).toBe(accept);
+              expect(assetRequest.headers.get('RSC')).toBe('1');
+              expect(assetRequest.headers.get('If-None-Match')).toBe(
+                '"old-payload"',
+              );
+              return new Response('route payload', {
+                headers: {
+                  'Content-Type': 'text/plain; charset=utf-8',
+                  ETag: '"payload"',
+                },
+              });
+            },
+          },
+        });
+        expect(response.status).toBe(200);
+        expect(response.headers.get('Content-Type')).toBe(
+          'text/plain; charset=utf-8',
+        );
+        expect(response.headers.get('ETag')).toBe('"payload"');
+        expect(await response.text()).toBe(
+          method === 'HEAD' ? '' : 'route payload',
+        );
+      }
+    }
+  });
+
+  it.each([
+    '/api/unknown.txt',
+    '/api/__next.unknown.txt',
+    '/api/unknown.json',
+  ])('keeps unmapped API files as structured JSON 404s: %s', async (path) => {
+    const response = await get('text/x-component', path);
+    expect(response.status).toBe(404);
+    expect(response.headers.get('Content-Type')).toContain('application/json');
+    expect((await response.json()).error.code).toBe('NOT_FOUND');
+  });
+
+  it('returns the API JSON 404 when a known navigation payload is absent', async () => {
+    const response = await get('text/x-component', '/api/__next._tree.txt');
+    expect(response.status).toBe(404);
+    expect(response.headers.get('Content-Type')).toContain('application/json');
+    expect((await response.json()).error.code).toBe('NOT_FOUND');
   });
 });

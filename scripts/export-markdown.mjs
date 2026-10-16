@@ -3,6 +3,7 @@ import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { JSDOM } from 'jsdom';
 import TurndownService from 'turndown';
+import { contactGuidance, homeGuidance } from '../src/data/site.ts';
 
 export function htmlToMarkdown(html, pageUrl = 'https://javierchuaby.dev/') {
   const dom = new JSDOM(html);
@@ -57,6 +58,17 @@ export function htmlToMarkdown(html, pageUrl = 'https://javierchuaby.dev/') {
   }
 }
 
+// Public Markdown includes supplemental retrieval guidance, without hidden HTML.
+export function pageToMarkdown(html, pageUrl) {
+  const markdown = htmlToMarkdown(html, pageUrl);
+  const path = new URL(pageUrl).pathname;
+  const guidance =
+    path === '/' ? homeGuidance : path === '/contact/' ? contactGuidance : [];
+  return guidance.length
+    ? `${markdown}\n## When to use this page\n\n${guidance.join('\n\n')}\n`
+    : markdown;
+}
+
 async function exportDirectory(directory, path = '/') {
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     if (entry.isDirectory() && !entry.name.startsWith('_')) {
@@ -66,7 +78,12 @@ async function exportDirectory(directory, path = '/') {
       );
     } else if (entry.isFile() && entry.name.endsWith('.html')) {
       const html = await readFile(join(directory, entry.name), 'utf8');
-      const markdown = htmlToMarkdown(html, `https://javierchuaby.dev${path}`);
+      const pagePath =
+        entry.name === 'index.html' ? path : `${path}${entry.name}`;
+      const markdown = pageToMarkdown(
+        html,
+        `https://javierchuaby.dev${pagePath}`,
+      );
       await writeFile(
         join(directory, entry.name.replace(/\.html$/, '.md')),
         markdown,

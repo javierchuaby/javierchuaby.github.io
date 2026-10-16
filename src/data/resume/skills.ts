@@ -1,6 +1,7 @@
 export interface Skill {
   title: string;
-  competency: number;
+  /** Subjective display weight (1–5), not a proficiency rating. */
+  prominence: number;
   category: string[];
 }
 
@@ -13,58 +14,58 @@ export interface Category {
 
 const skills: Skill[] = [
   // Languages
-  { title: 'Python', competency: 5, category: ['Languages', 'AI/ML'] },
+  { title: 'Python', prominence: 5, category: ['Languages', 'AI/ML'] },
   {
     title: 'TypeScript',
-    competency: 5,
+    prominence: 5,
     category: ['Languages', 'Web & Mobile'],
   },
-  { title: 'Java', competency: 4, category: ['Languages'] },
-  { title: 'C++', competency: 4, category: ['Languages'] },
+  { title: 'Java', prominence: 4, category: ['Languages'] },
+  { title: 'C++', prominence: 4, category: ['Languages'] },
 
   // Web & Mobile
-  { title: 'Next.js', competency: 5, category: ['Web & Mobile'] },
-  { title: 'React', competency: 5, category: ['Web & Mobile'] },
-  { title: 'Node.js', competency: 5, category: ['Web & Mobile'] },
-  { title: 'React Native', competency: 4, category: ['Web & Mobile'] },
+  { title: 'Next.js', prominence: 5, category: ['Web & Mobile'] },
+  { title: 'React', prominence: 5, category: ['Web & Mobile'] },
+  { title: 'Node.js', prominence: 5, category: ['Web & Mobile'] },
+  { title: 'React Native', prominence: 4, category: ['Web & Mobile'] },
 
   // Cloud & DevSecOps
-  { title: 'AWS', competency: 5, category: ['Cloud & DevSecOps'] },
-  { title: 'Azure DevOps', competency: 5, category: ['Cloud & DevSecOps'] },
-  { title: 'Docker', competency: 5, category: ['Cloud & DevSecOps'] },
-  { title: 'Terraform', competency: 4, category: ['Cloud & DevSecOps'] },
-  { title: 'SonarQube', competency: 4, category: ['Cloud & DevSecOps'] },
-  { title: 'Trivy', competency: 4, category: ['Cloud & DevSecOps'] },
-  { title: 'Kubernetes (K8s)', competency: 3, category: ['Cloud & DevSecOps'] },
-  { title: 'Argo CD', competency: 3, category: ['Cloud & DevSecOps'] },
+  { title: 'AWS', prominence: 5, category: ['Cloud & DevSecOps'] },
+  { title: 'Azure DevOps', prominence: 5, category: ['Cloud & DevSecOps'] },
+  { title: 'Docker', prominence: 5, category: ['Cloud & DevSecOps'] },
+  { title: 'Terraform', prominence: 4, category: ['Cloud & DevSecOps'] },
+  { title: 'SonarQube', prominence: 4, category: ['Cloud & DevSecOps'] },
+  { title: 'Trivy', prominence: 4, category: ['Cloud & DevSecOps'] },
+  { title: 'Kubernetes (K8s)', prominence: 3, category: ['Cloud & DevSecOps'] },
+  { title: 'Argo CD', prominence: 3, category: ['Cloud & DevSecOps'] },
   {
     title: 'Kafka',
-    competency: 3,
+    prominence: 3,
     category: ['Cloud & DevSecOps', 'Data & Databases'],
   },
-  { title: 'Entra ID (OIDC)', competency: 3, category: ['Cloud & DevSecOps'] },
-  { title: 'GCP', competency: 3, category: ['Cloud & DevSecOps'] },
+  { title: 'Entra ID (OIDC)', prominence: 3, category: ['Cloud & DevSecOps'] },
+  { title: 'GCP', prominence: 3, category: ['Cloud & DevSecOps'] },
 
   // Data & Databases
-  { title: 'PostgreSQL', competency: 5, category: ['Data & Databases'] },
-  { title: 'MongoDB', competency: 5, category: ['Data & Databases'] },
-  { title: 'ClickHouse', competency: 4, category: ['Data & Databases'] },
-  { title: 'InfluxDB3', competency: 4, category: ['Data & Databases'] },
-  { title: 'Prisma', competency: 4, category: ['Data & Databases'] },
-  { title: 'Supabase', competency: 4, category: ['Data & Databases'] },
+  { title: 'PostgreSQL', prominence: 5, category: ['Data & Databases'] },
+  { title: 'MongoDB', prominence: 5, category: ['Data & Databases'] },
+  { title: 'ClickHouse', prominence: 4, category: ['Data & Databases'] },
+  { title: 'InfluxDB3', prominence: 4, category: ['Data & Databases'] },
+  { title: 'Prisma', prominence: 4, category: ['Data & Databases'] },
+  { title: 'Supabase', prominence: 4, category: ['Data & Databases'] },
 
   // AI/ML
-  { title: 'PyTorch', competency: 5, category: ['AI/ML'] },
-  { title: 'LangGraph', competency: 5, category: ['AI/ML'] },
-  { title: 'LangChain', competency: 5, category: ['AI/ML'] },
-  { title: 'scikit-learn', competency: 5, category: ['AI/ML'] },
-  { title: 'CatBoost', competency: 4, category: ['AI/ML'] },
-  { title: 'MLflow', competency: 4, category: ['AI/ML'] },
+  { title: 'PyTorch', prominence: 5, category: ['AI/ML'] },
+  { title: 'LangGraph', prominence: 5, category: ['AI/ML'] },
+  { title: 'LangChain', prominence: 5, category: ['AI/ML'] },
+  { title: 'scikit-learn', prominence: 5, category: ['AI/ML'] },
+  { title: 'CatBoost', prominence: 4, category: ['AI/ML'] },
+  { title: 'MLflow', prominence: 4, category: ['AI/ML'] },
 
   // Network Tools
-  { title: 'SevOne', competency: 4, category: ['Network Tools'] },
-  { title: 'Netmiko', competency: 4, category: ['Network Tools'] },
-  { title: 'NetBrain', competency: 4, category: ['Network Tools'] },
+  { title: 'SevOne', prominence: 4, category: ['Network Tools'] },
+  { title: 'Netmiko', prominence: 4, category: ['Network Tools'] },
+  { title: 'NetBrain', prominence: 4, category: ['Network Tools'] },
 ].map((skill) => ({ ...skill, category: skill.category.sort() }));
 
 /**

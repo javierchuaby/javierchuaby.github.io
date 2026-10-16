@@ -18,7 +18,7 @@ describe('API page', () => {
 
     // Verify inline code elements have appropriate classes
     const endpointCodes = container.querySelectorAll('code.api-endpoint');
-    expect(endpointCodes).toHaveLength(8);
+    expect(endpointCodes).toHaveLength(9);
 
     const headerCodes = container.querySelectorAll('code.http-header');
     expect(headerCodes).toHaveLength(4);
@@ -39,7 +39,7 @@ describe('API page', () => {
       getByRole('heading', { level: 2, name: 'Available Endpoints' }),
     ).toBeInTheDocument();
     expect(
-      getByRole('heading', { level: 2, name: 'Rate Limiting Conventions' }),
+      getByRole('heading', { level: 2, name: 'Access and Media Types' }),
     ).toBeInTheDocument();
     expect(
       getByRole('heading', { level: 2, name: 'Structured Error Responses' }),
@@ -50,11 +50,11 @@ describe('API page', () => {
     const { container } = render(<ApiDocsPage />);
 
     const endpoints = [
-      'GET /api/profile',
-      'GET /api/work',
-      'GET /api/projects',
-      'GET /api/skills',
-      'GET /api/contact',
+      'GET /api/v1/profile',
+      'GET /api/v1/work',
+      'GET /api/v1/projects',
+      'GET /api/v1/skills',
+      'GET /api/v1/contact',
     ];
 
     const endpointCodes = container.querySelectorAll('code.api-endpoint');
@@ -69,10 +69,10 @@ describe('API page', () => {
     const { container } = render(<ApiDocsPage />);
 
     const headers = [
-      'RateLimit-Limit: 100',
-      'RateLimit-Remaining',
-      'RateLimit-Reset: 60',
-      'RateLimit-Policy: 100;w=60',
+      'Accept: application/json',
+      'Accept: text/markdown',
+      'Access-Control-Allow-Origin: *',
+      'Allow: GET, HEAD',
     ];
 
     const headerCodes = container.querySelectorAll('code.http-header');
@@ -81,5 +81,15 @@ describe('API page', () => {
     for (let i = 0; i < headers.length; i++) {
       expect(headerCodes[i]).toHaveTextContent(headers[i]);
     }
+  });
+
+  it('describes prominence and access without promising an enforced quota', () => {
+    const { container } = render(<ApiDocsPage />);
+    expect(container).toHaveTextContent(
+      'No application-level request quota is enforced.',
+    );
+    expect(container).toHaveTextContent('prominence weight (1–5)');
+    expect(container).toHaveTextContent('not proficiency');
+    expect(container).not.toHaveTextContent('RateLimit-');
   });
 });

@@ -1,8 +1,13 @@
+---
 openapi: 3.1.0
 info:
   title: Javier Chua Portfolio API
-  version: 1.0.0
-  description: Public read-only API and machine-readable endpoints for Javier Chua's developer portfolio, including profile data, work experience, projects, technical skills, and contact guidelines.
+  version: 1.1.0
+  description: 'Public read-only portfolio data: profile, Positions, Projects, Skills,
+    and contact guidelines. Canonical data routes use /api/v1; unversioned routes
+    and .json forms remain compatible aliases. No authentication is required. GET
+    and HEAD are supported. Error responses use the typed ErrorResponse
+    envelope.'
   contact:
     name: Javier Chua
     email: javierchua.dev@gmail.com
@@ -14,147 +19,1276 @@ servers:
   - url: https://javierchuaby.dev
     description: Production portfolio server
 paths:
-  /api/profile:
+  '/api/v1/profile':
     get:
-      operationId: getProfile
-      summary: Retrieve personal and professional profile
-      description: Returns verified profile data for Javier Chua, including identity, educational background, technical interests, and current position.
+      summary: Retrieve profile
+      description: Identity, Education, public social links, and current Position
+        (or null).
+      operationId: getV1Profile
       responses:
         '200':
-          description: Personal profile successfully retrieved
+          description: Portfolio data successfully retrieved.
           headers:
-            RateLimit-Limit:
-              $ref: '#/components/headers/RateLimit-Limit'
-            RateLimit-Remaining:
-              $ref: '#/components/headers/RateLimit-Remaining'
-            RateLimit-Reset:
-              $ref: '#/components/headers/RateLimit-Reset'
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Profile'
+                type: object
+                '$ref': '#/components/schemas/Profile'
+        '404':
+          '$ref': '#/components/responses/NotFound'
         '405':
-          $ref: '#/components/responses/MethodNotAllowed'
-  /api/work:
-    get:
-      operationId: getWorkExperience
-      summary: Retrieve career history and engineering positions
-      description: Returns chronologically sorted professional engineering experience and internships adhering to JSON Resume schema conventions.
+          '$ref': '#/components/responses/MethodNotAllowed'
+        '406':
+          '$ref': '#/components/responses/NotAcceptable'
+        '503':
+          '$ref': '#/components/responses/ServiceUnavailable'
+    head:
+      summary: Retrieve profile headers without a response body
+      operationId: headV1Profile
       responses:
         '200':
-          description: List of career positions successfully retrieved
+          description: Portfolio data successfully retrieved. HEAD returns no body.
           headers:
-            RateLimit-Limit:
-              $ref: '#/components/headers/RateLimit-Limit'
-            RateLimit-Remaining:
-              $ref: '#/components/headers/RateLimit-Remaining'
-            RateLimit-Reset:
-              $ref: '#/components/headers/RateLimit-Reset'
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '404':
+          description: The data endpoint does not exist. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '405':
+          description: Only GET and HEAD are supported. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+            Allow:
+              '$ref': '#/components/headers/Allow'
+        '406':
+          description: The data route supports application/json and compatible wildcards.
+            HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '503':
+          description: A generated data asset is unavailable. HEAD
+            returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+  '/api/v1/profile.json':
+    get:
+      summary: Retrieve profile
+      description: Identity, Education, public social links, and current Position
+        (or null).
+      operationId: getV1ProfileJson
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+          content:
+            application/json:
+              schema:
+                type: object
+                '$ref': '#/components/schemas/Profile'
+        '404':
+          '$ref': '#/components/responses/NotFound'
+        '405':
+          '$ref': '#/components/responses/MethodNotAllowed'
+        '406':
+          '$ref': '#/components/responses/NotAcceptable'
+        '503':
+          '$ref': '#/components/responses/ServiceUnavailable'
+    head:
+      summary: Retrieve profile headers without a response body
+      operationId: headV1ProfileJson
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '404':
+          description: The data endpoint does not exist. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '405':
+          description: Only GET and HEAD are supported. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+            Allow:
+              '$ref': '#/components/headers/Allow'
+        '406':
+          description: The data route supports application/json and compatible wildcards.
+            HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '503':
+          description: A generated data asset is unavailable. HEAD
+            returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+  '/api/profile':
+    get:
+      summary: Retrieve profile
+      description: Identity, Education, public social links, and current Position
+        (or null). Backward-compatible unversioned alias; no retirement is scheduled.
+      operationId: getLegacyProfile
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+          content:
+            application/json:
+              schema:
+                type: object
+                '$ref': '#/components/schemas/Profile'
+        '404':
+          '$ref': '#/components/responses/NotFound'
+        '405':
+          '$ref': '#/components/responses/MethodNotAllowed'
+        '406':
+          '$ref': '#/components/responses/NotAcceptable'
+        '503':
+          '$ref': '#/components/responses/ServiceUnavailable'
+    head:
+      summary: Retrieve profile headers without a response body
+      operationId: headLegacyProfile
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '404':
+          description: The data endpoint does not exist. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '405':
+          description: Only GET and HEAD are supported. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+            Allow:
+              '$ref': '#/components/headers/Allow'
+        '406':
+          description: The data route supports application/json and compatible wildcards.
+            HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '503':
+          description: A generated data asset is unavailable. HEAD
+            returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+  '/api/profile.json':
+    get:
+      summary: Retrieve profile
+      description: Identity, Education, public social links, and current Position
+        (or null). Backward-compatible unversioned alias; no retirement is scheduled.
+      operationId: getLegacyProfileJson
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+          content:
+            application/json:
+              schema:
+                type: object
+                '$ref': '#/components/schemas/Profile'
+        '404':
+          '$ref': '#/components/responses/NotFound'
+        '405':
+          '$ref': '#/components/responses/MethodNotAllowed'
+        '406':
+          '$ref': '#/components/responses/NotAcceptable'
+        '503':
+          '$ref': '#/components/responses/ServiceUnavailable'
+    head:
+      summary: Retrieve profile headers without a response body
+      operationId: headLegacyProfileJson
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '404':
+          description: The data endpoint does not exist. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '405':
+          description: Only GET and HEAD are supported. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+            Allow:
+              '$ref': '#/components/headers/Allow'
+        '406':
+          description: The data route supports application/json and compatible wildcards.
+            HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '503':
+          description: A generated data asset is unavailable. HEAD
+            returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+  '/api/v1/work':
+    get:
+      summary: Retrieve work
+      description: Positions in reverse chronological order using JSON Resume field
+        conventions.
+      operationId: getV1Work
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Position'
+                  type: object
+                  '$ref': '#/components/schemas/Position'
+        '404':
+          '$ref': '#/components/responses/NotFound'
         '405':
-          $ref: '#/components/responses/MethodNotAllowed'
-  /api/projects:
-    get:
-      operationId: getProjects
-      summary: Retrieve software projects and applications
-      description: Returns published software projects with summaries, external repository links, dates, and technology tags.
+          '$ref': '#/components/responses/MethodNotAllowed'
+        '406':
+          '$ref': '#/components/responses/NotAcceptable'
+        '503':
+          '$ref': '#/components/responses/ServiceUnavailable'
+    head:
+      summary: Retrieve work headers without a response body
+      operationId: headV1Work
       responses:
         '200':
-          description: List of projects successfully retrieved
+          description: Portfolio data successfully retrieved. HEAD returns no body.
           headers:
-            RateLimit-Limit:
-              $ref: '#/components/headers/RateLimit-Limit'
-            RateLimit-Remaining:
-              $ref: '#/components/headers/RateLimit-Remaining'
-            RateLimit-Reset:
-              $ref: '#/components/headers/RateLimit-Reset'
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '404':
+          description: The data endpoint does not exist. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '405':
+          description: Only GET and HEAD are supported. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+            Allow:
+              '$ref': '#/components/headers/Allow'
+        '406':
+          description: The data route supports application/json and compatible wildcards.
+            HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '503':
+          description: A generated data asset is unavailable. HEAD
+            returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+  '/api/v1/work.json':
+    get:
+      summary: Retrieve work
+      description: Positions in reverse chronological order using JSON Resume field
+        conventions.
+      operationId: getV1WorkJson
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Project'
+                  type: object
+                  '$ref': '#/components/schemas/Position'
+        '404':
+          '$ref': '#/components/responses/NotFound'
         '405':
-          $ref: '#/components/responses/MethodNotAllowed'
-  /api/skills:
-    get:
-      operationId: getSkills
-      summary: Retrieve technical skills and proficiencies
-      description: Returns categorized technical proficiencies across programming languages, web & mobile frameworks, cloud/DevSecOps, and databases.
+          '$ref': '#/components/responses/MethodNotAllowed'
+        '406':
+          '$ref': '#/components/responses/NotAcceptable'
+        '503':
+          '$ref': '#/components/responses/ServiceUnavailable'
+    head:
+      summary: Retrieve work headers without a response body
+      operationId: headV1WorkJson
       responses:
         '200':
-          description: List of categorized skills successfully retrieved
+          description: Portfolio data successfully retrieved. HEAD returns no body.
           headers:
-            RateLimit-Limit:
-              $ref: '#/components/headers/RateLimit-Limit'
-            RateLimit-Remaining:
-              $ref: '#/components/headers/RateLimit-Remaining'
-            RateLimit-Reset:
-              $ref: '#/components/headers/RateLimit-Reset'
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '404':
+          description: The data endpoint does not exist. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '405':
+          description: Only GET and HEAD are supported. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+            Allow:
+              '$ref': '#/components/headers/Allow'
+        '406':
+          description: The data route supports application/json and compatible wildcards.
+            HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '503':
+          description: A generated data asset is unavailable. HEAD
+            returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+  '/api/work':
+    get:
+      summary: Retrieve work
+      description: Positions in reverse chronological order using JSON Resume field
+        conventions. Backward-compatible unversioned alias; no retirement is scheduled.
+      operationId: getLegacyWork
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Skill'
+                  type: object
+                  '$ref': '#/components/schemas/Position'
+        '404':
+          '$ref': '#/components/responses/NotFound'
         '405':
-          $ref: '#/components/responses/MethodNotAllowed'
-  /api/contact:
-    get:
-      operationId: getContactInfo
-      summary: Retrieve contact methods and communication guidelines
-      description: Returns public communication channels, primary email address, social links, and guidelines for collaboration or project inquiries.
+          '$ref': '#/components/responses/MethodNotAllowed'
+        '406':
+          '$ref': '#/components/responses/NotAcceptable'
+        '503':
+          '$ref': '#/components/responses/ServiceUnavailable'
+    head:
+      summary: Retrieve work headers without a response body
+      operationId: headLegacyWork
       responses:
         '200':
-          description: Contact information and guidelines successfully retrieved
+          description: Portfolio data successfully retrieved. HEAD returns no body.
           headers:
-            RateLimit-Limit:
-              $ref: '#/components/headers/RateLimit-Limit'
-            RateLimit-Remaining:
-              $ref: '#/components/headers/RateLimit-Remaining'
-            RateLimit-Reset:
-              $ref: '#/components/headers/RateLimit-Reset'
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '404':
+          description: The data endpoint does not exist. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '405':
+          description: Only GET and HEAD are supported. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+            Allow:
+              '$ref': '#/components/headers/Allow'
+        '406':
+          description: The data route supports application/json and compatible wildcards.
+            HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '503':
+          description: A generated data asset is unavailable. HEAD
+            returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+  '/api/work.json':
+    get:
+      summary: Retrieve work
+      description: Positions in reverse chronological order using JSON Resume field
+        conventions. Backward-compatible unversioned alias; no retirement is scheduled.
+      operationId: getLegacyWorkJson
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContactInfo'
+                type: array
+                items:
+                  type: object
+                  '$ref': '#/components/schemas/Position'
+        '404':
+          '$ref': '#/components/responses/NotFound'
         '405':
-          $ref: '#/components/responses/MethodNotAllowed'
+          '$ref': '#/components/responses/MethodNotAllowed'
+        '406':
+          '$ref': '#/components/responses/NotAcceptable'
+        '503':
+          '$ref': '#/components/responses/ServiceUnavailable'
+    head:
+      summary: Retrieve work headers without a response body
+      operationId: headLegacyWorkJson
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '404':
+          description: The data endpoint does not exist. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '405':
+          description: Only GET and HEAD are supported. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+            Allow:
+              '$ref': '#/components/headers/Allow'
+        '406':
+          description: The data route supports application/json and compatible wildcards.
+            HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '503':
+          description: A generated data asset is unavailable. HEAD
+            returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+  '/api/v1/projects':
+    get:
+      summary: Retrieve projects
+      description: Projects authored outside Positions, with repository links, dates,
+        and technology labels.
+      operationId: getV1Projects
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  '$ref': '#/components/schemas/Project'
+        '404':
+          '$ref': '#/components/responses/NotFound'
+        '405':
+          '$ref': '#/components/responses/MethodNotAllowed'
+        '406':
+          '$ref': '#/components/responses/NotAcceptable'
+        '503':
+          '$ref': '#/components/responses/ServiceUnavailable'
+    head:
+      summary: Retrieve projects headers without a response body
+      operationId: headV1Projects
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '404':
+          description: The data endpoint does not exist. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '405':
+          description: Only GET and HEAD are supported. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+            Allow:
+              '$ref': '#/components/headers/Allow'
+        '406':
+          description: The data route supports application/json and compatible wildcards.
+            HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '503':
+          description: A generated data asset is unavailable. HEAD
+            returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+  '/api/v1/projects.json':
+    get:
+      summary: Retrieve projects
+      description: Projects authored outside Positions, with repository links, dates,
+        and technology labels.
+      operationId: getV1ProjectsJson
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  '$ref': '#/components/schemas/Project'
+        '404':
+          '$ref': '#/components/responses/NotFound'
+        '405':
+          '$ref': '#/components/responses/MethodNotAllowed'
+        '406':
+          '$ref': '#/components/responses/NotAcceptable'
+        '503':
+          '$ref': '#/components/responses/ServiceUnavailable'
+    head:
+      summary: Retrieve projects headers without a response body
+      operationId: headV1ProjectsJson
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '404':
+          description: The data endpoint does not exist. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '405':
+          description: Only GET and HEAD are supported. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+            Allow:
+              '$ref': '#/components/headers/Allow'
+        '406':
+          description: The data route supports application/json and compatible wildcards.
+            HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '503':
+          description: A generated data asset is unavailable. HEAD
+            returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+  '/api/projects':
+    get:
+      summary: Retrieve projects
+      description: Projects authored outside Positions, with repository links, dates,
+        and technology labels. Backward-compatible unversioned alias; no retirement
+        is scheduled.
+      operationId: getLegacyProjects
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  '$ref': '#/components/schemas/Project'
+        '404':
+          '$ref': '#/components/responses/NotFound'
+        '405':
+          '$ref': '#/components/responses/MethodNotAllowed'
+        '406':
+          '$ref': '#/components/responses/NotAcceptable'
+        '503':
+          '$ref': '#/components/responses/ServiceUnavailable'
+    head:
+      summary: Retrieve projects headers without a response body
+      operationId: headLegacyProjects
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '404':
+          description: The data endpoint does not exist. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '405':
+          description: Only GET and HEAD are supported. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+            Allow:
+              '$ref': '#/components/headers/Allow'
+        '406':
+          description: The data route supports application/json and compatible wildcards.
+            HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '503':
+          description: A generated data asset is unavailable. HEAD
+            returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+  '/api/projects.json':
+    get:
+      summary: Retrieve projects
+      description: Projects authored outside Positions, with repository links, dates,
+        and technology labels. Backward-compatible unversioned alias; no retirement
+        is scheduled.
+      operationId: getLegacyProjectsJson
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  '$ref': '#/components/schemas/Project'
+        '404':
+          '$ref': '#/components/responses/NotFound'
+        '405':
+          '$ref': '#/components/responses/MethodNotAllowed'
+        '406':
+          '$ref': '#/components/responses/NotAcceptable'
+        '503':
+          '$ref': '#/components/responses/ServiceUnavailable'
+    head:
+      summary: Retrieve projects headers without a response body
+      operationId: headLegacyProjectsJson
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '404':
+          description: The data endpoint does not exist. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '405':
+          description: Only GET and HEAD are supported. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+            Allow:
+              '$ref': '#/components/headers/Allow'
+        '406':
+          description: The data route supports application/json and compatible wildcards.
+            HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '503':
+          description: A generated data asset is unavailable. HEAD
+            returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+  '/api/v1/skills':
+    get:
+      summary: Retrieve skills
+      description: Skills with Categories and a subjective prominence weight (1–5)
+        for display size and ordering, not proficiency.
+      operationId: getV1Skills
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  '$ref': '#/components/schemas/Skill'
+        '404':
+          '$ref': '#/components/responses/NotFound'
+        '405':
+          '$ref': '#/components/responses/MethodNotAllowed'
+        '406':
+          '$ref': '#/components/responses/NotAcceptable'
+        '503':
+          '$ref': '#/components/responses/ServiceUnavailable'
+    head:
+      summary: Retrieve skills headers without a response body
+      operationId: headV1Skills
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '404':
+          description: The data endpoint does not exist. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '405':
+          description: Only GET and HEAD are supported. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+            Allow:
+              '$ref': '#/components/headers/Allow'
+        '406':
+          description: The data route supports application/json and compatible wildcards.
+            HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '503':
+          description: A generated data asset is unavailable. HEAD
+            returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+  '/api/v1/skills.json':
+    get:
+      summary: Retrieve skills
+      description: Skills with Categories and a subjective prominence weight (1–5)
+        for display size and ordering, not proficiency.
+      operationId: getV1SkillsJson
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  '$ref': '#/components/schemas/Skill'
+        '404':
+          '$ref': '#/components/responses/NotFound'
+        '405':
+          '$ref': '#/components/responses/MethodNotAllowed'
+        '406':
+          '$ref': '#/components/responses/NotAcceptable'
+        '503':
+          '$ref': '#/components/responses/ServiceUnavailable'
+    head:
+      summary: Retrieve skills headers without a response body
+      operationId: headV1SkillsJson
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '404':
+          description: The data endpoint does not exist. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '405':
+          description: Only GET and HEAD are supported. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+            Allow:
+              '$ref': '#/components/headers/Allow'
+        '406':
+          description: The data route supports application/json and compatible wildcards.
+            HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '503':
+          description: A generated data asset is unavailable. HEAD
+            returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+  '/api/skills':
+    get:
+      summary: Retrieve skills
+      description: Skills with Categories and a subjective prominence weight (1–5)
+        for display size and ordering, not proficiency. Backward-compatible unversioned
+        alias; no retirement is scheduled.
+      operationId: getLegacySkills
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  '$ref': '#/components/schemas/Skill'
+        '404':
+          '$ref': '#/components/responses/NotFound'
+        '405':
+          '$ref': '#/components/responses/MethodNotAllowed'
+        '406':
+          '$ref': '#/components/responses/NotAcceptable'
+        '503':
+          '$ref': '#/components/responses/ServiceUnavailable'
+    head:
+      summary: Retrieve skills headers without a response body
+      operationId: headLegacySkills
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '404':
+          description: The data endpoint does not exist. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '405':
+          description: Only GET and HEAD are supported. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+            Allow:
+              '$ref': '#/components/headers/Allow'
+        '406':
+          description: The data route supports application/json and compatible wildcards.
+            HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '503':
+          description: A generated data asset is unavailable. HEAD
+            returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+  '/api/skills.json':
+    get:
+      summary: Retrieve skills
+      description: Skills with Categories and a subjective prominence weight (1–5)
+        for display size and ordering, not proficiency. Backward-compatible unversioned
+        alias; no retirement is scheduled.
+      operationId: getLegacySkillsJson
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  '$ref': '#/components/schemas/Skill'
+        '404':
+          '$ref': '#/components/responses/NotFound'
+        '405':
+          '$ref': '#/components/responses/MethodNotAllowed'
+        '406':
+          '$ref': '#/components/responses/NotAcceptable'
+        '503':
+          '$ref': '#/components/responses/ServiceUnavailable'
+    head:
+      summary: Retrieve skills headers without a response body
+      operationId: headLegacySkillsJson
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '404':
+          description: The data endpoint does not exist. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '405':
+          description: Only GET and HEAD are supported. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+            Allow:
+              '$ref': '#/components/headers/Allow'
+        '406':
+          description: The data route supports application/json and compatible wildcards.
+            HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '503':
+          description: A generated data asset is unavailable. HEAD
+            returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+  '/api/v1/contact':
+    get:
+      summary: Retrieve contact
+      description: Public email, social links, and shared inquiry guidelines. No response-time
+        promise is provided.
+      operationId: getV1Contact
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+          content:
+            application/json:
+              schema:
+                type: object
+                '$ref': '#/components/schemas/ContactInfo'
+        '404':
+          '$ref': '#/components/responses/NotFound'
+        '405':
+          '$ref': '#/components/responses/MethodNotAllowed'
+        '406':
+          '$ref': '#/components/responses/NotAcceptable'
+        '503':
+          '$ref': '#/components/responses/ServiceUnavailable'
+    head:
+      summary: Retrieve contact headers without a response body
+      operationId: headV1Contact
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '404':
+          description: The data endpoint does not exist. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '405':
+          description: Only GET and HEAD are supported. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+            Allow:
+              '$ref': '#/components/headers/Allow'
+        '406':
+          description: The data route supports application/json and compatible wildcards.
+            HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '503':
+          description: A generated data asset is unavailable. HEAD
+            returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+  '/api/v1/contact.json':
+    get:
+      summary: Retrieve contact
+      description: Public email, social links, and shared inquiry guidelines. No response-time
+        promise is provided.
+      operationId: getV1ContactJson
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+          content:
+            application/json:
+              schema:
+                type: object
+                '$ref': '#/components/schemas/ContactInfo'
+        '404':
+          '$ref': '#/components/responses/NotFound'
+        '405':
+          '$ref': '#/components/responses/MethodNotAllowed'
+        '406':
+          '$ref': '#/components/responses/NotAcceptable'
+        '503':
+          '$ref': '#/components/responses/ServiceUnavailable'
+    head:
+      summary: Retrieve contact headers without a response body
+      operationId: headV1ContactJson
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '404':
+          description: The data endpoint does not exist. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '405':
+          description: Only GET and HEAD are supported. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+            Allow:
+              '$ref': '#/components/headers/Allow'
+        '406':
+          description: The data route supports application/json and compatible wildcards.
+            HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '503':
+          description: A generated data asset is unavailable. HEAD
+            returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+  '/api/contact':
+    get:
+      summary: Retrieve contact
+      description: Public email, social links, and shared inquiry guidelines. No response-time
+        promise is provided. Backward-compatible unversioned alias; no retirement
+        is scheduled.
+      operationId: getLegacyContact
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+          content:
+            application/json:
+              schema:
+                type: object
+                '$ref': '#/components/schemas/ContactInfo'
+        '404':
+          '$ref': '#/components/responses/NotFound'
+        '405':
+          '$ref': '#/components/responses/MethodNotAllowed'
+        '406':
+          '$ref': '#/components/responses/NotAcceptable'
+        '503':
+          '$ref': '#/components/responses/ServiceUnavailable'
+    head:
+      summary: Retrieve contact headers without a response body
+      operationId: headLegacyContact
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '404':
+          description: The data endpoint does not exist. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '405':
+          description: Only GET and HEAD are supported. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+            Allow:
+              '$ref': '#/components/headers/Allow'
+        '406':
+          description: The data route supports application/json and compatible wildcards.
+            HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '503':
+          description: A generated data asset is unavailable. HEAD
+            returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+  '/api/contact.json':
+    get:
+      summary: Retrieve contact
+      description: Public email, social links, and shared inquiry guidelines. No response-time
+        promise is provided. Backward-compatible unversioned alias; no retirement
+        is scheduled.
+      operationId: getLegacyContactJson
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+          content:
+            application/json:
+              schema:
+                type: object
+                '$ref': '#/components/schemas/ContactInfo'
+        '404':
+          '$ref': '#/components/responses/NotFound'
+        '405':
+          '$ref': '#/components/responses/MethodNotAllowed'
+        '406':
+          '$ref': '#/components/responses/NotAcceptable'
+        '503':
+          '$ref': '#/components/responses/ServiceUnavailable'
+    head:
+      summary: Retrieve contact headers without a response body
+      operationId: headLegacyContactJson
+      responses:
+        '200':
+          description: Portfolio data successfully retrieved. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '404':
+          description: The data endpoint does not exist. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '405':
+          description: Only GET and HEAD are supported. HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+            Allow:
+              '$ref': '#/components/headers/Allow'
+        '406':
+          description: The data route supports application/json and compatible wildcards.
+            HEAD returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
+        '503':
+          description: A generated data asset is unavailable. HEAD
+            returns no body.
+          headers:
+            API-Version:
+              '$ref': '#/components/headers/API-Version'
 components:
   headers:
-    RateLimit-Limit:
-      description: The maximum number of allowed requests in the current time window.
+    API-Version:
+      description: Major data API version served, including on compatible unversioned
+        aliases.
       schema:
-        type: integer
-        example: 100
-    RateLimit-Remaining:
-      description: The number of remaining requests allowed within the current rate limit window.
+        type: string
+        const: v1
+    Allow:
+      description: Supported resource methods.
       schema:
-        type: integer
-        example: 99
-    RateLimit-Reset:
-      description: The number of seconds remaining until the current rate limit window resets.
-      schema:
-        type: integer
-        example: 60
+        type: string
+        const: GET, HEAD
   responses:
-    MethodNotAllowed:
-      description: Method not allowed on read-only API endpoint
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
     NotFound:
-      description: Resource not found
+      description: The data endpoint does not exist.
+      headers:
+        API-Version:
+          '$ref': '#/components/headers/API-Version'
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            type: object
+            '$ref': '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: NOT_FOUND
+              message: The data endpoint does not exist.
+              resolution: See https://javierchuaby.dev/developers/ for the request
+                contract.
+    MethodNotAllowed:
+      description: Only GET and HEAD are supported.
+      headers:
+        API-Version:
+          '$ref': '#/components/headers/API-Version'
+        Allow:
+          '$ref': '#/components/headers/Allow'
+      content:
+        application/json:
+          schema:
+            type: object
+            '$ref': '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: METHOD_NOT_ALLOWED
+              message: Only GET and HEAD are supported.
+              resolution: See https://javierchuaby.dev/developers/ for the request
+                contract.
+    NotAcceptable:
+      description: The data route supports application/json and compatible wildcards.
+      headers:
+        API-Version:
+          '$ref': '#/components/headers/API-Version'
+      content:
+        application/json:
+          schema:
+            type: object
+            '$ref': '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: NOT_ACCEPTABLE
+              message: The data route supports application/json and compatible wildcards.
+              resolution: See https://javierchuaby.dev/developers/ for the request
+                contract.
+    ServiceUnavailable:
+      description: A generated data asset is unavailable.
+      headers:
+        API-Version:
+          '$ref': '#/components/headers/API-Version'
+      content:
+        application/json:
+          schema:
+            type: object
+            '$ref': '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: SERVICE_UNAVAILABLE
+              message: A generated data asset is unavailable.
+              resolution: See https://javierchuaby.dev/developers/ for the request
+                contract.
   schemas:
     ErrorResponse:
       type: object
@@ -171,21 +1305,31 @@ components:
             code:
               type: string
               example: NOT_FOUND
+              enum:
+                - NOT_FOUND
+                - METHOD_NOT_ALLOWED
+                - NOT_ACCEPTABLE
+                - RATE_LIMITED
+                - SERVICE_UNAVAILABLE
             message:
               type: string
               example: The requested API endpoint does not exist.
             resolution:
               type: string
-              example: Check the OpenAPI specification at /openapi.json or documentation at /api/.
+              example: Check the OpenAPI specification at /openapi.json or documentation
+                at /api/.
+      description: JSON error envelope used by data API errors. HEAD returns the same
+        status and headers without a body.
     Profile:
       type: object
       required:
         - name
         - handle
-        - title
         - description
         - email
         - education
+        - currentPosition
+        - social
       properties:
         name:
           type: string
@@ -193,12 +1337,10 @@ components:
         handle:
           type: string
           example: javierchuaby
-        title:
-          type: string
-          example: Backend & Infrastructure Engineer
         description:
           type: string
-          example: Javier Chua is a Computer Science student at NUS, interested in backend systems and network engineering.
+          example: Javier Chua is a Computer Science student at NUS, interested in
+            backend systems and network engineering.
         email:
           type: string
           format: email
@@ -219,23 +1361,19 @@ components:
                 format: uri
               year:
                 type: integer
-                example: 2026
+                example: 2028
+            required:
+              - school
+              - degree
+              - link
+              - year
         currentPosition:
-          type: object
-          nullable: true
-          properties:
-            name:
-              type: string
-            position:
-              type: string
-            url:
-              type: string
-              format: uri
-            startDate:
-              type: string
-            endDate:
-              type: string
-              nullable: true
+          anyOf:
+            - '$ref': '#/components/schemas/Position'
+            - type: 'null'
+          description: The first current Position in the shared reverse-chronological
+            data at build time, or null. Dates are compared inclusively using the
+            build UTC calendar date; future Positions are excluded.
         social:
           type: array
           items:
@@ -246,6 +1384,9 @@ components:
               link:
                 type: string
                 format: uri
+            required:
+              - label
+              - link
     Position:
       type: object
       required:
@@ -266,11 +1407,12 @@ components:
           example: https://www.visa.com.sg
         startDate:
           type: string
-          example: 2026-05-12
+          example: '2026-05-12'
+          format: date
         endDate:
           type: string
-          nullable: true
-          example: 2026-07-31
+          example: '2026-07-31'
+          format: date
         summary:
           type: string
         highlights:
@@ -284,6 +1426,7 @@ components:
       type: object
       required:
         - title
+        - image
         - startDate
         - desc
       properties:
@@ -299,9 +1442,10 @@ components:
           type: string
         startDate:
           type: string
+          format: date
         endDate:
           type: string
-          nullable: true
+          format: date
         desc:
           type: string
         tech:
@@ -314,26 +1458,27 @@ components:
       type: object
       required:
         - title
-        - competency
+        - prominence
         - category
       properties:
         title:
           type: string
           example: Python
-        competency:
-          type: integer
-          minimum: 1
-          maximum: 5
-          example: 5
         category:
           type: array
           items:
             type: string
+        prominence:
+          type: integer
+          minimum: 1
+          maximum: 5
+          example: 5
+          description: Subjective display weight for size and within-category ordering,
+            not proficiency.
     ContactInfo:
       type: object
       required:
         - email
-        - responseTime
         - guidelines
         - social
       properties:
@@ -341,9 +1486,6 @@ components:
           type: string
           format: email
           example: javierchua.dev@gmail.com
-        responseTime:
-          type: string
-          example: Usually within 24 hours
         guidelines:
           type: array
           items:
@@ -358,3 +1500,23 @@ components:
               link:
                 type: string
                 format: uri
+            required:
+              - label
+              - link
+externalDocs:
+  description: Developer portal and version policy
+  url: https://javierchuaby.dev/developers/#version-policy
+x-versioning-policy:
+  currentMajor: v1
+  canonicalPathPrefix: '/api/v1'
+  responseHeader: API-Version
+  breakingChanges: Breaking response or behavior changes require a new major version
+    path. Additive optional fields may be introduced within v1.
+  legacyAliases: Unversioned /api/{resource} and .json forms remain backward-compatible
+    aliases; they are not currently deprecated.
+  minimumRetirementNoticeDays: 90
+  retirementNotice: If retirement is scheduled, announce it at least 90 days before
+    removal, publish migration guidance, and emit Deprecation (RFC 9745 structured
+    date) and Sunset (RFC 8594 HTTP-date) response headers on affected routes.
+  scheduledRetirements: []
+  documentation: https://javierchuaby.dev/developers/#version-policy

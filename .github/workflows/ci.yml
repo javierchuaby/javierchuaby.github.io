@@ -28,4 +28,5 @@ jobs:
       - run: pnpm audit --audit-level=high
       - run: pnpm test
       - run: pnpm build
+      - run: node scripts/verify-export.mjs
       - run: pnpm exec wrangler deploy --dry-run
