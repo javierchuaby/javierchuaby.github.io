@@ -16,7 +16,7 @@ export default function Footer() {
             <ThemePortrait width={80} height={80} />
           </Link>
           <div className="footer-info">
-            <h3>Javier Chua</h3>
+            <p className="footer-name">Javier Chua</p>
             <p className="footer-role">{currentRole}</p>
             <p className="footer-copyright">
               &copy; {new Date().getFullYear()} ·{' '}
@@ -33,14 +33,15 @@ export default function Footer() {
 
         <div className="footer-right">
           <nav className="footer-links" aria-labelledby="footer-links-heading">
-            <h4 id="footer-links-heading" className="footer-links-label">
+            <p id="footer-links-heading" className="footer-links-label">
               Explore
-            </h4>
+            </p>
             <div className="footer-links-grid">
               <Link href="/about">About</Link>
               <Link href="/resume">Resume</Link>
               <Link href="/projects">Projects</Link>
               <Link href="/contact">Contact</Link>
+              <Link href="/privacy">Privacy</Link>
             </div>
           </nav>
 
@@ -48,9 +49,9 @@ export default function Footer() {
             className="footer-social"
             aria-labelledby="footer-social-heading"
           >
-            <h4 id="footer-social-heading" className="footer-social-label">
+            <p id="footer-social-heading" className="footer-social-label">
               Connect
-            </h4>
+            </p>
             <ContactIcons />
           </div>
         </div>

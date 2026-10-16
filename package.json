@@ -16,9 +16,8 @@
     "preinstall": "node scripts/enforce-package-manager.mjs",
     "predev": "pnpm run clean",
     "dev": "next dev --turbopack",
-    "build": "next build && next-image-export-optimizer",
-    "predeploy": "pnpm test && pnpm run build",
-    "deploy": "gh-pages -d out -b gh-pages -t",
+    "build": "next build && next-image-export-optimizer && node scripts/export-markdown.mjs",
+    "deploy": "pnpm run deploy:worker",
     "start": "next start",
     "lint": "biome check .",
     "type-check": "tsc --noEmit",
@@ -31,18 +30,21 @@
     "test:ui": "vitest --ui",
     "analyze": "next experimental-analyze --output",
     "clean": "rm -rf .next out .swc .turbo tsconfig.tsbuildinfo",
-    "clean:all": "pnpm clean && rm -rf node_modules"
+    "clean:all": "pnpm clean && rm -rf node_modules",
+    "preview:agents": "wrangler dev --ip 127.0.0.1 --port 8787",
+    "verify:agents": "node scripts/verify-agents.mjs",
+    "deploy:worker": "pnpm test && pnpm build && wrangler deploy && pnpm verify:agents https://javierchuaby.dev"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^7.2.0",
     "@fortawesome/free-brands-svg-icons": "^7.2.0",
     "@fortawesome/free-regular-svg-icons": "^7.2.0",
     "@fortawesome/react-fontawesome": "^3.2.0",
-    "@next/third-parties": "^16.3.0",
+    "@next/third-parties": "^16.4.2",
     "@tailwindcss/postcss": "^4.3.3",
     "dayjs": "^1.11.20",
     "markdown-to-jsx": "^9.8.0",
-    "next": "^16.3.0",
+    "next": "^16.4.2",
     "next-image-export-optimizer": "^1.20.1",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
@@ -57,12 +59,13 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.2",
-    "@vitest/coverage-v8": "^4.1.5",
-    "gh-pages": "^6.3.0",
+    "@vitest/coverage-v8": "^4.1.12",
     "jsdom": "^29.1.1",
     "prettier": "^3.8.3",
+    "turndown": "^7.2.4",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.2"
+    "vitest": "^4.1.12",
+    "wrangler": "^4.151.0"
   },
   "browserslist": {
     "production": [

@@ -1,6 +1,7 @@
 import contact from '@/data/contact';
 import degrees from '@/data/resume/degrees';
 import work from '@/data/resume/work';
+import { siteDescription } from '@/data/site';
 import { AUTHOR_NAME, SITE_URL } from '@/lib/utils';
 import JsonLd from './JsonLd';
 
@@ -21,10 +22,18 @@ export default function PersonSchema() {
     '@context': 'https://schema.org',
     '@type': 'Person',
     name: AUTHOR_NAME,
+    description: siteDescription,
     url: SITE_URL,
     image: `${SITE_URL}/images/me.jpg`,
     jobTitle: currentJob.position,
-    ...(email && { email }),
+    ...(email && {
+      email,
+      contactPoint: {
+        '@type': 'ContactPoint',
+        contactType: 'professional inquiries',
+        email,
+      },
+    }),
     sameAs: socialLinks,
     worksFor: {
       '@type': 'Organization',
