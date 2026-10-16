@@ -142,7 +142,7 @@ export default function ApiDocsPage() {
             URL, or an unsupported method, the server returns a structured JSON
             error object rather than an HTML page:
           </p>
-          <pre>
+          <pre className="code-block-container">
             <code className="code-block">{`{
   "error": {
     "code": "NOT_FOUND",

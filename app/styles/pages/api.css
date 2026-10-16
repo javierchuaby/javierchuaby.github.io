@@ -36,8 +36,20 @@
   border-color: var(--color-accent);
 }
 
-/* Multiline code blocks - use class selector for specificity */
-.api-content pre > code.code-block {
+/* Multiline code blocks - use higher specificity to override base code styles */
+.api-content pre.code-block-container {
+  margin: 0 0 var(--spacing-element) 0;
+  padding: var(--spacing-4);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-border);
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  line-height: var(--leading-relaxed);
+}
+
+.api-content pre.code-block-container > code.code-block {
   display: block;
   padding: 0;
   margin: 0;
@@ -50,7 +62,8 @@
   -moz-tab-size: 2;
 }
 
-.api-content pre {
+/* Fallback: target any pre inside api-content that contains code.code-block */
+.api-content pre:has(> code.code-block) {
   margin: 0 0 var(--spacing-element) 0;
   padding: var(--spacing-4);
   border-radius: var(--radius-md);
@@ -60,4 +73,17 @@
   font-family: var(--font-mono);
   font-size: 0.9em;
   line-height: var(--leading-relaxed);
+}
+
+.api-content pre:has(> code.code-block) > code.code-block {
+  display: block;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  color: var(--color-fg-bold);
+  white-space: pre;
+  tab-size: 2;
+  -moz-tab-size: 2;
 }
