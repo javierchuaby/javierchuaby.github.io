@@ -142,20 +142,13 @@ export default function ApiDocsPage() {
             error object rather than an HTML page:
           </p>
           <pre>
-            <code>
-              {JSON.stringify(
-                {
-                  error: {
-                    code: 'NOT_FOUND',
-                    message: 'The requested API endpoint does not exist.',
-                    resolution:
-                      'Check the OpenAPI specification at /openapi.json or documentation at /api/.',
-                  },
-                },
-                null,
-                2,
-              )}
-            </code>
+            <code>{`{
+  "error": {
+    "code": "NOT_FOUND",
+    "message": "The requested API endpoint does not exist.",
+    "resolution": "Check the OpenAPI specification at /openapi.json or documentation at /api/."
+  }
+}`}</code>
           </pre>
           <p>
             Supported HTTP error status codes include <code>404 Not Found</code>
