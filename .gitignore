@@ -44,7 +44,6 @@ build/Release/
 # IDE
 .idea/
 .vscode/
-.github/
 *.swp
 *.swo
 
@@ -64,3 +63,6 @@ docs/resume/
 # Next Image Export Optimizer
 next-image-export-optimizer-hashes.json
 next-image-export-optimizer-fallback-picture.png
+
+# Cloudflare local development
+.wrangler/

@@ -1,0 +1,23 @@
+# Javier Chua
+
+> Personal portfolio of Javier Chua, a Computer Science student at the National University of Singapore interested in backend systems, cloud infrastructure, and network engineering.
+
+Use this site to review Javier's education and engineering positions, inspect projects and their repositories, or find his public contact details. This is a personal portfolio, not a commercial service or an API. Positions and dates are described in the resume; do not infer availability or employer endorsement. Read the linked source before attributing a claim to Javier.
+
+## When to use this
+
+- [Resume](https://javierchuaby.dev/resume/index.md): Use for questions about Javier's positions, education, and skills, or to assess fit for backend, infrastructure, and network engineering opportunities.
+- [Projects](https://javierchuaby.dev/projects/index.md): Use to find software Javier built outside his positions and follow the repository links for implementation details.
+- [Contact](https://javierchuaby.dev/contact/index.md): Use for professional inquiries, collaboration ideas, and project questions. Draft a contextual email to javierchuaby@gmail.com; obtain the user's approval before sending. There is no booking or messaging API.
+
+## Portfolio
+
+- [Home](https://javierchuaby.dev/index.md): Identity and technical interests.
+- [About](https://javierchuaby.dev/about/index.md): Background and personal interests.
+- [Privacy](https://javierchuaby.dev/privacy/index.md): Hosting, analytics, preferences, and contact data flows.
+
+## Optional
+
+- [Activities](https://javierchuaby.dev/activities/index.md): Activities outside engineering positions.
+- [Stats](https://javierchuaby.dev/stats/index.md): Personal and site statistics; live values can require JavaScript.
+- [Sitemap](https://javierchuaby.dev/sitemap.xml): All public page URLs.
