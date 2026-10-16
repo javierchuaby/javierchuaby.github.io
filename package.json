@@ -1,6 +1,7 @@
 {
   "name": "portfolio",
   "version": "1.0.0",
+  "private": true,
   "homepage": "https://javierchuaby.dev",
   "license": "MIT",
   "repository": {
