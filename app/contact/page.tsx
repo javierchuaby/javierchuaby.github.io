@@ -3,12 +3,12 @@ import type { Metadata } from 'next';
 import ContactIcons from '@/components/Contact/ContactIcons';
 import EmailLink from '@/components/Contact/EmailLink';
 import PageWrapper from '@/components/Template/PageWrapper';
-import { contactParagraphs } from '@/data/site';
+import { contactEmail, contactParagraphs } from '@/data/site';
 import { createPageMetadata } from '@/lib/metadata';
 
 export const metadata: Metadata = createPageMetadata({
   title: 'Contact',
-  description: 'Contact Javier Chua via email @ javierchuaby@gmail.com',
+  description: `Contact Javier Chua via email at ${contactEmail}`,
   path: '/contact/',
 });
 

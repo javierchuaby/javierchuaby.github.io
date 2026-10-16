@@ -1,6 +1,7 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { contactEmail } from '@/data/site';
 import EmailLink from '../../Contact/EmailLink';
 
 describe('EmailLink', () => {
@@ -49,7 +50,7 @@ describe('EmailLink', () => {
 
     // Initial state shows 'hi' as default (accessibility: never show empty)
     const prefix = document.querySelector('.contact-email-prefix');
-    expect(prefix?.textContent).toBe('javierchuaby');
+    expect(prefix?.textContent).toBe(contactEmail.split('@')[0]);
 
     // Advance through multiple messages to verify animation works
     // Each message takes ~50 chars + 50 hold ticks at 50ms each
@@ -128,7 +129,7 @@ describe('EmailLink', () => {
     });
 
     const link = screen.getByRole('link');
-    expect(link.getAttribute('href')).toBe('mailto:javierchuaby@gmail.com');
+    expect(link.getAttribute('href')).toBe(`mailto:${contactEmail}`);
   });
 
   it('has invalid class when email prefix is invalid', async () => {

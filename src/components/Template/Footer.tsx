@@ -2,11 +2,15 @@ import Link from 'next/link';
 
 import ContactIcons from '@/components/Contact/ContactIcons';
 import work from '@/data/resume/work';
+import { getCurrentPosition } from '@/lib/positions';
 
 import ThemePortrait from './ThemePortrait';
 
 export default function Footer() {
-  const currentRole = `${work[0].position} at ${work[0].name}`;
+  const currentPosition = getCurrentPosition(work);
+  const currentRole = currentPosition
+    ? `${currentPosition.position} at ${currentPosition.name}`
+    : 'Computer Science student at NUS';
 
   return (
     <footer className="site-footer-new">

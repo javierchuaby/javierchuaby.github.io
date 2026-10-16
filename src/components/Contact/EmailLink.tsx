@@ -1,6 +1,9 @@
 'use client';
 
 import { useEffect, useReducer, useRef, useState } from 'react';
+import { contactEmail } from '@/data/site';
+
+const [emailLocalPart, emailDomain] = contactEmail.split('@');
 
 // Animation timing constants
 const ANIMATION_TICK_MS = 50; // Tick length in milliseconds
@@ -168,12 +171,14 @@ export default function EmailLink({ loopMessage = false }: EmailLinkProps) {
   };
 
   const displayPrefix =
-    displayMessage === 'hi' ? 'javierchuaby' : `javierchuaby+${displayMessage}`;
+    displayMessage === 'hi'
+      ? emailLocalPart
+      : `${emailLocalPart}+${displayMessage}`;
 
   const emailContent = (
     <>
       <span className="contact-email-prefix">{displayPrefix}</span>
-      <span className="contact-email-domain">@gmail.com</span>
+      <span className="contact-email-domain">{`@${emailDomain}`}</span>
     </>
   );
 
@@ -185,7 +190,7 @@ export default function EmailLink({ loopMessage = false }: EmailLinkProps) {
     >
       {isValid ? (
         <a
-          href={`mailto:${displayPrefix}@gmail.com`}
+          href={`mailto:${displayPrefix}@${emailDomain}`}
           className="contact-email-link"
           onClick={handleClick}
           onKeyDown={handleKeyDown}

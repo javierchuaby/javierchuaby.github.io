@@ -2,6 +2,7 @@ import contact from '@/data/contact';
 import degrees from '@/data/resume/degrees';
 import work from '@/data/resume/work';
 import { siteDescription } from '@/data/site';
+import { getCurrentPosition } from '@/lib/positions';
 import { AUTHOR_NAME, SITE_URL } from '@/lib/utils';
 import JsonLd from './JsonLd';
 
@@ -15,8 +16,7 @@ export default function PersonSchema() {
   const emailItem = contact.find((item) => item.link.startsWith('mailto:'));
   const email = emailItem?.link.replace('mailto:', '');
 
-  // Current job from work.ts (first entry)
-  const currentJob = work[0];
+  const currentPosition = getCurrentPosition(work);
 
   const personData = {
     '@context': 'https://schema.org',
@@ -25,7 +25,6 @@ export default function PersonSchema() {
     description: siteDescription,
     url: SITE_URL,
     image: `${SITE_URL}/images/me.jpg`,
-    jobTitle: currentJob.position,
     ...(email && {
       email,
       contactPoint: {
@@ -35,11 +34,14 @@ export default function PersonSchema() {
       },
     }),
     sameAs: socialLinks,
-    worksFor: {
-      '@type': 'Organization',
-      name: currentJob.name,
-      url: currentJob.url,
-    },
+    ...(currentPosition && {
+      jobTitle: currentPosition.position,
+      worksFor: {
+        '@type': 'Organization',
+        name: currentPosition.name,
+        url: currentPosition.url,
+      },
+    }),
     alumniOf: degrees.map((degree) => ({
       '@type': 'CollegeOrUniversity',
       name: degree.school,

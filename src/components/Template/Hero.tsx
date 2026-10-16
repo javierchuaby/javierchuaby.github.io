@@ -1,8 +1,11 @@
 import Link from 'next/link';
+import work from '@/data/resume/work';
+import { getCurrentPosition } from '@/lib/positions';
 
 import ThemePortrait from './ThemePortrait';
 
 export default function Hero() {
+  const currentPosition = getCurrentPosition(work);
   return (
     <section className="hero">
       <div className="hero-content">
@@ -16,7 +19,9 @@ export default function Hero() {
 
         <p className="hero-tagline">
           Computer Science student at the National University of Singapore (NUS)
-          and current Network Engineer Intern at Visa.
+          {currentPosition
+            ? ` and ${currentPosition.position} at ${currentPosition.name}.`
+            : '.'}
         </p>
 
         <div className="hero-chips">

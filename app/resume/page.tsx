@@ -9,12 +9,12 @@ import PageWrapper from '@/components/Template/PageWrapper';
 import degrees from '@/data/resume/degrees';
 import { categories, skills } from '@/data/resume/skills';
 import work from '@/data/resume/work';
+import { siteDescription } from '@/data/site';
 import { createPageMetadata } from '@/lib/metadata';
 
 export const metadata: Metadata = createPageMetadata({
   title: 'Resume',
-  description:
-    "Javier Chua's Resume. Senior Software Engineer specializing in full-stack web development, design systems, and scalable systems.",
+  description: siteDescription,
   path: '/resume/',
 });
 
@@ -24,12 +24,7 @@ export default function ResumePage() {
       <section className="resume-page">
         <header className="resume-header">
           <h1 className="resume-title">Resume</h1>
-          <p className="resume-summary">
-            Computer Science undergraduate at NUS, currently developing
-            predictive machine learning models for network infrastructure at
-            Visa. Experienced in backend software development, cloud
-            infrastructure deployments, and applied artifical intelligence.
-          </p>
+          <p className="resume-summary">{siteDescription}</p>
         </header>
 
         <ResumeNav />
