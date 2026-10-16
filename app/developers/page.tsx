@@ -101,7 +101,7 @@ export default function DevelopersPage() {
           </p>
           <p>
             See the{' '}
-            <a href="https://github.com/javierchuaby/javierchuaby.github.io/blob/main/docs/api-policy.md">
+            <a href="https://github.com/javierchuaby/portfolio/blob/main/docs/api-policy.md">
               API policy
             </a>{' '}
             for compatibility, versioning, and deprecation details, and the{' '}
@@ -115,7 +115,7 @@ export default function DevelopersPage() {
             <code className="api-endpoint">@javierchuaby/portfolio-cli</code>{' '}
             package is a local preview and has not been published to npm. Use
             the{' '}
-            <a href="https://github.com/javierchuaby/javierchuaby.github.io/tree/main/cli">
+            <a href="https://github.com/javierchuaby/portfolio/tree/main/cli">
               CLI source and setup instructions
             </a>{' '}
             to run it from a checkout.

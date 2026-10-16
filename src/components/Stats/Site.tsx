@@ -33,7 +33,7 @@ const FALLBACK_DATA: GitHubData = {
 async function fetchGitHubStats(): Promise<GitHubData> {
   try {
     const response = await fetch(
-      `https://api.github.com/repos/javierchuaby/javierchuaby.github.io?timestamp=${Date.now()}`,
+      `https://api.github.com/repos/javierchuaby/portfolio?timestamp=${Date.now()}`,
       {
         headers: { Accept: 'application/vnd.github.v3+json' },
         next: { revalidate: false },

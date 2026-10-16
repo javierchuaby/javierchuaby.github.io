@@ -52,7 +52,7 @@ describe('Site', () => {
 
     expect(global.fetch).toHaveBeenCalledWith(
       expect.stringContaining(
-        'https://api.github.com/repos/javierchuaby/javierchuaby.github.io',
+        'https://api.github.com/repos/javierchuaby/portfolio',
       ),
       expect.objectContaining({
         headers: expect.objectContaining({

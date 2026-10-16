@@ -4,23 +4,23 @@ import { StatData } from '../../components/Stats/types';
 
 /* Keys match keys returned by the github api. Fields without keys are
  * mostly jokes. To see everything returned by the github api, run:
- curl https://api.github.com/repos/javierchuaby/javierchuaby.github.io
+ curl https://api.github.com/repos/javierchuaby/portfolio
  */
 const data: StatData[] = [
   {
     label: 'Stars this repository has on github',
     key: 'stargazers_count',
-    link: 'https://github.com/javierchuaby/javierchuaby.github.io/stargazers',
+    link: 'https://github.com/javierchuaby/portfolio/stargazers',
   },
   {
     label: 'Number of people watching this repository',
     key: 'subscribers_count',
-    link: 'https://github.com/javierchuaby/javierchuaby.github.io/stargazers',
+    link: 'https://github.com/javierchuaby/portfolio/stargazers',
   },
   {
     label: 'Number of forks',
     key: 'forks',
-    link: 'https://github.com/javierchuaby/javierchuaby.github.io/network',
+    link: 'https://github.com/javierchuaby/portfolio/network',
   },
   // {
   //   label: 'Number of spoons',
@@ -33,18 +33,18 @@ const data: StatData[] = [
   // {
   //   label: 'Open github issues',
   //   key: 'open_issues_count',
-  //   link: 'https://github.com/javierchuaby/javierchuaby.github.io/issues',
+  //   link: 'https://github.com/javierchuaby/portfolio/issues',
   // },
   {
     label: 'Last updated at',
     key: 'pushed_at',
-    link: 'https://github.com/javierchuaby/javierchuaby.github.io/commits',
+    link: 'https://github.com/javierchuaby/portfolio/commits',
     format: (x: unknown) => dayjs(x as string).format('MMMM DD, YYYY'),
   },
   // {
   //   label: 'Lines of TypeScript powering this website',
   //   value: '2272',
-  //   link: 'https://github.com/javierchuaby/javierchuaby.github.io/graphs/contributors',
+  //   link: 'https://github.com/javierchuaby/portfolio/graphs/contributors',
   // },
 ];
 

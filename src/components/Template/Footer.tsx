@@ -25,7 +25,7 @@ export default function Footer() {
             <p className="footer-copyright">
               &copy; {new Date().getFullYear()} ·{' '}
               <a
-                href="https://github.com/javierchuaby/javierchuaby.github.io"
+                href="https://github.com/javierchuaby/portfolio"
                 target="_blank"
                 rel="noopener noreferrer"
               >
